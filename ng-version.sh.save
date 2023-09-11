@@ -1,5 +1,0 @@
-#!/bin/bash
-/usr/local/lib/node_modules/@angular/cli/bin/ng --version
-
-chmod +x ng-version.sh
-
