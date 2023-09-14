@@ -13,10 +13,11 @@ function DashImageSection({
 
   return (
     <div
-      className={`flex items-center justify-center lg:flex-row flex-col lg:space-x-8 space-y-8 sm:px-10 lg:mt-20 2xl:px-80 xl:px-60 lg:px-40 md:px-28`}
+      className={`flex items-center justify-center place-content-center lg:flex-row flex-col space-y-8 sm:px-10 lg:mt-20`}
     >
       <div
-        className={`bg-slate-50 w-full rounded-lg lg:w-1/2 ${imagePositionClass}`}
+        className={`bg-slate-50 w-full rounded-lg lg:w-1/2 p-4 ${imagePositionClass}`} // Add padding here
+        style={{ maxWidth: "500px" }} // Set the desired width
       >
         <img
           src={process.env.PUBLIC_URL + imageSrc}
@@ -24,12 +25,12 @@ function DashImageSection({
           className="w-full h-full object-cover"
         />
       </div>
-      <div className={`lg:w-1/2 ${textPositionClass}`}>
-        <div className="grid grid-rows p-4 m-2">
+      <div className={` ${textPositionClass} p-24`}>
+        <div className="grid grid-rows">
           <div className="font-medium text-3xl mb-15">{heading}</div>
           <div className="mb-5 mt-2 text-slate-400">{text}</div>
           <div>
-            <button className="rounded-2xl font-light text-white text-sm bg-regal-blue py-2 px-4 mb-5">
+            <button className="rounded-2xl font-light text-white text-sm bg-regal-blue py-2 px-4">
               {buttonText}
             </button>
           </div>

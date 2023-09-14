@@ -1,20 +1,8 @@
 import React from "react";
+import { CHECK_SECTION_ITEMS } from "../../constants";
 
 function CheckSection() {
-  const items = [
-    {
-      heading: "Heading goes here",
-      text: "A lot of random works just to see if this is working the way that it is supposed to.",
-    },
-    {
-      heading: "Heading goes here",
-      text: "A lot of random works just to see if this is working the way that it is supposed to.",
-    },
-    {
-      heading: "Heading goes here",
-      text: "A lot of random works just to see if this is working the way that it is supposed to.",
-    },
-  ];
+  const items = CHECK_SECTION_ITEMS;
 
   return (
     <div>

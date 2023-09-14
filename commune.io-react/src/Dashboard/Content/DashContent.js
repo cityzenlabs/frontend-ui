@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "../../Image/Image";
 
+import { Link } from "react-router-dom";
+
 function DashContent() {
   return (
     <div>
@@ -17,9 +19,11 @@ function DashContent() {
           </div>
         </div>
         <div class="mt-10">
-          <button class="rounded-2xl font-light text-white text-md bg-regal-blue py-4 px-10 ">
-            Open Account
-          </button>
+          <Link to="signup">
+            <button class="rounded-2xl font-light text-white text-md bg-regal-blue py-4 px-10 ">
+              Open Account
+            </button>
+          </Link>
           <button class="rounded-2xl font-light text-black text-md bg-white py-4 px-10 border border-grey ml-4">
             Login
           </button>

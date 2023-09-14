@@ -7,6 +7,7 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
+import SignUp from "./SignUp/SignUp";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/signup" component={SignUp} />
         </Switch>
       </Router>
     </div>

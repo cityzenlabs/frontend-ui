@@ -5,6 +5,7 @@ import DashContent from "./Content/DashContent";
 import DashHeader from "./Header/DashHeader";
 import DashImageSection from "./ImageSection/DashImageSection";
 import { ACCORDIAN_OPTIONS } from "../constants";
+import DashFooter from "./Footer/DashFooter";
 
 function Dashboard() {
   const items = ACCORDIAN_OPTIONS;
@@ -32,6 +33,7 @@ function Dashboard() {
       />
       <CheckSection />
       <Accordian items={items} />
+      <DashFooter />
     </div>
   );
 }

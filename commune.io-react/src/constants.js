@@ -20,3 +20,18 @@ export const ACCORDIAN_OPTIONS = [
     body: "",
   },
 ];
+
+export const CHECK_SECTION_ITEMS = [
+  {
+    heading: "Heading goes here",
+    text: "A lot of random works just to see if this is working the way that it is supposed to.",
+  },
+  {
+    heading: "Heading goes here",
+    text: "A lot of random works just to see if this is working the way that it is supposed to.",
+  },
+  {
+    heading: "Heading goes here",
+    text: "A lot of random works just to see if this is working the way that it is supposed to.",
+  },
+];
