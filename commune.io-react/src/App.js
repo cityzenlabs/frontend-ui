@@ -1,13 +1,13 @@
 import "./App.css";
 import React from "react";
-import Dashboard from "./Dashboard/Dashboard";
+import Dashboard from "./Components/Dashboard/Dashboard";
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
 } from "react-router-dom";
-import SignUp from "./SignUp/SignUp";
+import SignUp from "./Components/SignUp/SignUp";
 
 function App() {
   return (

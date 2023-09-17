@@ -13,7 +13,7 @@ function DashImageSection({
 
   return (
     <div
-      className={`flex items-center justify-center place-content-center lg:flex-row flex-col space-y-8 sm:px-10 lg:mt-20`}
+      className={`flex items-center justify-center place-content-center lg:flex-row flex-col sm:px-10 lg:mt-10`}
     >
       <div
         className={`bg-slate-50 w-full rounded-lg lg:w-1/2 p-4 ${imagePositionClass}`} // Add padding here
@@ -27,7 +27,7 @@ function DashImageSection({
       </div>
       <div className={` ${textPositionClass} p-24`}>
         <div className="grid grid-rows">
-          <div className="font-medium text-3xl mb-15">{heading}</div>
+          <div className="font-medium text-3xl">{heading}</div>
           <div className="mb-5 mt-2 text-slate-400">{text}</div>
           <div>
             <button className="rounded-2xl font-light text-white text-sm bg-regal-blue py-2 px-4">
