@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import IListBox from "../../../Library/ListBox/IListBox";
+import IInput from "../../../Library/Input/IInput";
 
 interface DetailFormProps {
   onNextStep: () => void;
@@ -74,16 +75,12 @@ function DetailForm({ onNextStep }: DetailFormProps) {
           </div>
           <div className="mt-4">Location</div>
           <div className="grid grid-cols-2 gap-2">
-            <input
-              name="State"
-              className=" mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 rounded-md sm:text-sm "
-              placeholder="State"
-            />
-            <input
-              name="City"
-              className=" mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 rounded-md sm:text-sm "
-              placeholder="City"
-            />
+            <div>
+              <IInput name="state" placeholder="State" />
+            </div>
+            <div>
+              <IInput name="city" placeholder="City" />
+            </div>
           </div>
 
           <div>

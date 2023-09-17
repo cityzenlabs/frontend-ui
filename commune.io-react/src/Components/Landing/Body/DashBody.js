@@ -23,14 +23,16 @@ function DashBody() {
           </div>
         </div>
         <div class="mt-10">
-          <Link to="signup">
+          <Link to="/signup">
             <button class="rounded-2xl font-light text-white text-md bg-regal-blue py-4 px-10 ">
               Open Account
             </button>
           </Link>
-          <button class="rounded-2xl font-light text-black text-md bg-white py-4 px-10 border border-grey ml-4">
-            Login
-          </button>
+          <Link to="/login">
+            <button class="rounded-2xl font-light text-black text-md bg-white py-4 px-10 border border-grey ml-4">
+              Login
+            </button>
+          </Link>
         </div>
         <div class="mt-5">Text goes here, Text goes here</div>
         <div style={{ overflow: "hidden" }}>
