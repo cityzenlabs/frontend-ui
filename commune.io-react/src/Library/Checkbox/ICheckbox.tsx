@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ICheckbox.css"; // Import your custom CSS styles
 
 interface ICheckboxProps {

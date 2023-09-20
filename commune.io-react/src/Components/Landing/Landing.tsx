@@ -1,6 +1,7 @@
 import DashBody from "./Body/DashBody";
 import DashHeader from "./Header/DashHeader";
 import DashFooter from "./Footer/DashFooter";
+import React from "react";
 
 function Dashboard() {
   return (

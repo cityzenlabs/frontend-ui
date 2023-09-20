@@ -1,5 +1,14 @@
 import React from "react";
 
+interface DashImageSectionProps {
+  heading: string;
+  text: string;
+  buttonText: string;
+  imageSrc: string;
+  imageAlt: string;
+  reverse: boolean;
+}
+
 function DashImageSection({
   heading,
   text,
@@ -7,7 +16,7 @@ function DashImageSection({
   imageSrc,
   imageAlt,
   reverse,
-}) {
+}: DashImageSectionProps) {
   const textPositionClass = reverse ? "order-2" : "order-1";
   const imagePositionClass = reverse ? "order-1" : "order-2";
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import IListBox from "../../../Library/ListBox/IListBox";
 import IInput from "../../../Library/Input/IInput";
 
 interface DetailFormProps {

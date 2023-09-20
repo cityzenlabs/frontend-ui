@@ -2,7 +2,16 @@ import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/outline";
 
-function Accordian({ items }) {
+interface AccordionItem {
+  header: string;
+  body: string;
+}
+
+interface AccordionProps {
+  items: AccordionItem[];
+}
+
+function Accordian({ items }: AccordionProps) {
   return (
     <div>
       <div className="mx-auto max-w-2xl bg-white p-2">
