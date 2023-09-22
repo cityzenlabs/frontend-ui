@@ -7,30 +7,34 @@ import Leaderboard from "./Leaderboard/Leaderboard";
 import Notifications from "./Notifications/Notifications";
 import Settings from "./Settings/Settings";
 function Dashboard() {
-  const [selectedItem, setSelectedItem] = useState<string>("Home");
+  const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
   return (
     <div>
       <Sidebar
-        selectedItem={selectedItem}
+        sideBarSelection={sideBarSelection}
         sideBarVisibility={sidebarVisibilty}
         viewProfile={viewProfile}
         setViewProfile={setViewProfile}
-        setSelectedItem={setSelectedItem}
+        setSideBarSelection={setSideBarSelection}
         setSideBarVisibility={setSidebarVisibility}
       />
       <div className="bg-slate-50 min-h-screen">
         <div>
-          {selectedItem === "Home" && (
-            <Home setViewProfile={setViewProfile} viewProfile={viewProfile} />
+          {sideBarSelection === "Home" && (
+            <Home
+              setViewProfile={setViewProfile}
+              viewProfile={viewProfile}
+              setSideBarSelection={setSideBarSelection}
+            />
           )}
         </div>
-        <div>{selectedItem === "Events" && <Events />}</div>
-        <div>{selectedItem === "Communities" && <Communities />}</div>
-        <div>{selectedItem === "Leaderboard" && <Leaderboard />}</div>
-        <div>{selectedItem === "Notifications" && <Notifications />}</div>
-        <div>{selectedItem === "Settings" && <Settings />}</div>
+        <div>{sideBarSelection === "Events" && <Events />}</div>
+        <div>{sideBarSelection === "Communities" && <Communities />}</div>
+        <div>{sideBarSelection === "Leaderboard" && <Leaderboard />}</div>
+        <div>{sideBarSelection === "Notifications" && <Notifications />}</div>
+        <div>{sideBarSelection === "Settings" && <Settings />}</div>
       </div>
     </div>
   );

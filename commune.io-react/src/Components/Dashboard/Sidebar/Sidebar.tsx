@@ -3,11 +3,11 @@ import { SIDE_BAR_ITEMS, HAMBURGER_ICON } from "../../../constants";
 import { SideBarProps } from "./types/SidebarProps";
 
 function Sidebar({
-  selectedItem,
+  sideBarSelection,
   sideBarVisibility,
   viewProfile,
   setViewProfile,
-  setSelectedItem,
+  setSideBarSelection,
   setSideBarVisibility,
 }: SideBarProps) {
   const toggleSidebar = () => {
@@ -44,7 +44,7 @@ function Sidebar({
 
   const handleMenuItemClick = (route: string) => {
     setSideBarVisibility(false);
-    setSelectedItem(route);
+    setSideBarSelection(route);
   };
 
   const handleViewProfile = () => {
@@ -82,7 +82,7 @@ function Sidebar({
                 <div
                   onClick={() => handleMenuItemClick(item.label)}
                   className={`flex items-center p-2 rounded-lg hover:bg-slate-50  font-light  ${
-                    selectedItem === item.label ? "bg-slate-50 border" : ""
+                    sideBarSelection === item.label ? "bg-slate-50 border" : ""
                   }`}
                 >
                   <svg
@@ -92,7 +92,7 @@ function Sidebar({
                     strokeWidth={1.5}
                     stroke="currentColor"
                     className={`w-6 h-6  ${
-                      selectedItem === item.label ? "text-regal-blue" : ""
+                      sideBarSelection === item.label ? "text-regal-blue" : ""
                     }`}
                   >
                     <path d={item.icon} />
@@ -100,7 +100,7 @@ function Sidebar({
 
                   <span
                     className={`ml-3 ${
-                      selectedItem === item.label
+                      sideBarSelection === item.label
                         ? "text-regal-blue"
                         : "text-gray-900"
                     }`}

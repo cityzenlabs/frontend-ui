@@ -1,8 +1,8 @@
 export interface SideBarProps {
-  selectedItem: string;
+  sideBarSelection: string;
   sideBarVisibility: boolean;
   viewProfile: boolean;
-  setSelectedItem: (label: string) => void;
+  setSideBarSelection: (label: string) => void;
   setSideBarVisibility: (visible: boolean) => void;
   setViewProfile: (visible: boolean) => void;
 }
