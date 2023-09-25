@@ -1,13 +1,11 @@
 import React from "react";
 import { HomeProps } from "./types/HomeProps";
 import Profile from "./Profile/Profile";
-import HomeWelcome from "./HomeWelcome/HomeWelcome";
-import HomeAttributes from "./HomeAttributes/HomeAttributes";
-import HomeEvents from "./HomeEvents/HomeEvents";
-import HomeRecommendations from "./HomeRecommendations/HomeRecommendations";
-import HomeUpcomingEvents from "./HomeUpcomingEvents/HomeUpcomingEvents";
 
 function Home({ viewProfile, setViewProfile, setSideBarSelection }: HomeProps) {
+  const handleSetViewProfile = (): void => {
+    setViewProfile(true);
+  };
   return (
     <div>
       {viewProfile ? (
@@ -20,23 +18,68 @@ function Home({ viewProfile, setViewProfile, setSideBarSelection }: HomeProps) {
             <label className="font-medium text-3xl">Dashboard</label>
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
-                <HomeWelcome
-                  viewProfile={viewProfile}
-                  setViewProfile={setViewProfile}
-                />
-                <HomeAttributes />
+                <div className="w-full">
+                  <div className="h-[80px] rounded-lg bg-white flex items-center px-4 mt-8">
+                    <div className="text-2xl">Welcome, Phillip</div>
+                    <div className="ml-auto text-sm border rounded py-1 px-4">
+                      <button onClick={handleSetViewProfile}>
+                        See profile
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full">
+                  <div className="h-[403px] rounded-lg bg-white px-4 py-6 mt-8">
+                    Your top 4 attributes
+                  </div>
+                </div>
               </div>
               <div>
-                <HomeEvents setSideBarSelection={setSideBarSelection} />
+                <div className="w-full">
+                  <div className="h-[515px] rounded-lg bg-white px-4 py-6 xl:mt-8">
+                    <div className="flex justify-between">
+                      <div className="text-2xl">
+                        Level up with these <br /> events
+                      </div>
+                      <div>
+                        <button className="text-sm border rounded py-1 px-4">
+                          See All
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="xl:ml-[320px] md:ml-[320px] px-12 ">
-            <HomeRecommendations />
+            <div className="w-full">
+              <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
+                <div className="flex justify-between">
+                  <div className="text-xl">Recommended Communities</div>
+                  <div>
+                    <button className="text-sm border rounded py-1 px-4">
+                      See All
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8">
-            <HomeUpcomingEvents />
+            <div className="w-full">
+              <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
+                <div className="flex justify-between">
+                  <div className="text-xl">Upcoming Events</div>
+                  <div>
+                    <button className="text-sm border rounded py-1 px-4">
+                      See All
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

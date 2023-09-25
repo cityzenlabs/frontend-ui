@@ -1,13 +1,21 @@
 import React from "react";
-import EventsUpcoming from "../EventsUpcoming/EventsUpcoming";
+import { EventsProps } from "../types/EventsProps";
+import { Visibility } from "../Enums/EventEnums";
 
-function ManageEvents() {
+function ManageEvents({ setEventsVisibility }: EventsProps) {
   const eventStats = [{ id: 1 }, { id: 2 }, { id: 3 }];
   const graphs = [{ id: 1 }, { id: 2 }];
+
+  const handleBack = () => {
+    setEventsVisibility(Visibility.Events);
+  };
   return (
     <div>
       <div className="flex xl:ml-[320px] md:ml-[320px] px-12 py-8">
-        <button className="flex items-center space-x-1 px-2 py-1 text-slate-400 border bg-white rounded">
+        <button
+          className="flex items-center space-x-1 px-2 py-1 text-slate-400 border bg-white rounded"
+          onClick={handleBack}
+        >
           <div className="w-6 h-6 flex m-auto transform rotate-90">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +36,7 @@ function ManageEvents() {
       <div className="flex xl:ml-[320px] md:ml-[320px] px-12">
         {eventStats.map((item) => (
           <div key={item.id} className="w-[148px] mr-4">
-            <div className="h-[112px] rounded-lg bg-white flex items-center px-4 mt-8"></div>
+            <div className="h-[112px] rounded-lg bg-white flex items-center px-4 "></div>
           </div>
         ))}
       </div>
