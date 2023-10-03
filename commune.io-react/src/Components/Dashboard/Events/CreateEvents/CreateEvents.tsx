@@ -248,7 +248,7 @@ function CreateEvents({ setEventsVisibility }: EventsProps) {
                 <img
                   src={imageUrl}
                   alt={`${index}`}
-                  className="w-full h-full object-cover border rounded"
+                  className="w-full h-full object-cover  rounded"
                 />
               </div>
             );

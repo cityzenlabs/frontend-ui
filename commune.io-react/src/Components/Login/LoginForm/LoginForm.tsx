@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import IInput from "../../../Library/Input/IInput";
 import ICheckbox from "../../../Library/Checkbox/ICheckbox";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,10 +6,35 @@ import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
 
 function LoginForm() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // to handle potential login errors
   const navigate = useNavigate();
 
-  const handleLogin = (): void => {
-    navigate("/dashboard");
+  const handleLogin = async (): Promise<void> => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/app-service/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        },
+      );
+
+      if (response.ok) {
+        console.log(response);
+        // Optionally, handle any data returned with the response.
+        const data = await response.json();
+        navigate("/dashboard");
+      } else {
+        setError("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      setError("Something went wrong. Please try again later.");
+    }
   };
 
   const handleForgotPasswordClick = (): void => {
@@ -39,6 +64,10 @@ function LoginForm() {
                     type="email"
                     name="email"
                     placeholder="you@example.com"
+                    value={email}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setEmail(e.target.value)
+                    }
                   />
                 </div>
                 <div className="mt-4">
@@ -47,8 +76,13 @@ function LoginForm() {
                     name="password"
                     placeholder="password"
                     label="Password"
+                    value={password}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setPassword(e.target.value)
+                    }
                   />
                 </div>
+                {error && <div className="text-red-500 mt-4">{error}</div>}
                 <div className="flex mt-6 justify-between">
                   <div>
                     <ICheckbox label="Remember me" />
