@@ -3,11 +3,15 @@ import IInput from "../../../Library/Input/IInput";
 
 interface DetailFormProps {
   onNextStep: () => void;
+  userData: {
+    state?: string;
+    city?: string;
+    image?: string;
+  };
+  updateUser: (updatedData: any) => void;
 }
 
-function DetailForm({ onNextStep }: DetailFormProps) {
-  const [image, setImage] = useState<string | null>(null); // Initialize image state as null
-
+function DetailForm({ onNextStep, userData, updateUser }: DetailFormProps) {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = e.target.files?.[0];
     if (selectedImage) {
@@ -17,7 +21,7 @@ function DetailForm({ onNextStep }: DetailFormProps) {
         img.src = reader.result as string;
         img.onload = () => {
           if (img.width >= 200 && img.height >= 200) {
-            setImage(reader.result as string);
+            updateUser({ ...userData, image: reader.result as string });
           } else {
             alert("Image must have a minimum resolution of 200x200 pixels.");
           }
@@ -28,17 +32,23 @@ function DetailForm({ onNextStep }: DetailFormProps) {
   };
 
   const handleContinue = (): void => {
-    onNextStep();
+    if (userData.state && userData.city) {
+      onNextStep();
+    } else {
+      alert("Please complete the form before proceeding.");
+    }
   };
 
   const containerStyle: React.CSSProperties = {
-    width: "60px", // Adjust the size of the container as needed
+    width: "60px",
     height: "60px",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: image ? `url(${image}) center/cover no-repeat` : "#C7D5FB",
+    background: userData.image
+      ? `url(${userData.image}) center/cover no-repeat`
+      : "#C7D5FB",
     cursor: "pointer",
   };
 
@@ -57,7 +67,7 @@ function DetailForm({ onNextStep }: DetailFormProps) {
                   onChange={handleImageChange}
                 />
                 <div style={containerStyle}>
-                  {!image && (
+                  {!userData.image && (
                     <span className="text-regal-blue text-3xl font-light">
                       +
                     </span>
@@ -75,10 +85,24 @@ function DetailForm({ onNextStep }: DetailFormProps) {
           <div className="mt-4">Location</div>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <IInput name="state" placeholder="State" />
+              <IInput
+                name="state"
+                placeholder="State"
+                value={userData.state || ""}
+                onChange={(e) =>
+                  updateUser({ ...userData, state: e.target.value })
+                }
+              />
             </div>
             <div>
-              <IInput name="city" placeholder="City" />
+              <IInput
+                name="city"
+                placeholder="City"
+                value={userData.city || ""}
+                onChange={(e) =>
+                  updateUser({ ...userData, city: e.target.value })
+                }
+              />
             </div>
           </div>
 

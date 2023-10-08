@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import IInput from "../../../Library/Input/IInput";
 
-interface EmailPasswordFormProps {
-  onNextStep: () => void;
-}
+function EmailPasswordForm({ onNextStep, userData, updateUser }: any) {
+  const [error, setError] = useState("");
 
-function EmailPasswordForm({ onNextStep }: EmailPasswordFormProps) {
-  const handleContinue = (): void => {
-    onNextStep();
+  const handleContinue = async (): Promise<void> => {
+    const bodyData = {
+      authType: "EMAIL",
+      authIdentifier: userData.email,
+    };
+
+    if (userData.email && userData.password) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/app-service/users/new-user-validation`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bodyData),
+          },
+        );
+
+        const result = await response.json();
+
+        if (!result) {
+          setError("Email already taken!"); // or handle this in a better way
+        } else {
+          onNextStep();
+        }
+      } catch (error) {
+        setError("Something went wrong. Please try again later.");
+      }
+    } else {
+      alert("Please complete the form before proceeding.");
+    }
   };
 
   return (
@@ -24,6 +52,10 @@ function EmailPasswordForm({ onNextStep }: EmailPasswordFormProps) {
                 type="email"
                 name="email"
                 placeholder="you@example.com"
+                value={userData.email}
+                onChange={(e) =>
+                  updateUser({ ...userData, email: e.target.value })
+                }
               />
             </div>
             <div className="mt-4">
@@ -32,8 +64,13 @@ function EmailPasswordForm({ onNextStep }: EmailPasswordFormProps) {
                 name="password"
                 placeholder="password"
                 label="Password"
+                value={userData.password}
+                onChange={(e) =>
+                  updateUser({ ...userData, password: e.target.value })
+                }
               />
             </div>
+            {error && <div className=" text-sm text-red-500 mt-4">{error}</div>}
 
             <div className="mt-2 text-sm font-thin">At least 8 characters.</div>
             <div>

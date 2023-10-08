@@ -4,7 +4,7 @@ interface NotificationProps {
   onNextStep: () => void;
 }
 
-function Notification({ onNextStep }: NotificationProps) {
+function Notification({ onNextStep, userData, updateUser }: any) {
   const handleContinue = (): void => {
     onNextStep();
   };

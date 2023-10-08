@@ -20,14 +20,15 @@ function LoginForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({
+            authType: "EMAIL",
+            authIdentifier: email,
+            password: password,
+          }),
         },
       );
 
       if (response.ok) {
-        console.log(response);
-        // Optionally, handle any data returned with the response.
-        const data = await response.json();
         navigate("/dashboard");
       } else {
         setError("Login failed. Please check your credentials.");
@@ -82,7 +83,9 @@ function LoginForm() {
                     }
                   />
                 </div>
-                {error && <div className="text-red-500 mt-4">{error}</div>}
+                {error && (
+                  <div className="text-red-500 text-sm mt-4">{error}</div>
+                )}
                 <div className="flex mt-6 justify-between">
                   <div>
                     <ICheckbox label="Remember me" />

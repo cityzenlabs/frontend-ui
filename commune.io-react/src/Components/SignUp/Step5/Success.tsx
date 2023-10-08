@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import { useDispatch } from "react-redux";
-import { login } from "../../../Actions/actions";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../Actions/actionTypes";
 import { useNavigate } from "react-router-dom";
 
-function Success() {
-  const dispatch = useDispatch();
+function Success({ userData, updateUser }: any) {
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
@@ -32,18 +26,37 @@ function Success() {
 
     window.addEventListener("resize", handleResize);
 
-    if (isLoggedIn) {
-      // Navigate to the dashboard when isLoggedIn is true
-      navigate("/dashboard");
-    }
-
     return (): void => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isLoggedIn, navigate]);
+  });
 
-  const handleContinue = (): void => {
-    dispatch(login());
+  const handleContinue = async (): Promise<void> => {
+    const user = {
+      email: userData.email,
+      password: userData.password,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      gender: userData.gender,
+      city: userData.city,
+      state: userData.state,
+      picture: "",
+      dateOfBirth: userData.year + "-" + userData.month + "-" + userData.day,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/app-service/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        navigate("/dashboard");
+      }
+    } catch (error) {}
   };
 
   return (
