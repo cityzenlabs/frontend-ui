@@ -5,8 +5,8 @@ function Login() {
   return (
     <div className="grid lg:grid-cols-2 ">
       <div>
-        <div className="absolute bottom-0 p-10">
-          <div className="text-xs text-black text-slate-400">
+        <div className="absolute bottom-0 p-10 ">
+          <div className="text-xs text-black text-slate-400 ">
             Copyright COMMUNIE.IO 2023
           </div>
         </div>

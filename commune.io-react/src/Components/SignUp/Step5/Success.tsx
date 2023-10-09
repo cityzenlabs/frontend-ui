@@ -33,7 +33,10 @@ function Success({ userData, updateUser }: any) {
 
   const handleContinue = async (): Promise<void> => {
     const user = {
-      email: userData.email,
+      authDto: {
+        authType: "EMAIL",
+        authIdentifier: userData.email,
+      },
       password: userData.password,
       firstName: userData.firstName,
       lastName: userData.lastName,

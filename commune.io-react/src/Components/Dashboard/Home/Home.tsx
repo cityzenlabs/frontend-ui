@@ -2,7 +2,7 @@ import React from "react";
 import { HomeProps } from "./types/HomeProps";
 import Profile from "./Profile/Profile";
 
-function Home({ viewProfile, setViewProfile, setSideBarSelection }: HomeProps) {
+function Home({ viewProfile, setViewProfile }: HomeProps) {
   const handleSetViewProfile = (): void => {
     setViewProfile(true);
   };
