@@ -2,7 +2,7 @@ import React from "react";
 import { HomeProps } from "./types/HomeProps";
 import Profile from "./Profile/Profile";
 
-function Home({ viewProfile, setViewProfile }: HomeProps) {
+function Home({ viewProfile, setViewProfile, user }: HomeProps) {
   const handleSetViewProfile = (): void => {
     setViewProfile(true);
   };
@@ -20,7 +20,7 @@ function Home({ viewProfile, setViewProfile }: HomeProps) {
               <div>
                 <div className="w-full">
                   <div className="h-[80px] rounded-lg bg-white flex items-center px-4 mt-8">
-                    <div className="text-2xl">Welcome, Phillip</div>
+                    <div className="text-2xl">Welcome, {user?.firstName}</div>
                     <div className="ml-auto text-sm border rounded py-1 px-4">
                       <button onClick={handleSetViewProfile}>
                         See profile

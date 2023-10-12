@@ -1,9 +1,18 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Tab } from "@headlessui/react";
 import "./Settings.css";
 import EditProfile from "./EditProfile/EditProfile";
+import Security from "./Security/Security";
+import SecurityNotifications from "./Notifications/SecurityNotifications";
 
-function Settings() {
+interface SettingsProps {
+  setUser: Dispatch<SetStateAction<any>>;
+  userId: string;
+  user: any; // Use the appropriate type instead of 'any'
+  profilePicture: string;
+}
+
+function Settings({ setUser, userId, user, profilePicture }: SettingsProps) {
   return (
     <div>
       <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8 ">
@@ -22,6 +31,7 @@ function Settings() {
                   "Help Center",
                 ].map((tab) => (
                   <Tab
+                    key={tab}
                     as="button"
                     className={({ selected }) => `
                                         ${
@@ -39,10 +49,19 @@ function Settings() {
             </div>
             <Tab.Panels className="mt-16">
               <Tab.Panel>
-                <EditProfile />
+                <EditProfile
+                  setUser={setUser}
+                  userId={userId}
+                  user={user}
+                  profilePicture={profilePicture}
+                />
               </Tab.Panel>
-              <Tab.Panel>Content 2</Tab.Panel>
-              <Tab.Panel>Content 3</Tab.Panel>
+              <Tab.Panel>
+                <Security />
+              </Tab.Panel>
+              <Tab.Panel>
+                <SecurityNotifications />
+              </Tab.Panel>
               <Tab.Panel>Content 4</Tab.Panel>
               <Tab.Panel>Content 5</Tab.Panel>
               <Tab.Panel>Content 6</Tab.Panel>
