@@ -6,44 +6,39 @@ import Communities from "./Communities/Communities";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import Notifications from "./Notifications/Notifications";
 import Settings from "./Settings/Settings";
+import * as UserService from "../../Services/UserService/UserService";
+
 function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
+  const [userId] = useState<string>("652d77a0bee0d62986c1efdb");
   const [user, setUser] = useState<any>();
-  const [userId] = useState<string>("65273b2aab6a9b4c117b09a6");
   const [profilePicture, setProfilePicture] = useState<any>();
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/app-service/users/${userId}`,
-        );
-
-        const result = await response.json();
-        if (JSON.stringify(user) !== JSON.stringify(result)) {
-          setUser(result);
-        }
+        const userData = await UserService.fetchUserData(userId);
+        setUser(userData);
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        setError(error as Error); // Explicitly cast error to Error type
       }
     };
 
     const getProfilePicture = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/app-service/users/${userId}/profile-picture`,
-        );
-
-        const imageUrl = await response.text();
-
+        const imageUrl = await UserService.fetchProfilePicture(userId);
         setProfilePicture(imageUrl);
-      } catch (error) {}
+      } catch (error) {
+        setError(error as Error); // Explicitly cast error to Error type
+      }
     };
+
     getProfilePicture();
     fetchData();
-  }, []); // Still depend on user, but check before setting state
+  }, [userId]);
 
   return (
     <div>

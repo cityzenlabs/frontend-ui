@@ -6,12 +6,17 @@ import React, {
   SetStateAction,
 } from "react";
 import IInput from "../../../../Library/Input/IInput";
+import * as UserService from "../../../../Services/UserService/UserService";
 
 interface EditProfileProps {
   setUser: Dispatch<SetStateAction<any>>;
   userId: string;
   user: any;
   profilePicture: string;
+}
+
+function isEmptyOrWhitespace(value: any) {
+  return /^\s*$/.test(value);
 }
 
 function EditProfile({
@@ -22,13 +27,13 @@ function EditProfile({
 }: EditProfileProps) {
   // Initialize image state with profilePicture prop
   const [image, setImage] = useState<string>(profilePicture);
-  const [firstName, setFirstName] = useState<string>(user.firstName || "");
-  const [lastName, setLastName] = useState<string>(user.lastName || "");
-  const [email, setEmail] = useState<string>(user.email || "");
-  const [state, setState] = useState<string>(user.state || "");
-  const [city, setCity] = useState<string>(user.city || "");
+  const [firstName, setFirstName] = useState<string>(user?.firstName || "");
+  const [lastName, setLastName] = useState<string>(user?.lastName || "");
+  const [email, setEmail] = useState<string>(user?.email || "");
+  const [state, setState] = useState<string>(user?.state || "");
+  const [city, setCity] = useState<string>(user?.city || "");
   const [phoneNumber, setPhoneNumber] = useState<string>(
-    user.phoneNumber || "",
+    user?.phoneNumber || "",
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,64 +50,52 @@ function EditProfile({
     fileInputRef.current?.click();
   };
 
-  const handleEditProfile = (): void => {
-    fetch(`http://localhost:8080/app-service/users/${userId}/update-auth`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        authType: "EMAIL",
-        authIdentifier: email,
-      }),
-    })
-      .then((response1) => {
-        if (!response1.ok) {
-          throw new Error(`Error in request 1: ${response1.statusText}`);
+  const resetForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhoneNumber("");
+    setCity("");
+    setState("");
+  };
+
+  const handleEditProfile = async (): Promise<void> => {
+    try {
+      if (email !== "") {
+        await UserService.updateEmail(userId, email);
+      }
+      if (phoneNumber !== "") {
+        await UserService.updatePhoneNumber(userId, phoneNumber);
+      }
+      const fieldsToUpdate: any = {
+        firstName,
+        lastName,
+        city,
+        state,
+      };
+
+      // Update the user?'s profile
+      const nonEmptyFields: { [key: string]: string } = {};
+      for (const [key, value] of Object.entries(fieldsToUpdate)) {
+        if (typeof value === "string" && value.trim() !== "") {
+          nonEmptyFields[key] = value;
         }
-        return fetch(
-          `http://localhost:8080/app-service/users/${userId}/update-auth`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              authType: "PHONE_NUMBER",
-              authIdentifier: phoneNumber,
-            }),
-          },
+      }
+
+      // Only make the API call if there are non-empty fields to update
+      if (Object.keys(nonEmptyFields).length > 0) {
+        const updatedUser = await UserService.updateProfileInfo(
+          userId,
+          nonEmptyFields,
         );
-      })
-      .then((response2) => {
-        if (!response2.ok) {
-          throw new Error(`Error in request 2: ${response2.statusText}`);
-        }
-        return fetch(`http://localhost:8080/app-service/users/${userId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            city: city,
-            state: state,
-          }),
-        });
-      })
-      .then((response3) => {
-        if (!response3.ok) {
-          throw new Error(`Error in request 3: ${response3.statusText}`);
-        }
-        return response3.json(); // assuming the user data is in the third response
-      })
-      .then((userData) => {
-        setUser(userData);
-      })
-      .catch((error) => {
-        console.error("Error during profile edit:", error);
-      });
+
+        // Update the user state
+        setUser(updatedUser);
+        resetForm();
+      }
+    } catch (error) {
+      console.error("Error during profile edit:", error);
+    }
   };
 
   return (
@@ -149,7 +142,7 @@ function EditProfile({
           <IInput
             name="firstName"
             label="First Name"
-            placeholder={user.firstName}
+            placeholder={user?.firstName}
             value={firstName}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setFirstName(e.target.value)
@@ -160,7 +153,7 @@ function EditProfile({
           <IInput
             name="lastName"
             label="Last Name"
-            placeholder={user.lastName}
+            placeholder={user?.lastName}
             value={lastName}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setLastName(e.target.value)
@@ -171,7 +164,7 @@ function EditProfile({
           <IInput
             name="email"
             label="Email"
-            placeholder={user.email}
+            placeholder={user?.email}
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -182,7 +175,7 @@ function EditProfile({
           <IInput
             name="phoneNumber"
             label="Phone Number"
-            placeholder={user.phoneNumber}
+            placeholder={user?.phoneNumber}
             value={phoneNumber}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPhoneNumber(e.target.value)
@@ -194,7 +187,7 @@ function EditProfile({
           <div>
             <IInput
               name="city"
-              placeholder={user.city}
+              placeholder={user?.city}
               value={city}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setCity(e.target.value)
@@ -204,7 +197,7 @@ function EditProfile({
           <div>
             <IInput
               name="state"
-              placeholder={user.state}
+              placeholder={user?.state}
               value={state}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setState(e.target.value)
