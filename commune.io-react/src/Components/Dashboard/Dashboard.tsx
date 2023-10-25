@@ -12,7 +12,7 @@ function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
-  const [userId] = useState<string>("652d77a0bee0d62986c1efdb");
+  const [userId] = useState<string>("653864502481df3c3c9f3111");
   const [user, setUser] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<Error | null>(null);
@@ -21,9 +21,10 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const userData = await UserService.fetchUserData(userId);
+        console.log(user);
         setUser(userData);
       } catch (error) {
-        setError(error as Error); // Explicitly cast error to Error type
+        setError(error as Error);
       }
     };
 
@@ -32,7 +33,7 @@ function Dashboard() {
         const imageUrl = await UserService.fetchProfilePicture(userId);
         setProfilePicture(imageUrl);
       } catch (error) {
-        setError(error as Error); // Explicitly cast error to Error type
+        setError(error as Error);
       }
     };
 

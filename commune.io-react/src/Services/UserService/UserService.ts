@@ -2,9 +2,7 @@
 
 export const fetchUserData = async (userId: string) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}`,
-    );
+    const response = await fetch(`http://localhost:8080/users/${userId}`);
     const result = await response.json();
     return result;
   } catch (error) {
@@ -15,7 +13,7 @@ export const fetchUserData = async (userId: string) => {
 export const fetchProfilePicture = async (userId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}/profile-picture`,
+      `http://localhost:8080/users/${userId}/profile-picture`,
     );
     const imageUrl = await response.text();
     return imageUrl;
@@ -27,7 +25,7 @@ export const fetchProfilePicture = async (userId: string) => {
 export const updateProfilePicture = async (userId: string, file: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}/upload-profile-picture`,
+      `http://localhost:8080/users/${userId}/upload-profile-picture`,
       { method: "POST", body: file },
     );
     const imageUrl = await response.text();
@@ -42,7 +40,7 @@ export const updateProfilePicture = async (userId: string, file: string) => {
 export const updateEmail = async (userId: string, email: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}/update-auth`,
+      `http://localhost:8080/users/${userId}/update-auth`,
       {
         method: "PUT",
         headers: {
@@ -54,7 +52,9 @@ export const updateEmail = async (userId: string, email: string) => {
         }),
       },
     );
-    return response;
+    if (response.ok) {
+      return "success";
+    }
   } catch (error) {
     throw error;
   }
@@ -68,7 +68,7 @@ export const updatePhoneNumber = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}/update-auth`,
+      `http://localhost:8080/users/${userId}/update-auth`,
       {
         method: "PUT",
         headers: {
@@ -80,7 +80,9 @@ export const updatePhoneNumber = async (
         }),
       },
     );
-    return response;
+    if (response.ok) {
+      return "success";
+    }
   } catch (error) {
     throw error;
   }
@@ -90,16 +92,13 @@ export const updatePhoneNumber = async (
 
 export const updateProfileInfo = async (userId: string, data: any) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/app-service/users/${userId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    const response = await fetch(`http://localhost:8080/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(data),
+    });
     const userData = await response.json();
     return userData;
   } catch (error) {

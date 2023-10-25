@@ -3,10 +3,20 @@ import ProfileCommunities from "./ProfileCommunities/ProfileCommunities";
 import ProfileStubs from "./ProfileStubs/ProfileStubs";
 import { ProfileProps } from "./types/ProfileProps";
 
-function Profile({ setViewProfile }: ProfileProps) {
+function Profile({ setViewProfile, user }: ProfileProps) {
   const handleSetViewProfile = (): void => {
     setViewProfile(false);
   };
+
+  const attributeColors = [
+    "#68BEF1",
+    "#40B87E",
+    "#4BCEC9",
+    "#A979E6",
+    "#FFA656",
+    "#FF5050",
+  ];
+
   return (
     <div>
       <button
@@ -40,43 +50,61 @@ function Profile({ setViewProfile }: ProfileProps) {
               />
             </div>
             <div className="ml-6 grid grid-rows">
-              <div className="text-2xl">Phillip DiPhillipo</div>
-              <div className="text-sm">Reputation Score - xx</div>
+              <div className="text-2xl">
+                {user?.firstName} {user?.lastName}
+              </div>
               <div className="text-sm">
-                Florida, Miami <div className="text-sm">01.01.1993 - Male</div>
+                Reputation Score - {user?.reputation}
+              </div>
+              <div className="text-sm">
+                {user?.city}, {user.state}{" "}
+                <div className="text-sm">
+                  {user?.dateOfBirth} - {user?.gender}
+                </div>
               </div>
             </div>
           </div>
           <div className="text-lg mt-12">Profile Points</div>
           <div className="xl:flex mt-3">
-            <div className="w-1/2">
-              <div className="h-[52px]">
-                <div className="text-[#68BEF1]">Social</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
-              </div>
-              <div className="h-[52px]">
-                <div className=" text-[#A979E6] mt-2">Nightlife</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
-              </div>
-              <div className="h-[52px]">
-                <div className="text-[#FFA656] mt-2">Intelligence</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div className="h-[52px]">
-                <div className="text-[#40B87E] ">Fitness</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
-              </div>
+            <div className="w-full xl:w-full">
+              <div className="xl:flex xl:flex-wrap">
+                {user.attributes.map((attribute: any, index: number) => (
+                  <div className="w-full xl:w-1/2 h-[52px]" key={index}>
+                    <div className={`text-[${attributeColors[index]}]`}>
+                      {attribute.attribute}
+                    </div>
+                    <div className="text-[11px]">{`LEVEL ${attribute.level} - ${attribute.points}/10 POINTS`}</div>
+                    <div
+                      style={{
+                        position: "relative", // Parent needs to be relative
+                        width: "75%",
+                        height: "4px",
+                      }}
+                    >
+                      {/* Full progress bar */}
+                      <div
+                        style={{
+                          position: "absolute", // Child needs to be absolute
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: attributeColors[index],
+                          opacity: 0.3, // Opacity for the whole bar
+                        }}
+                      ></div>
 
-              <div className="h-[52px]">
-                <div className="text-[#4BCEC9] mt-2">Culture</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
-              </div>
-
-              <div className="h-[52px]">
-                <div className="text-[#FF5050] mt-2">Adventure</div>
-                <div className="text-[11px]">LEVEL 1- 4/10 POINTS</div>
+                      {/* Filled portion of the progress bar */}
+                      <div
+                        style={{
+                          position: "absolute", // Child needs to be absolute
+                          width: `${(attribute.points / 10) * 100}%`, // Calculate percentage
+                          height: "100%",
+                          backgroundColor: attributeColors[index],
+                          opacity: 1, // Fully opaque
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

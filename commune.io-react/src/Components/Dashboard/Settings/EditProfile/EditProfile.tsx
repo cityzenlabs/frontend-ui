@@ -15,26 +15,19 @@ interface EditProfileProps {
   profilePicture: string;
 }
 
-function isEmptyOrWhitespace(value: any) {
-  return /^\s*$/.test(value);
-}
-
 function EditProfile({
   setUser,
   userId,
   user,
   profilePicture,
 }: EditProfileProps) {
-  // Initialize image state with profilePicture prop
   const [image, setImage] = useState<string>(profilePicture);
-  const [firstName, setFirstName] = useState<string>(user?.firstName || "");
-  const [lastName, setLastName] = useState<string>(user?.lastName || "");
-  const [email, setEmail] = useState<string>(user?.email || "");
-  const [state, setState] = useState<string>(user?.state || "");
-  const [city, setCity] = useState<string>(user?.city || "");
-  const [phoneNumber, setPhoneNumber] = useState<string>(
-    user?.phoneNumber || "",
-  );
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -61,12 +54,16 @@ function EditProfile({
 
   const handleEditProfile = async (): Promise<void> => {
     try {
+      const updatePromises = [];
+
       if (email !== "") {
-        await UserService.updateEmail(userId, email);
+        updatePromises.push(UserService.updateEmail(userId, email));
       }
+
       if (phoneNumber !== "") {
-        await UserService.updatePhoneNumber(userId, phoneNumber);
+        updatePromises.push(UserService.updatePhoneNumber(userId, phoneNumber));
       }
+
       const fieldsToUpdate: any = {
         firstName,
         lastName,
@@ -74,24 +71,34 @@ function EditProfile({
         state,
       };
 
-      // Update the user?'s profile
       const nonEmptyFields: { [key: string]: string } = {};
+
       for (const [key, value] of Object.entries(fieldsToUpdate)) {
         if (typeof value === "string" && value.trim() !== "") {
           nonEmptyFields[key] = value;
         }
       }
 
-      // Only make the API call if there are non-empty fields to update
       if (Object.keys(nonEmptyFields).length > 0) {
         const updatedUser = await UserService.updateProfileInfo(
           userId,
           nonEmptyFields,
         );
-
-        // Update the user state
         setUser(updatedUser);
         resetForm();
+      }
+
+      const updateResults = await Promise.all(updatePromises);
+      const hasErrors = updateResults.some((result) => result !== "success");
+
+      if (!hasErrors) {
+        const updatedUser = await UserService.fetchUserData(userId);
+        setUser(updatedUser);
+        resetForm();
+      } else {
+        console.error(
+          "Profile edit failed. Check for errors in the update operations.",
+        );
       }
     } catch (error) {
       console.error("Error during profile edit:", error);

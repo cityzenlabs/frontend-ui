@@ -10,7 +10,7 @@ function Home({ viewProfile, setViewProfile, user }: HomeProps) {
     <div>
       {viewProfile ? (
         <div className="xl:ml-[320px] md:ml-[320px] px-12 py-10">
-          <Profile setViewProfile={setViewProfile} />
+          <Profile setViewProfile={setViewProfile} user={user} />
         </div>
       ) : (
         <div>

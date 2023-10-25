@@ -15,7 +15,7 @@ function Security() {
     if (newPassword === confirmPassword) {
       try {
         const response = await fetch(
-          "http://localhost:8080/app-service/users/6525fb76062b36551274b1ce/update-password",
+          "http://localhost:8080/app-service/users/652f211f85b4405f840ac3f2/update-password",
           {
             method: "PUT",
             headers: {
@@ -31,6 +31,9 @@ function Security() {
         if (response.ok) {
           setMessage("Password updated successfully!");
           setIsError(false);
+          setCurrentPassword("");
+          setConfirmPassword("");
+          setNewPassword("");
         } else {
           setMessage("Error updating password. Please try again.");
           setIsError(true);
@@ -87,6 +90,7 @@ function Security() {
             name="currentPassword"
             label="Current Password"
             placeholder="************"
+            type="password"
             value={currentPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setCurrentPassword(e.target.value)
@@ -98,6 +102,7 @@ function Security() {
             name="newPassword"
             label="New Password"
             placeholder="************"
+            type="password"
             value={newPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setNewPassword(e.target.value)
@@ -109,6 +114,7 @@ function Security() {
             name="confirmPassword"
             label="Confirm Password"
             placeholder="************"
+            type="password"
             value={confirmPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setConfirmPassword(e.target.value)
