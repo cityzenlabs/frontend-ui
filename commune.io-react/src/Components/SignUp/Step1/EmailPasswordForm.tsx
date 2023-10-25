@@ -14,7 +14,7 @@ function EmailPasswordForm({ onNextStep, userData, updateUser }: any) {
     if (userData.email && userData.password) {
       try {
         const response = await fetch(
-          `http://localhost:8080/app-service/users/new-user-validation`,
+          `http://localhost:8080/users/new-user-validation`,
           {
             method: "POST",
             headers: {

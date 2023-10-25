@@ -3,11 +3,7 @@ import IInput from "../../../Library/Input/IInput";
 
 interface DetailFormProps {
   onNextStep: () => void;
-  userData: {
-    state?: string;
-    city?: string;
-    image?: string;
-  };
+  userData: any;
   updateUser: (updatedData: any) => void;
 }
 
@@ -31,8 +27,39 @@ function DetailForm({ onNextStep, userData, updateUser }: DetailFormProps) {
     }
   };
 
-  const handleContinue = (): void => {
+  const createUser = () => {
+    return {
+      authDto: {
+        authType: "EMAIL",
+        authIdentifier: userData.email,
+        password: userData.password,
+      },
+      role: "USER",
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      gender: userData.gender,
+      city: userData.city,
+      state: userData.state,
+      picture: "",
+      dateOfBirth: userData.year + "-" + userData.month + "-" + userData.day,
+    };
+  };
+
+  const handleContinue = async (): Promise<void> => {
     if (userData.state && userData.city) {
+      const user = createUser();
+
+      try {
+        const response = await fetch("http://localhost:8080/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        const createdUser = await response.json;
+      } catch (error) {}
       onNextStep();
     } else {
       alert("Please complete the form before proceeding.");

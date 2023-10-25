@@ -3,7 +3,6 @@ import EmailPasswordForm from "./Step1/EmailPasswordForm";
 import GeneralInformationForm from "./Step2/GeneralInformationForm";
 import DetailForm from "./Step3/DetailForm";
 import Notification from "./Step4/Notification";
-import Success from "./Step5/Success";
 
 function SignUp() {
   const [step, setStep] = useState<number>(1);
@@ -60,14 +59,7 @@ function SignUp() {
             updateUser={updateUser}
           />
         )}
-        {step === 4 && (
-          <Notification
-            onNextStep={handleNextStep}
-            userData={userData}
-            updateUser={updateUser}
-          />
-        )}
-        {step === 5 && <Success userData={userData} updateUser={updateUser} />}
+        {step === 4 && <Notification />}
       </div>
       <div className="bg-gradient-to-tl from-slate-ish via-regal-blue to-white h-screen hidden lg:flex lg:items-center lg:justify-center p-32">
         <div className="text-white text-3xl text-center">

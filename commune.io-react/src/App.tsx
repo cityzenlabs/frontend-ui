@@ -9,6 +9,7 @@ import Landing from "./Components/Landing/Landing";
 import SignUp from "./Components/SignUp/SignUp";
 import Login from "./Components/Login/Login";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import Success from "./Components/SignUp/Step5/Success";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/account-created-successfully" element={<Success />} />
         </Routes>
       </Router>
     </div>

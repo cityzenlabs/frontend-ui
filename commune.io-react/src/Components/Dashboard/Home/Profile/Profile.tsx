@@ -73,7 +73,7 @@ function Profile({ setViewProfile, user }: ProfileProps) {
                     <div className={`text-[${attributeColors[index]}]`}>
                       {attribute.attribute}
                     </div>
-                    <div className="text-[11px]">{`LEVEL ${attribute.level} - ${attribute.points}/10 POINTS`}</div>
+                    <div className="text-[11px]">{`LEVEL ${attribute.level} - ${attribute.points}/100 POINTS`}</div>
                     <div
                       style={{
                         position: "relative", // Parent needs to be relative
@@ -96,7 +96,7 @@ function Profile({ setViewProfile, user }: ProfileProps) {
                       <div
                         style={{
                           position: "absolute", // Child needs to be absolute
-                          width: `${(attribute.points / 10) * 100}%`, // Calculate percentage
+                          width: `${(attribute.points / 100) * 100}%`, // Calculate percentage
                           height: "100%",
                           backgroundColor: attributeColors[index],
                           opacity: 1, // Fully opaque
