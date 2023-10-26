@@ -12,7 +12,6 @@ function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
-  const [userId] = useState<string>("653864502481df3c3c9f3111");
   const [user, setUser] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<Error | null>(null);
@@ -20,8 +19,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userData = await UserService.fetchUserData(userId);
-        console.log(user);
+        const userData = await UserService.fetchUserData();
         setUser(userData);
       } catch (error) {
         setError(error as Error);
@@ -30,7 +28,7 @@ function Dashboard() {
 
     const getProfilePicture = async () => {
       try {
-        const imageUrl = await UserService.fetchProfilePicture(userId);
+        const imageUrl = await UserService.fetchProfilePicture();
         setProfilePicture(imageUrl);
       } catch (error) {
         setError(error as Error);
@@ -39,7 +37,7 @@ function Dashboard() {
 
     getProfilePicture();
     fetchData();
-  }, [userId]);
+  }, []);
 
   return (
     <div>
@@ -70,7 +68,6 @@ function Dashboard() {
           {sideBarSelection === "Settings" && (
             <Settings
               setUser={setUser}
-              userId={userId}
               user={user}
               profilePicture={profilePicture}
             />

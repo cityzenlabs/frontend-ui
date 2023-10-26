@@ -7,12 +7,11 @@ import SecurityNotifications from "./Notifications/SecurityNotifications";
 
 interface SettingsProps {
   setUser: Dispatch<SetStateAction<any>>;
-  userId: string;
   user: any; // Use the appropriate type instead of 'any'
   profilePicture: string;
 }
 
-function Settings({ setUser, userId, user, profilePicture }: SettingsProps) {
+function Settings({ setUser, user, profilePicture }: SettingsProps) {
   return (
     <div>
       <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8 ">
@@ -51,7 +50,6 @@ function Settings({ setUser, userId, user, profilePicture }: SettingsProps) {
               <Tab.Panel>
                 <EditProfile
                   setUser={setUser}
-                  userId={userId}
                   user={user}
                   profilePicture={profilePicture}
                 />

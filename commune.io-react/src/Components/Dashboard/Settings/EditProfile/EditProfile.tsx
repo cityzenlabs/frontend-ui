@@ -10,17 +10,11 @@ import * as UserService from "../../../../Services/UserService/UserService";
 
 interface EditProfileProps {
   setUser: Dispatch<SetStateAction<any>>;
-  userId: string;
   user: any;
   profilePicture: string;
 }
 
-function EditProfile({
-  setUser,
-  userId,
-  user,
-  profilePicture,
-}: EditProfileProps) {
+function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
   const [image, setImage] = useState<string>(profilePicture);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -57,11 +51,11 @@ function EditProfile({
       const updatePromises = [];
 
       if (email !== "") {
-        updatePromises.push(UserService.updateEmail(userId, email));
+        updatePromises.push(UserService.updateEmail(email));
       }
 
       if (phoneNumber !== "") {
-        updatePromises.push(UserService.updatePhoneNumber(userId, phoneNumber));
+        updatePromises.push(UserService.updatePhoneNumber(phoneNumber));
       }
 
       const fieldsToUpdate: any = {
@@ -80,10 +74,7 @@ function EditProfile({
       }
 
       if (Object.keys(nonEmptyFields).length > 0) {
-        const updatedUser = await UserService.updateProfileInfo(
-          userId,
-          nonEmptyFields,
-        );
+        const updatedUser = await UserService.updateProfileInfo(nonEmptyFields);
         setUser(updatedUser);
         resetForm();
       }
@@ -92,7 +83,7 @@ function EditProfile({
       const hasErrors = updateResults.some((result) => result !== "success");
 
       if (!hasErrors) {
-        const updatedUser = await UserService.fetchUserData(userId);
+        const updatedUser = await UserService.fetchUserData();
         setUser(updatedUser);
         resetForm();
       } else {
