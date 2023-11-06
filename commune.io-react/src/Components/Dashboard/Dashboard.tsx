@@ -14,28 +14,30 @@ function Dashboard() {
   const [viewProfile, setViewProfile] = useState<boolean>(false);
   const [user, setUser] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userData = await UserService.fetchUserData();
+        const userDataPromise = UserService.fetchUserData();
+        const profilePicturePromise = UserService.fetchProfilePicture();
+
+        const [userData, imageUrl] = await Promise.all([
+          userDataPromise,
+          profilePicturePromise,
+        ]);
+        console.log(userData);
         setUser(userData);
-      } catch (error) {
-        setError(error as Error);
-      }
-    };
-
-    const getProfilePicture = async () => {
-      try {
-        const imageUrl = await UserService.fetchProfilePicture();
+        console.log(user);
         setProfilePicture(imageUrl);
+        setIsLoading(false);
       } catch (error) {
-        setError(error as Error);
+        setError(error);
+        setIsLoading(false);
       }
     };
 
-    getProfilePicture();
     fetchData();
   }, []);
 
@@ -51,7 +53,7 @@ function Dashboard() {
       />
       <div className="bg-slate-50 min-h-screen">
         <div>
-          {sideBarSelection === "Home" && (
+          {sideBarSelection === "Home" && !isLoading && (
             <Home
               setViewProfile={setViewProfile}
               viewProfile={viewProfile}

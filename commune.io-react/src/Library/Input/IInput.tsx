@@ -6,27 +6,26 @@ interface IInputProps {
   label?: string;
   type?: string;
   value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Adding this line
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
 function IInput({
   name,
   placeholder,
   label,
-  type,
+  type = "text",
   value,
   onChange,
 }: IInputProps) {
   return (
     <div>
-      <div className="font-light">{label}</div>
+      {label && <div className="font-thin">{label}</div>}
       <input
         name={name}
-        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 "
         placeholder={placeholder}
         type={type}
         value={value}
         onChange={onChange}
+        className="mt-1 block w-full rounded-2xl border py-2 px-6 focus:border-regal-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm placeholder-slate-400 focus:outline-none"
       />
     </div>
   );

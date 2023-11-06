@@ -1,86 +1,58 @@
 import React from "react";
 import { HomeProps } from "./types/HomeProps";
 import Profile from "./Profile/Profile";
+import IContainer from "../../../Library/Container/IContainer";
+import IPanel from "../../../Library/Panel/IPanel";
+import ILabel from "../../../Library/Label/ILabel";
 
 function Home({ viewProfile, setViewProfile, user }: HomeProps) {
   const handleSetViewProfile = (): void => {
+    console.log(user);
     setViewProfile(true);
   };
+
   return (
     <div>
       {viewProfile ? (
-        <div className="xl:ml-[320px] md:ml-[320px] px-12 py-10">
-          <Profile setViewProfile={setViewProfile} user={user} />
-        </div>
+        <Profile setViewProfile={setViewProfile} user={user} />
       ) : (
         <div>
-          <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8">
-            <label className="font-medium text-3xl">Dashboard</label>
+          <IContainer paddingY={8}>
+            <ILabel text="Dashboard"></ILabel>
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
-                <div className="w-full">
-                  <div className="h-[80px] rounded-lg bg-white flex items-center px-4 mt-8">
-                    <div className="text-2xl">Welcome, {user?.firstName}</div>
-                    <div className="ml-auto text-sm border rounded py-1 px-4">
-                      <button onClick={handleSetViewProfile}>
-                        See profile
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full">
-                  <div className="h-[403px] rounded-lg bg-white px-4 py-6 mt-8">
-                    Your top 4 attributes
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="w-full">
-                  <div className="h-[515px] rounded-lg bg-white px-4 py-6 xl:mt-8">
-                    <div className="flex justify-between">
-                      <div className="text-2xl">
-                        Level up with these <br /> events
-                      </div>
-                      <div>
-                        <button className="text-sm border rounded py-1 px-4">
-                          See All
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                <IPanel
+                  title="Welcome, "
+                  height="80"
+                  marginTop="mt-8"
+                  buttonLabel="See Profile"
+                  onButtonClick={handleSetViewProfile}
+                ></IPanel>
 
-          <div className="xl:ml-[320px] md:ml-[320px] px-12 ">
-            <div className="w-full">
-              <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
-                <div className="flex justify-between">
-                  <div className="text-xl">Recommended Communities</div>
-                  <div>
-                    <button className="text-sm border rounded py-1 px-4">
-                      See All
-                    </button>
-                  </div>
-                </div>
+                <IPanel
+                  title="Your Top 4 Attributes"
+                  height="h-[403px]"
+                  marginTop="mt-8"
+                ></IPanel>
               </div>
+              <IPanel
+                title="Level up with these events"
+                buttonLabel="See All"
+                height="h-[515px]"
+                marginTop="xl:mt-8"
+              ></IPanel>
             </div>
-          </div>
-          <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8">
-            <div className="w-full">
-              <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
-                <div className="flex justify-between">
-                  <div className="text-xl">Upcoming Events</div>
-                  <div>
-                    <button className="text-sm border rounded py-1 px-4">
-                      See All
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </IContainer>
+
+          <IContainer>
+            <IPanel
+              title="Recommended Communities"
+              buttonLabel="See All"
+            ></IPanel>
+          </IContainer>
+          <IContainer paddingY={8}>
+            <IPanel title="Upcoming Events" buttonLabel="See All"></IPanel>
+          </IContainer>
         </div>
       )}
     </div>

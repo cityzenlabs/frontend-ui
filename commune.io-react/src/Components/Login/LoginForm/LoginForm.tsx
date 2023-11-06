@@ -8,7 +8,8 @@ function LoginForm() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // to handle potential login errors
+  const [error, setError] = useState("");
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (): Promise<void> => {
@@ -17,7 +18,6 @@ function LoginForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Client-Type": "web",
         },
         body: JSON.stringify({
           authType: "EMAIL",
@@ -27,8 +27,9 @@ function LoginForm() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
+        setToken(data.accessToken);
+        console.log(token);
         navigate("/dashboard");
       } else {
         setError("Login failed. Please check your credentials.");

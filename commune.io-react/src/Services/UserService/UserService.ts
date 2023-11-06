@@ -1,9 +1,10 @@
-// userService.js
-
 export const fetchUserData = async () => {
   try {
     const response = await fetch(`http://localhost:8080/users/profile`, {
-      credentials: "include",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+      },
     });
     const result = await response.json();
     return result;
@@ -17,7 +18,10 @@ export const fetchProfilePicture = async () => {
     const response = await fetch(
       `http://localhost:8080/users/profile-picture`,
       {
-        credentials: "include",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+        },
       },
     );
     const imageUrl = await response.text();
@@ -31,7 +35,14 @@ export const updateProfilePicture = async (file: string) => {
   try {
     const response = await fetch(
       `http://localhost:8080/users/profile-picture`,
-      { method: "POST", body: file },
+      {
+        method: "POST",
+        body: file,
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+        },
+      },
     );
     const imageUrl = await response.text();
     return imageUrl;
@@ -48,6 +59,8 @@ export const updateEmail = async (email: string) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
       },
       body: JSON.stringify({
         authType: "EMAIL",
@@ -70,6 +83,8 @@ export const updatePhoneNumber = async (phoneNumber: string) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
       },
       body: JSON.stringify({
         authType: "PHONE_NUMBER",
@@ -92,6 +107,8 @@ export const updateProfileInfo = async (data: any) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
       },
       body: JSON.stringify(data),
     });
