@@ -4,6 +4,8 @@ import "./Settings.css";
 import EditProfile from "./EditProfile/EditProfile";
 import Security from "./Security/Security";
 import SecurityNotifications from "./Notifications/SecurityNotifications";
+import IContainer from "../../../Library/Container/IContainer";
+import ILabel from "../../../Library/Label/ILabel";
 
 interface SettingsProps {
   setUser: Dispatch<SetStateAction<any>>;
@@ -14,8 +16,8 @@ interface SettingsProps {
 function Settings({ setUser, user, profilePicture }: SettingsProps) {
   return (
     <div>
-      <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8 ">
-        <label className="font-medium text-3xl">Settings</label>
+      <IContainer paddingY={8}>
+        <ILabel text="Settings"></ILabel>
         <div className="tab-scroll-container mt-10">
           <Tab.Group>
             <div className="tab-list-wrapper overflow-x-auto">
@@ -67,7 +69,7 @@ function Settings({ setUser, user, profilePicture }: SettingsProps) {
             </Tab.Panels>
           </Tab.Group>
         </div>
-      </div>
+      </IContainer>
     </div>
   );
 }

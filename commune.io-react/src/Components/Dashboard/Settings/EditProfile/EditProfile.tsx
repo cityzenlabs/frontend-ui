@@ -7,6 +7,10 @@ import React, {
 } from "react";
 import IInput from "../../../../Library/Input/IInput";
 import * as UserService from "../../../../Services/UserService/UserService";
+import IContainer from "../../../../Library/Container/IContainer";
+import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
+import IButton from "../../../../Library/Button/IButton";
+import IToggleButtonGroup from "../../../../Library/ToggleButtonGroup/IToggleButtonGroup";
 
 interface EditProfileProps {
   setUser: Dispatch<SetStateAction<any>>;
@@ -45,6 +49,8 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
     setCity("");
     setState("");
   };
+
+  const deleteAccount = () => {};
 
   const handleEditProfile = async (): Promise<void> => {
     try {
@@ -135,85 +141,87 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
           </div>
         </div>
       </div>
-      <div className="grid grid-rows xl:w-2/5 lg:w-2/5 w-full">
-        <div className="mt-10">
-          <IInput
-            name="firstName"
-            label="First Name"
-            placeholder={user?.firstName}
-            value={firstName}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setFirstName(e.target.value)
-            }
-          />
-        </div>
-        <div className="mt-5">
-          <IInput
-            name="lastName"
-            label="Last Name"
-            placeholder={user?.lastName}
-            value={lastName}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLastName(e.target.value)
-            }
-          />
-        </div>
-        <div className="mt-5">
-          <IInput
-            name="email"
-            label="Email"
-            placeholder={user?.email}
-            value={email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
-          />
-        </div>
-        <div className="mt-5">
-          <IInput
-            name="phoneNumber"
-            label="Phone Number"
-            placeholder={user?.phoneNumber}
-            value={phoneNumber}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPhoneNumber(e.target.value)
-            }
-          />
-        </div>
-        <div className="mt-4">Location</div>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <IInput
-              name="city"
-              placeholder={user?.city}
-              value={city}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setCity(e.target.value)
-              }
-            />
-          </div>
-          <div>
-            <IInput
-              name="state"
-              placeholder={user?.state}
-              value={state}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setState(e.target.value)
-              }
-            />
-          </div>
-        </div>
-        <div className="mt-4">
-          <button className="text-[#E2224D]">Delete account</button>
-        </div>
-        <div className="mt-8">
-          <button
-            className="rounded-2xl font-light text-white text-md bg-regal-blue py-3 px-4"
-            onClick={handleEditProfile}
-          >
-            Save Changes
-          </button>
-        </div>
+
+      <div className="xl:w-1/3 mt-10">
+        <IInput
+          name="firstName"
+          label="First Name"
+          placeholder={user?.firstName}
+          value={firstName}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setFirstName(e.target.value)
+          }
+        />
+      </div>
+
+      <div className="xl:w-1/3 mt-4">
+        <IInput
+          name="lastName"
+          label="Last Name"
+          placeholder={user?.lastName}
+          value={lastName}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setLastName(e.target.value)
+          }
+        />
+      </div>
+      <div className="xl:w-1/3 mt-4">
+        <IInput
+          name="email"
+          label="Email"
+          placeholder={user?.email}
+          value={email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
+        />
+      </div>
+      <div className="xl:w-1/3 mt-4">
+        <IInput
+          name="phoneNumber"
+          label="Phone Number"
+          placeholder={user?.phoneNumber}
+          value={phoneNumber}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPhoneNumber(e.target.value)
+          }
+        />
+      </div>
+      <div className="xl:w-1/3 mt-4">
+        <IInputGroup
+          label="Location"
+          inputs={[
+            {
+              name: "City",
+              placeholder: user?.city,
+              value: city,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setCity(e.target.value),
+            },
+            {
+              name: "State",
+              placeholder: user.state,
+              value: state,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setState(e.target.value),
+            },
+          ]}
+        ></IInputGroup>
+      </div>
+
+      <div className="flex mt-10">
+        <IButton
+          onClick={handleEditProfile}
+          text="Save Changes"
+          bgColor="bg-regal-blue"
+          textColor="text-white"
+        />
+        <IButton
+          onClick={deleteAccount}
+          text="Delete Account"
+          bgColor="bg-[#E2224D]"
+          textColor="text-white"
+        />
       </div>
     </div>
   );

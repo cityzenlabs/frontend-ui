@@ -1,10 +1,7 @@
 import React from "react";
-import ProfileCommunities from "./ProfileCommunities/ProfileCommunities";
-import ProfileStubs from "./ProfileStubs/ProfileStubs";
 import { ProfileProps } from "./types/ProfileProps";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import IContainer from "../../../../Library/Container/IContainer";
-import ILabel from "../../../../Library/Label/ILabel";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
 

@@ -15,12 +15,12 @@ const ITextArea: React.FC<ITextAreaProps> = ({
 }) => {
   return (
     <div>
-      <div className=" font-thin">Description</div>
+      <div className=" mb-1 font-thin">Description</div>
       <textarea
         name={name}
         value={value}
         onChange={onChange}
-        className=" xl:w-[600px] w-full h-[200px] rounded-2xl font-medium text-black text-md bg-white border px-6 mr-4"
+        className="  w-full h-[200px] rounded-2xl font-medium text-black text-md bg-white border px-6 mr-4"
       ></textarea>
     </div>
   );

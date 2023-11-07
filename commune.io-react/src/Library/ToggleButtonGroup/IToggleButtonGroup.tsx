@@ -20,7 +20,7 @@ function IToggleButtonGroup({
 }: IToggleButtonGroupProps) {
   return (
     <div>
-      {label && <div className="font-thin">{label}</div>}
+      {label && <div className=" mb-1 font-thin">{label}</div>}
       <div className="xl:flex">
         {options.map((option) => (
           <button

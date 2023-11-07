@@ -3,7 +3,7 @@ export const fetchUserData = async () => {
     const response = await fetch(`http://localhost:8080/users/profile`, {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
       },
     });
     const result = await response.json();
@@ -20,7 +20,7 @@ export const fetchProfilePicture = async () => {
       {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
         },
       },
     );
@@ -40,7 +40,7 @@ export const updateProfilePicture = async (file: string) => {
         body: file,
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
         },
       },
     );
@@ -60,7 +60,7 @@ export const updateEmail = async (email: string) => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
       },
       body: JSON.stringify({
         authType: "EMAIL",
@@ -84,7 +84,7 @@ export const updatePhoneNumber = async (phoneNumber: string) => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
       },
       body: JSON.stringify({
         authType: "PHONE_NUMBER",
@@ -108,7 +108,7 @@ export const updateProfileInfo = async (data: any) => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTIzMzYyMywiZXhwIjoxNjk5MzIwMDIzfQ.KM8ffVXx0taWZP6GkGtBD9SpP15yI4fCIvo7_XXtssk",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
       },
       body: JSON.stringify(data),
     });

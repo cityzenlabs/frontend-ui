@@ -7,9 +7,6 @@ import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 
 function ManageCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
-  const eventStats = [{ id: 1 }, { id: 2 }, { id: 3 }];
-  const graphs = [{ id: 1 }, { id: 2 }];
-
   const handleBack = () => {
     setCommunitiesVisibility(Visibility.Communities);
   };
