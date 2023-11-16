@@ -7,17 +7,16 @@ import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
 import IPanel from "../../../Library/Panel/IPanel";
 import IButton from "../../../Library/Button/IButton";
+import CommunityDashboard from "./CommunityDashboard/CommunityDashboard";
+import { useAuth } from "../../../AuthContext";
 
 function Communities() {
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
-
+  const [communityId, setCommunityId] = useState("");
+  const accessToken = useAuth();
   const handleMangeCommunities = () => {
     setCommunitiesVisibility(Visibility.Manage);
-  };
-
-  const handleCreateCommunities = () => {
-    setCommunitiesVisibility(Visibility.Create);
   };
 
   return (
@@ -32,6 +31,15 @@ function Communities() {
         {communitiesVisibility === Visibility.Create && (
           <CreateCommunities
             setCommunitiesVisibility={setCommunitiesVisibility}
+            setCommunityId={setCommunityId}
+          />
+        )}
+
+        {communitiesVisibility === Visibility.Dashboard && (
+          <CommunityDashboard
+            setCommunitiesVisibility={setCommunitiesVisibility}
+            communityId={communityId}
+            token={accessToken.token}
           />
         )}
 
@@ -48,14 +56,6 @@ function Communities() {
                   <IButton
                     text="Manage Communities"
                     onClick={handleMangeCommunities}
-                  />
-
-                  <IButton
-                    text="Create Community"
-                    onClick={handleCreateCommunities}
-                    bgColor="bg-regal-blue"
-                    textColor="text-white"
-                    icon={<span>+</span>}
                   />
                 </div>
               </div>

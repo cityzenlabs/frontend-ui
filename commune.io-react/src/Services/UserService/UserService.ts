@@ -1,9 +1,8 @@
-export const fetchUserData = async () => {
+export const fetchUserData = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/users/profile`, {
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+        Authorization: `Bearer ${token}`,
       },
     });
     const result = await response.json();
@@ -13,14 +12,13 @@ export const fetchUserData = async () => {
   }
 };
 
-export const fetchProfilePicture = async () => {
+export const fetchProfilePicture = async (token: any) => {
   try {
     const response = await fetch(
       `http://localhost:8080/users/profile-picture`,
       {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -31,7 +29,7 @@ export const fetchProfilePicture = async () => {
   }
 };
 
-export const updateProfilePicture = async (file: string) => {
+export const updateProfilePicture = async (file: string, token: any) => {
   try {
     const response = await fetch(
       `http://localhost:8080/users/profile-picture`,
@@ -39,8 +37,7 @@ export const updateProfilePicture = async (file: string) => {
         method: "POST",
         body: file,
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -53,14 +50,13 @@ export const updateProfilePicture = async (file: string) => {
 
 // userService.js
 
-export const updateEmail = async (email: string) => {
+export const updateEmail = async (email: string, token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/users/update-auth`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         authType: "EMAIL",
@@ -77,14 +73,13 @@ export const updateEmail = async (email: string) => {
 
 // userService.js
 
-export const updatePhoneNumber = async (phoneNumber: string) => {
+export const updatePhoneNumber = async (phoneNumber: string, token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/users/update-auth`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         authType: "PHONE_NUMBER",
@@ -101,14 +96,13 @@ export const updatePhoneNumber = async (phoneNumber: string) => {
 
 // userService.js
 
-export const updateProfileInfo = async (data: any) => {
+export const updateProfileInfo = async (data: any, token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/users`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI2NTQ4M2Y0NzZjMWYwODQ3OTJjODg0YTgiLCJzdWIiOiJ0ZXN0dXNlcjExQGdtYWlsLmNvbSIsImlhdCI6MTY5OTMyMTUzMywiZXhwIjoxNjk5NDA3OTMzfQ.0I-Ygrrye36WKT1RBHX7RQo6vRI5sboVGP04a5t3Ws8",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });

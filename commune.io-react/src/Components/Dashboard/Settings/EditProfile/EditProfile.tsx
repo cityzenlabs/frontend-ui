@@ -7,10 +7,9 @@ import React, {
 } from "react";
 import IInput from "../../../../Library/Input/IInput";
 import * as UserService from "../../../../Services/UserService/UserService";
-import IContainer from "../../../../Library/Container/IContainer";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import IButton from "../../../../Library/Button/IButton";
-import IToggleButtonGroup from "../../../../Library/ToggleButtonGroup/IToggleButtonGroup";
+import { useAuth } from "../../../../AuthContext";
 
 interface EditProfileProps {
   setUser: Dispatch<SetStateAction<any>>;
@@ -26,8 +25,8 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
   const [state, setState] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const accessToken = useAuth();
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -57,11 +56,13 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
       const updatePromises = [];
 
       if (email !== "") {
-        updatePromises.push(UserService.updateEmail(email));
+        updatePromises.push(UserService.updateEmail(email, accessToken.token));
       }
 
       if (phoneNumber !== "") {
-        updatePromises.push(UserService.updatePhoneNumber(phoneNumber));
+        updatePromises.push(
+          UserService.updatePhoneNumber(phoneNumber, accessToken.token),
+        );
       }
 
       const fieldsToUpdate: any = {
@@ -80,7 +81,10 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
       }
 
       if (Object.keys(nonEmptyFields).length > 0) {
-        const updatedUser = await UserService.updateProfileInfo(nonEmptyFields);
+        const updatedUser = await UserService.updateProfileInfo(
+          nonEmptyFields,
+          accessToken.token,
+        );
         setUser(updatedUser);
         resetForm();
       }
@@ -89,7 +93,7 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
       const hasErrors = updateResults.some((result) => result !== "success");
 
       if (!hasErrors) {
-        const updatedUser = await UserService.fetchUserData();
+        const updatedUser = await UserService.fetchUserData(accessToken.token);
         setUser(updatedUser);
         resetForm();
       } else {

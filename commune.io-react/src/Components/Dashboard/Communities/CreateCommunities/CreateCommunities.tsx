@@ -11,8 +11,9 @@ import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
+import { useAuth } from "../../../../AuthContext";
 
-function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
+function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -20,7 +21,6 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
   const [minAge, setMinAge] = useState<string>("");
   const [maxAge, setMaxAge] = useState<string>("");
   const [genderRequirements, setGenderRequirements] = useState("");
-  const [dues, setDues] = useState("");
   const [social, setSocial] = useState("");
   const [intelligence, setIntelligence] = useState("");
   const [nightLife, setNightLife] = useState("");
@@ -28,6 +28,7 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
   const [culture, setCulture] = useState("");
   const [fitness, setFitness] = useState("");
   const [description, setDescription] = useState("");
+  const accessToken = useAuth();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -37,7 +38,7 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
   };
 
   const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Communities);
+    setCommunitiesVisibility(Visibility.Manage);
   };
 
   const resetFields = () => {
@@ -47,7 +48,6 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
     setMinAge("");
     setMaxAge("");
     setGenderRequirements("");
-    setDues("");
     setSocial("");
     setIntelligence("");
     setNightLife("");
@@ -64,7 +64,6 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
       description: description,
       city: city,
       state: state,
-      membershipDues: parseInt(dues),
       minimumAge: parseInt(minAge),
       maximumAge: parseInt(maxAge),
       genderRequirements: genderRequirements,
@@ -79,14 +78,16 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
     };
 
     try {
-      const result = await CommunityService.createCommunity(community);
+      const result = await CommunityService.createCommunity(
+        community,
+        accessToken.token,
+      );
       if (result.id) {
         resetFields();
+        setCommunityId(result.id);
+        setCommunitiesVisibility(Visibility.Dashboard);
       }
-      console.log(result.error);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -173,21 +174,6 @@ function CreateCommunities({ setCommunitiesVisibility }: CommunitiesProps) {
       </IContainer>
 
       <IContainer>
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInput
-            label="Dues"
-            name="dues"
-            placeholder="Membership Dues"
-            value={dues}
-            numberOnly={true}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setDues(e.target.value)
-            }
-          ></IInput>
-        </div>
-      </IContainer>
-
-      <IContainer paddingY={4}>
         <div className="xl:w-1/2 lg:w-full">
           <IInputGroup
             label="Attributes"

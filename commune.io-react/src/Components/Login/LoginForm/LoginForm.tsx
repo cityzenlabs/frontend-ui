@@ -3,13 +3,14 @@ import IInput from "../../../Library/Input/IInput";
 import ICheckbox from "../../../Library/Checkbox/ICheckbox";
 import { Link, useNavigate } from "react-router-dom";
 import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
+import { useAuth } from "../../../AuthContext";
 
 function LoginForm() {
+  const { setToken } = useAuth();
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (): Promise<void> => {
@@ -29,7 +30,6 @@ function LoginForm() {
       const data = await response.json();
       if (response.ok) {
         setToken(data.accessToken);
-        console.log(token);
         navigate("/dashboard");
       } else {
         setError("Login failed. Please check your credentials.");

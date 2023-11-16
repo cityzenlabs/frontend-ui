@@ -23,13 +23,12 @@ function Settings({ setUser, user, profilePicture }: SettingsProps) {
             <div className="tab-list-wrapper overflow-x-auto">
               <Tab.List className="text-slate-400 space-x-10 whitespace-nowrap">
                 {[
-                  "Edit Profile",
+                  "Profile",
                   "Security",
                   "Notifications",
-                  "Terms of Service",
-                  "Privacy Policy",
-                  "Cookie Policy",
-                  "Help Center",
+                  "Payments",
+                  "Subscription",
+                  "Support",
                 ].map((tab) => (
                   <Tab
                     key={tab}

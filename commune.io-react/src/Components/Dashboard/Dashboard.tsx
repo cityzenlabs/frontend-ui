@@ -7,6 +7,7 @@ import Leaderboard from "./Leaderboard/Leaderboard";
 import Notifications from "./Notifications/Notifications";
 import Settings from "./Settings/Settings";
 import * as UserService from "../../Services/UserService/UserService";
+import { useAuth } from "../../AuthContext";
 
 function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
@@ -16,20 +17,21 @@ function Dashboard() {
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
+  const accessToken = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDataPromise = UserService.fetchUserData();
-        const profilePicturePromise = UserService.fetchProfilePicture();
+        const userDataPromise = UserService.fetchUserData(accessToken.token);
+        const profilePicturePromise = UserService.fetchProfilePicture(
+          accessToken.token,
+        );
 
         const [userData, imageUrl] = await Promise.all([
           userDataPromise,
           profilePicturePromise,
         ]);
-        console.log(userData);
         setUser(userData);
-        console.log(user);
         setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {

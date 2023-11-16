@@ -10,6 +10,7 @@ import SignUp from "./Components/SignUp/SignUp";
 import Login from "./Components/Login/Login";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Success from "./Components/SignUp/Step5/Success";
+import ProtectedRoute from "./ProtectedRoute"; // Make sure this path is correct
 
 function App() {
   return (
@@ -20,7 +21,14 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/account-created-successfully" element={<Success />} />
         </Routes>
       </Router>
