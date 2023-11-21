@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
-import { CommunitiesProps } from "../types/CommunityProps";
 import { Visibility } from "../Enums/CommunityEnums";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { CommunityDashboardModel } from "./CommunityDashboardModel";

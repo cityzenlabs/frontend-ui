@@ -25,6 +25,7 @@ function Communities() {
         {communitiesVisibility === Visibility.Manage && (
           <ManageCommunities
             setCommunitiesVisibility={setCommunitiesVisibility}
+            token={accessToken.token}
           />
         )}
 

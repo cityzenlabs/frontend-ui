@@ -32,8 +32,8 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
-    if (selectedImageFiles) {
-      setImageFiles([...imageFiles, ...Array.from(selectedImageFiles)]);
+    if (selectedImageFiles && selectedImageFiles[0]) {
+      setImageFiles([selectedImageFiles[0]]);
     }
   };
 
@@ -86,8 +86,18 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
         resetFields();
         setCommunityId(result.id);
         setCommunitiesVisibility(Visibility.Dashboard);
+
+        if (imageFiles.length > 0) {
+          await CommunityService.updateCommunityPicture(
+            accessToken.token,
+            result.id,
+            imageFiles[0],
+          );
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      // Handle the error
+    }
   };
 
   return (
