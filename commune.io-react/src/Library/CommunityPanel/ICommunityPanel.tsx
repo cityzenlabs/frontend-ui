@@ -5,30 +5,42 @@ interface Community {
   memberCount: number;
   premiumCommunity: boolean;
   communityPicture?: string;
+  communityType?: string;
 }
 
 interface ManagedCommunities {
   [key: string]: Community;
 }
 
-interface ICommunityPanelProps {
-  communities: ManagedCommunities;
+interface TrendingCommunities {
+  [key: string]: Community;
 }
 
-const ICommunityPanel: React.FC<ICommunityPanelProps> = ({ communities }) => {
+interface ICommunityPanelProps {
+  communities: ManagedCommunities | TrendingCommunities;
+  showAll: boolean;
+  onCommunityClick?: (id: string) => void;
+}
+
+const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
+  communities,
+  showAll,
+  onCommunityClick,
+}) => {
   return (
-    <div className="xl:grid lg:grid grid-cols-4 gap-3 p-4 flex overflow-x-auto py-4 space-x-3">
+    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 p-4 overflow-x-auto py-4 space-x-3">
       {Object.entries(communities)
-        .slice(0, 4)
+        .slice(0, showAll ? undefined : 4)
         .map(([id, community]) => (
           <div
             key={id}
             className="rounded-lg shadow-md"
             style={{ height: "275px" }}
+            onClick={() => onCommunityClick && onCommunityClick(id)}
           >
             <img
               src={community.communityPicture}
-              alt=""
+              alt={community.communityName}
               className="rounded-t-lg w-full h-32 object-cover"
             />
             <div className="p-4">
@@ -37,7 +49,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({ communities }) => {
                 Reputation: {community.communityReputation}
               </p>
               <p className="text-sm">Members: {community.memberCount}</p>
-
+              <p className="text-sm">Type: {community.communityType}</p>
               <p className="text-xs text-gray-500 uppercase">
                 {community.premiumCommunity
                   ? "Premium Community"

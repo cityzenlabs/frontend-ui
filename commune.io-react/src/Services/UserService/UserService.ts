@@ -1,6 +1,20 @@
-export const fetchUserData = async (token: any) => {
+export const fetchUserProfile = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/users/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchUserDashboard = async (token: any) => {
+  try {
+    const response = await fetch(`http://localhost:8080/users/dashboard`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

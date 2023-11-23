@@ -67,7 +67,7 @@ function IInput({
         value={value}
         onChange={onChange}
         onKeyDown={handleKeyDown} // Add the onKeyDown event handler
-        className="mt-1 block w-full rounded-2xl border py-2 px-6 focus:border-regal-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm placeholder-slate-400 focus:outline-none"
+        className="block w-full rounded-2xl font-medium text-black text-md bg-white border py-2 px-6 "
       />
     </div>
   );

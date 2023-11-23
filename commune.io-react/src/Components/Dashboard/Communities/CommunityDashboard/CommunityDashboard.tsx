@@ -66,7 +66,7 @@ function CommunityDashboard({
   }, []);
 
   const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Manage);
+    setCommunitiesVisibility(Visibility.Communities);
   };
 
   return (
@@ -75,7 +75,10 @@ function CommunityDashboard({
         <div className="flex">
           <IBackButton onClick={handleBack} />
           {dashboardData && (
-            <ILabel text={dashboardData.name} className="ml-4"></ILabel>
+            <ILabel
+              text={dashboardData.community.name}
+              className="ml-4"
+            ></ILabel>
           )}
         </div>
       </IContainer>
@@ -83,19 +86,19 @@ function CommunityDashboard({
         <div className="grid xl:grid-cols-3 gap-6 xl:w-4/5 lg:w-full">
           <IPanel height="h-[70px]">
             <div className="flex justify-between items-center">
-              {dashboardData?.memberCount + " Joined "}
+              {dashboardData?.members.length + " Joined "}
               <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
             </div>
           </IPanel>
           <IPanel height="h-[70px]">
             <div className="flex justify-between items-center">
-              {dashboardData?.pendingEvents + " Events Pending"}
+              {dashboardData?.pendingEvents.length + " Events Pending"}
               <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
             </div>
           </IPanel>
           <IPanel height="h-[70px]">
             <div className="flex justify-between items-center">
-              {dashboardData?.completedEvents + " Events Completed"}{" "}
+              {dashboardData?.completedEvents.length + " Events Completed"}{" "}
               <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
             </div>
           </IPanel>
@@ -115,14 +118,16 @@ function CommunityDashboard({
               <div className="p-4 h-full flex flex-col">
                 {dashboardData && (
                   <div>
-                    <ILabel text={dashboardData.name}></ILabel>
+                    <ILabel text={dashboardData.community.name}></ILabel>
                   </div>
                 )}
                 <div className="mt-5">
-                  {dashboardData?.city + ", " + dashboardData?.state}
+                  {dashboardData?.community.city +
+                    ", " +
+                    dashboardData?.community.state}
                 </div>
                 <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                  {dashboardData?.description}
+                  {dashboardData?.community.description}
                 </div>
               </div>
             </IPanel>
@@ -132,7 +137,7 @@ function CommunityDashboard({
               <div className="p-4">
                 <div className="font-bold text-md mb-4">Community</div>
                 <div className="mt-3">
-                  Reputation Score - {dashboardData?.reputation}
+                  Reputation Score - {dashboardData?.community.reputation}
                 </div>
               </div>
             </IPanel>
@@ -141,34 +146,37 @@ function CommunityDashboard({
               <div className="p-4">
                 <div className="font-bold text-md mb-4">REQUIREMENTS</div>
                 <div className="grid grid-cols-2 gap-4">
-                  {dashboardData?.attributeRequirements &&
-                    Object.entries(dashboardData.attributeRequirements).map(
-                      ([attribute, level], index) => {
-                        // Determine the color for the current attribute
-                        const color =
-                          attributeColors[index % attributeColors.length];
-                        return (
-                          <div
-                            key={attribute}
-                            className="flex justify-between items-center p-1"
-                          >
-                            <div className="flex-1">
-                              <div
-                                className="text-sm font-medium capitalize"
-                                style={{ color }}
-                              >
-                                {attribute.toLowerCase()}
-                              </div>
-                              <div className="text-xs">Level {level}</div>
+                  {dashboardData?.community.attributeRequirements &&
+                    Object.entries(
+                      dashboardData.community.attributeRequirements as [
+                        string,
+                        number,
+                      ][],
+                    ).map(([attribute, level], index) => {
+                      // Determine the color for the current attribute
+                      const color =
+                        attributeColors[index % attributeColors.length];
+                      return (
+                        <div
+                          key={attribute}
+                          className="flex justify-between items-center p-1"
+                        >
+                          <div className="flex-1">
+                            <div
+                              className="text-sm font-medium capitalize"
+                              style={{ color }}
+                            >
+                              {attribute.toLowerCase()}
                             </div>
-                            {/* Use the same color for the icon */}
-                            <div style={{ color }}>
-                              {getIconForAttribute(attribute)}
-                            </div>
+                            <div className="text-xs">Level {level}</div>
                           </div>
-                        );
-                      },
-                    )}
+                          {/* Use the same color for the icon */}
+                          <div style={{ color }}>
+                            {getIconForAttribute(attribute)}
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </IPanel>

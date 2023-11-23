@@ -58,7 +58,8 @@ function Profile({ setViewProfile, user }: ProfileProps) {
                         key={attributeKey}
                         attributeKey={attributeKey}
                         attributeValue={attributeValue as any} // Cast to 'any' since we don't have a type here
-                        color={attributeColors[index % attributeColors.length]} // Use modulo for cycling colors if more attributes than colors
+                        color={attributeColors[index % attributeColors.length]}
+                        isHalfWidth={true} // Use modulo for cycling colors if more attributes than colors
                       />
                     ),
                   )}

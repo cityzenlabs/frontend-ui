@@ -25,11 +25,12 @@ export interface ManagedCommunities {
 }
 
 export interface ManagedCommunitiesModel {
-  ongoingEvents: number;
-  pendingEvents: number;
-  completedEvents: number;
+  ongoingEvents: any;
+  pendingEvents: any;
+  completedEvents: any;
   communityPortalAnalytics: {
     [key: string]: MonthlyData;
   };
   managedCommunities: ManagedCommunities;
+  communityCards: any;
 }

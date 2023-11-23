@@ -38,7 +38,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
   };
 
   const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Manage);
+    setCommunitiesVisibility(Visibility.Communities);
   };
 
   const resetFields = () => {

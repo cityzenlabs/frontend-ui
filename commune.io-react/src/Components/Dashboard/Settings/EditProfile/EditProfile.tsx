@@ -93,17 +93,14 @@ function EditProfile({ setUser, user, profilePicture }: EditProfileProps) {
       const hasErrors = updateResults.some((result) => result !== "success");
 
       if (!hasErrors) {
-        const updatedUser = await UserService.fetchUserData(accessToken.token);
+        const updatedUser = await UserService.fetchUserProfile(
+          accessToken.token,
+        );
         setUser(updatedUser);
         resetForm();
       } else {
-        console.error(
-          "Profile edit failed. Check for errors in the update operations.",
-        );
       }
-    } catch (error) {
-      console.error("Error during profile edit:", error);
-    }
+    } catch (error) {}
   };
 
   return (

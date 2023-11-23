@@ -1,4 +1,6 @@
 export interface CommunityDashboardModel {
+  community?: any;
+  members?: any;
   id: string;
   name: string;
   picture: string;
@@ -54,8 +56,8 @@ export interface CommunityDashboardModel {
   };
   stripeAccountId: string | null;
   memberCount: number;
-  pendingEvents: number;
-  completedEvents: number;
+  pendingEvents: any;
+  completedEvents: any;
   upcomingSocialEvents: {
     [key: string]: {
       eventName: string;

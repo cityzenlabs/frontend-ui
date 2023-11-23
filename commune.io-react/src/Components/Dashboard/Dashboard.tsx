@@ -22,7 +22,9 @@ function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDataPromise = UserService.fetchUserData(accessToken.token);
+        const userDataPromise = UserService.fetchUserDashboard(
+          accessToken.token,
+        );
         const profilePicturePromise = UserService.fetchProfilePicture(
           accessToken.token,
         );
@@ -31,7 +33,7 @@ function Dashboard() {
           userDataPromise,
           profilePicturePromise,
         ]);
-        setUser(userData);
+        setUser(userData.user);
         setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {

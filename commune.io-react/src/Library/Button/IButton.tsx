@@ -21,7 +21,7 @@ function IButton({
 }: IButtonProps) {
   return (
     <button
-      className={`rounded-2xl font-medium ${textColor} text-md ${bgColor} ${borderColor} py-2 px-6 mr-4 focus:border-blue-600 focus:ring-blue-500 focus:ring-1 shadow-sm ${className}`}
+      className={`rounded-2xl font-light ${textColor} text-md ${bgColor} ${borderColor}  px-3   ${className}`}
       onClick={onClick}
     >
       {text} {icon}

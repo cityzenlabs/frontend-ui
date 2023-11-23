@@ -9,16 +9,23 @@ interface IAttribute {
 interface IAttributeBarProps {
   attributeKey: string;
   attributeValue: IAttribute;
-  color: string; // Pass the color as a prop
+  color: string;
+  isHalfWidth?: boolean; // Optional boolean prop
 }
 
 function IAttributeBar({
   attributeKey,
   attributeValue,
   color,
+  isHalfWidth = false,
 }: IAttributeBarProps) {
+  const widthClass = isHalfWidth ? "xl:w-1/2" : "w-full";
+
   return (
-    <div className="w-full xl:w-1/2 h-[52px]">
+    <div
+      className={`${widthClass} h-[52px]`}
+      style={{ marginTop: "8px", marginBottom: "8px" }}
+    >
       <div style={{ color: color }}>
         {" "}
         {/* Use inline style for color */}
