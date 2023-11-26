@@ -66,7 +66,7 @@ function CommunityDashboard({
   }, []);
 
   const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Communities);
+    setCommunitiesVisibility(Visibility.Manage);
   };
 
   return (

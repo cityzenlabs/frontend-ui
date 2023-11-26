@@ -5,7 +5,7 @@ import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
 
-function Profile({ setViewProfile, user }: ProfileProps) {
+function Profile({ setViewProfile, home }: ProfileProps) {
   const handleSetViewProfile = (): void => {
     setViewProfile(false);
   };
@@ -35,15 +35,15 @@ function Profile({ setViewProfile, user }: ProfileProps) {
               </div>
               <div className="ml-6 grid grid-rows">
                 <div className="text-2xl">
-                  {user?.firstName} {user?.lastName}
+                  {home.user?.firstName} {home.user?.lastName}
                 </div>
                 <div className="text-sm">
-                  Reputation Score - {user?.reputation}
+                  Reputation Score - {home.user?.reputation}
                 </div>
                 <div className="text-sm">
-                  {user?.city}, {user.state}{" "}
+                  {home.user?.city}, {home.user.state}{" "}
                   <div className="text-sm">
-                    {user?.dateOfBirth} - {user?.gender}
+                    {home.user?.dateOfBirth} - {home.user?.gender}
                   </div>
                 </div>
               </div>
@@ -52,7 +52,7 @@ function Profile({ setViewProfile, user }: ProfileProps) {
             <div className="xl:flex mt-3">
               <div className="w-full xl:w-full">
                 <div className="xl:flex xl:flex-wrap">
-                  {Object.entries(user?.attributes || {}).map(
+                  {Object.entries(home?.user.attributes || {}).map(
                     ([attributeKey, attributeValue], index) => (
                       <IAttributeBar
                         key={attributeKey}

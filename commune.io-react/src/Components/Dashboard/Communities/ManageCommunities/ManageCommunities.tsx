@@ -4,14 +4,15 @@ import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
-import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import { ManagedCommunitiesModel } from "./ManageCommunitiesModel";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
 
-function ManageCommunities({ setCommunitiesVisibility, token }: any) {
-  const [communityPortal, setCommunityPortal] =
-    useState<ManagedCommunitiesModel>();
+function ManageCommunities({
+  setCommunitiesVisibility,
+  token,
+  setCommunityId,
+}: any) {
+  const [communityPortal, setCommunityPortal] = useState<any>();
 
   const [showAllCommunities, setShowAllCommunities] = useState(false);
 
@@ -23,20 +24,13 @@ function ManageCommunities({ setCommunitiesVisibility, token }: any) {
     setCommunitiesVisibility(Visibility.Communities);
   };
 
-  const handleCreateCommunity = () => {
-    setCommunitiesVisibility(Visibility.Create);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityPortal(token);
-        console.log(data);
         setCommunityPortal(data);
       } catch (error) {
-        //setError(error);
       } finally {
-        //setIsLoading(false);
       }
     };
 
@@ -95,6 +89,10 @@ function ManageCommunities({ setCommunitiesVisibility, token }: any) {
             <ICommunityPanel
               communities={communityPortal.communityCards}
               showAll={showAllCommunities}
+              onCommunityClick={(id) => {
+                setCommunityId(id);
+                setCommunitiesVisibility(Visibility.Dashboard);
+              }}
             />
           )}
         </IPanel>

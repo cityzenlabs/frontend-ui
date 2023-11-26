@@ -7,7 +7,7 @@ import ILabel from "../../../Library/Label/ILabel";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
 
-function Home({ viewProfile, setViewProfile, user }: HomeProps) {
+function Home({ viewProfile, setViewProfile, home }: HomeProps) {
   const attributeColors = [
     "#68BEF1",
     "#40B87E",
@@ -29,7 +29,7 @@ function Home({ viewProfile, setViewProfile, user }: HomeProps) {
   return (
     <div>
       {viewProfile ? (
-        <Profile setViewProfile={setViewProfile} user={user} />
+        <Profile setViewProfile={setViewProfile} home={home} />
       ) : (
         <div>
           <IContainer paddingY={8}>
@@ -37,7 +37,7 @@ function Home({ viewProfile, setViewProfile, user }: HomeProps) {
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
                 <IPanel
-                  title={"Welcome, " + user.firstName}
+                  title={"Welcome, " + home.user.firstName}
                   height="80"
                   marginTop="mt-8"
                   buttonLabel="See Profile"
@@ -52,7 +52,7 @@ function Home({ viewProfile, setViewProfile, user }: HomeProps) {
                   <div className="xl:flex mt-3">
                     <div className="w-full xl:w-full">
                       <div className="xl:flex xl:flex-wrap">
-                        {Object.entries(user?.topFourAttributes || {}).map(
+                        {Object.entries(home?.topFourAttributes || {}).map(
                           ([attributeKey, attributeValue], index) => (
                             <IAttributeBar
                               key={attributeKey}
@@ -85,9 +85,9 @@ function Home({ viewProfile, setViewProfile, user }: HomeProps) {
               buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
               onButtonClick={toggleShowAllRecommended}
             >
-              {user?.recommendedCommunities && (
+              {home?.recommendedCommunities && (
                 <ICommunityPanel
-                  communities={user.recommendedCommunities}
+                  communities={home.recommendedCommunities}
                   showAll={showAllRecommended}
                 />
               )}

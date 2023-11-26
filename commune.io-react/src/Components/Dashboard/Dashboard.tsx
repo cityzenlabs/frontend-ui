@@ -13,7 +13,7 @@ function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
-  const [user, setUser] = useState<any>();
+  const [home, setHome] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -22,18 +22,16 @@ function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDataPromise = UserService.fetchUserDashboard(
-          accessToken.token,
-        );
+        const userDataPromise = UserService.fetchUserHome(accessToken.token);
         const profilePicturePromise = UserService.fetchProfilePicture(
           accessToken.token,
         );
 
-        const [userData, imageUrl] = await Promise.all([
+        const [dashboardData, imageUrl] = await Promise.all([
           userDataPromise,
           profilePicturePromise,
         ]);
-        setUser(userData.user);
+        setHome(dashboardData);
         setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {
@@ -62,7 +60,7 @@ function Dashboard() {
               setViewProfile={setViewProfile}
               viewProfile={viewProfile}
               setSideBarSelection={setSideBarSelection}
-              user={user}
+              home={home}
             />
           )}
         </div>
@@ -73,8 +71,8 @@ function Dashboard() {
         <div>
           {sideBarSelection === "Settings" && (
             <Settings
-              setUser={setUser}
-              user={user}
+              setHome={setHome}
+              home={home}
               profilePicture={profilePicture}
             />
           )}

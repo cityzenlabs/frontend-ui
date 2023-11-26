@@ -12,9 +12,9 @@ export const fetchUserProfile = async (token: any) => {
   }
 };
 
-export const fetchUserDashboard = async (token: any) => {
+export const fetchUserHome = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/dashboard`, {
+    const response = await fetch(`http://localhost:8080/users/home`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -8,12 +8,12 @@ import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
 
 interface SettingsProps {
-  setUser: Dispatch<SetStateAction<any>>;
-  user: any; // Use the appropriate type instead of 'any'
+  setHome: Dispatch<SetStateAction<any>>;
+  home: any; // Use the appropriate type instead of 'any'
   profilePicture: string;
 }
 
-function Settings({ setUser, user, profilePicture }: SettingsProps) {
+function Settings({ setHome, home, profilePicture }: SettingsProps) {
   return (
     <div>
       <IContainer paddingY={8}>
@@ -50,8 +50,8 @@ function Settings({ setUser, user, profilePicture }: SettingsProps) {
             <Tab.Panels className="mt-16">
               <Tab.Panel>
                 <EditProfile
-                  setUser={setUser}
-                  user={user}
+                  setHome={setHome}
+                  home={home}
                   profilePicture={profilePicture}
                 />
               </Tab.Panel>

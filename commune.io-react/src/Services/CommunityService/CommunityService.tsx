@@ -59,6 +59,25 @@ export const getCommunityHome = async (token: any) => {
   }
 };
 
+export const getCommunity = async (id: any, token: any) => {
+  try {
+    const response = await fetch(`http://localhost:8080/communities/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getCommunityPortal = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/communities/portal`, {
@@ -90,7 +109,7 @@ export const updateCommunityPicture = async (
     const response = await fetch(
       `http://localhost:8080/communities/${id}/community-picture`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },

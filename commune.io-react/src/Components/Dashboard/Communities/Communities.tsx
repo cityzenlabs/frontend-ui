@@ -12,6 +12,7 @@ import { useAuth } from "../../../AuthContext";
 
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
+import Community from "./Community/Community";
 
 function Communities() {
   const [communityHome, setCommunityHome] = useState<any>();
@@ -55,7 +56,6 @@ function Communities() {
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityHome(accessToken.token);
-
         setCommunityHome(data);
       } catch (error) {
         //setError(error);
@@ -74,6 +74,7 @@ function Communities() {
           <ManageCommunities
             setCommunitiesVisibility={setCommunitiesVisibility}
             token={accessToken.token}
+            setCommunityId={setCommunityId}
           />
         )}
 
@@ -86,6 +87,14 @@ function Communities() {
 
         {communitiesVisibility === Visibility.Dashboard && (
           <CommunityDashboard
+            setCommunitiesVisibility={setCommunitiesVisibility}
+            communityId={communityId}
+            token={accessToken.token}
+          />
+        )}
+
+        {communitiesVisibility === Visibility.Community && (
+          <Community
             setCommunitiesVisibility={setCommunitiesVisibility}
             communityId={communityId}
             token={accessToken.token}
@@ -132,7 +141,7 @@ function Communities() {
                       showAll={showAllTrending}
                       onCommunityClick={(id) => {
                         setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Dashboard);
+                        setCommunitiesVisibility(Visibility.Community);
                       }}
                     />
                   )}
@@ -154,7 +163,7 @@ function Communities() {
                       showAll={showAllUpcoming}
                       onCommunityClick={(id) => {
                         setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Dashboard);
+                        setCommunitiesVisibility(Visibility.Community);
                       }}
                     />
                   )}
@@ -176,7 +185,7 @@ function Communities() {
                       showAll={showAllRecommended}
                       onCommunityClick={(id) => {
                         setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Dashboard);
+                        setCommunitiesVisibility(Visibility.Community);
                       }}
                     />
                   )}
