@@ -127,39 +127,7 @@ function CreateEvents({ setEventsVisibility }: EventsProps) {
             </button>
           </div>{" "}
         </div>
-        <div>
-          <div className="mt-4">Attributes</div>
-          {attributes.map((item) => (
-            <button
-              key={item.id}
-              className={`mt-4 rounded-2xl font-light text-black text-sm ${
-                selectedAttributes.includes(item.id)
-                  ? "bg-regal-blue text-white"
-                  : "bg-white text-black"
-              } border py-1 px-4 mr-4`}
-              onClick={() => handleAttributeButtonClick(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
 
-        <div>
-          <div className="mt-4">Tags</div>
-          {tags.map((item) => (
-            <button
-              key={item.label}
-              className={`mt-4 rounded-2xl font-light text-black text-sm ${
-                selectedTags.includes(item.id)
-                  ? "bg-regal-blue text-white"
-                  : "bg-white text-black"
-              } border py-1 px-4 mr-4`}
-              onClick={() => handleTagButtonClick(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
         <div>
           <div className="mt-4">Details</div>{" "}
           <div>

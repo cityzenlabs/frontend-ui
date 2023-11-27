@@ -4,6 +4,7 @@ import IBackButton from "../../../../Library/BackButton/IBackButton";
 import { Visibility } from "../Enums/CommunityEnums";
 import IPanel from "../../../../Library/Panel/IPanel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
+import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";
 import {
   UsersIcon,
@@ -12,38 +13,86 @@ import {
   AcademicCapIcon,
   StarIcon,
   MoonIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/solid";
-import { Carousel } from "@material-tailwind/react";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
+import IEventCard from "../../../../Library/EventPanel/IEventCard";
+import CommunityMembersList from "./CommunityMembersList";
 
 function Community({ setCommunitiesVisibility, communityId, token }: any) {
+  const [community, setCommunity] = useState<any>();
+  const [communityPicture, setCommunityPicture] = useState<any>();
+  const [communityEvents, setCommunityEvents] = useState<[]>();
+  const [user, setUser] = useState<any>();
+  const [showMembersList, setShowMembersList] = useState<boolean>(false);
+
   useEffect(() => {
     let isMounted = true;
 
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunity(communityId, token);
-
         if (isMounted) {
           setCommunity(data);
+          const user = await UserService.fetchUser(token, data.organizer);
+
+          if (isMounted) {
+            setUser(user);
+          }
         }
       } catch (error) {
-        console.error(error); // Or handle the error as needed
+        console.error(error);
       } finally {
         if (isMounted) {
-          // Stop loading indicators or any cleanup tasks
+        }
+      }
+    };
+
+    const fetchCommunityEvents = async () => {
+      try {
+        const data = await CommunityService.getCommunityEvents(
+          communityId,
+          token,
+          "upcoming",
+        );
+
+        if (isMounted) {
+          setCommunityEvents(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (isMounted) {
+        }
+      }
+    };
+
+    const fetchPicture = async () => {
+      try {
+        const data = await CommunityService.getCommunityPicture(
+          communityId,
+          token,
+        );
+
+        if (isMounted) {
+          setCommunityPicture(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (isMounted) {
         }
       }
     };
 
     fetchData();
+    fetchPicture();
+    fetchCommunityEvents();
 
     return () => {
       isMounted = false; // Prevents state updates if the component unmounts
     };
   }, [communityId, token]);
-
-  const [community, setCommunity] = useState<any>();
 
   const attributeColors = [
     "#68BEF1", // Blue
@@ -72,91 +121,119 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
 
   return (
     <div>
-      <IContainer paddingY={8}>
-        <div className="flex">
-          <IBackButton onClick={handleBack} />
-        </div>
-      </IContainer>
+      {showMembersList && (
+        <CommunityMembersList
+          setShowMembersList={setShowMembersList}
+          token={token}
+          communityId={community.id}
+        />
+      )}
 
-      <IContainer>
-        <div className="w-full">
-          <IPanel height="h-[320px]">
-            <ICarousel images={[community?.picture]} />
-          </IPanel>
-        </div>
-      </IContainer>
-
-      <IContainer paddingY={8}>
-        <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
-          <div className="col-span-3 xl:col-span-2">
-            <IPanel height="h-[550px]">
-              <div className="p-4 h-full flex flex-col">
-                {community && (
-                  <div>
-                    <ILabel text={community.name}></ILabel>
-                  </div>
-                )}
-                <div className="mt-5">
-                  {community?.city + ", " + community?.state}
-                </div>
-                <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                  {community?.description}
-                </div>
-              </div>
-            </IPanel>
-          </div>
-          <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
-            <IPanel height="h-[177px]"></IPanel>
-
-            <IPanel height="h-[270px]">
-              <div className="p-4">
-                <div className="font-bold text-md mb-4">REQUIREMENTS</div>
-                <div className="grid grid-cols-2 gap-4">
-                  {community?.attributeRequirements &&
-                    Object.entries(
-                      community.attributeRequirements as [string, number][],
-                    ).map(([attribute, level], index) => {
-                      // Determine the color for the current attribute
-                      const color =
-                        attributeColors[index % attributeColors.length];
-                      return (
-                        <div
-                          key={attribute}
-                          className="flex justify-between items-center p-1"
-                        >
-                          <div className="flex-1">
-                            <div
-                              className="text-sm font-medium capitalize"
-                              style={{ color }}
-                            >
-                              {attribute.toLowerCase()}
-                            </div>
-                            <div className="text-xs">Level {level}</div>
-                          </div>
-                          {/* Use the same color for the icon */}
-                          <div style={{ color }}>
-                            {getIconForAttribute(attribute)}
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            </IPanel>
-
-            <IPanel height="h-[55px]">{}</IPanel>
-          </div>
-        </div>
-      </IContainer>
-      <IContainer className="pb-8">
+      {!showMembersList && (
         <div>
-          <IPanel
-            title="Related Events"
-            height="600px"
-            buttonLabel="See All"
-          ></IPanel>
+          <IContainer paddingY={8}>
+            <div className="flex">
+              <IBackButton onClick={handleBack} />
+              <ILabel className="ml-4" text={community?.name} />
+            </div>
+          </IContainer>
+
+          <IContainer>
+            <div className="w-full">
+              <IPanel height="h-[320px]">
+                <ICarousel images={[communityPicture]} />
+              </IPanel>
+            </div>
+          </IContainer>
+
+          <IContainer paddingY={8}>
+            <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
+              <div className="col-span-3 xl:col-span-2">
+                <IPanel height="h-[550px]">
+                  <div className=" h-full flex flex-col">
+                    {community && (
+                      <div>
+                        <ILabel text={community.name}></ILabel>
+                      </div>
+                    )}
+                    <div className="mt-5">
+                      {community?.city + ", " + community?.state}
+                    </div>
+                    <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
+                      {community?.description}
+                    </div>
+                  </div>
+                </IPanel>
+              </div>
+              <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
+                <IPanel height="h-[177px]">
+                  <div>
+                    <div className="font-bold text-md ">
+                      {user?.firstName + " " + user?.lastName}
+                    </div>
+                    <div>Reputation Score - {user?.reputation}</div>
+                    <div className="font-bold text-md mt-4">Community</div>
+                    <div>Reputation Score - {community?.reputation}</div>
+                  </div>
+                </IPanel>
+
+                <IPanel height="h-[270px]">
+                  <div>
+                    <div className="font-bold text-md mb-4">REQUIREMENTS</div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {community?.attributeRequirements &&
+                        Object.entries(
+                          community.attributeRequirements as [string, number][],
+                        ).map(([attribute, level], index) => {
+                          // Determine the color for the current attribute
+                          const color =
+                            attributeColors[index % attributeColors.length];
+                          return (
+                            <div
+                              key={attribute}
+                              className="flex justify-between items-center p-1"
+                            >
+                              <div className="flex-1">
+                                <div
+                                  className="text-sm font-medium capitalize"
+                                  style={{ color }}
+                                >
+                                  {attribute.toLowerCase()}
+                                </div>
+                                <div className="text-xs">Level {level}</div>
+                              </div>
+                              {/* Use the same color for the icon */}
+                              <div style={{ color }}>
+                                {getIconForAttribute(attribute)}
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </IPanel>
+
+                <IPanel
+                  height="h-[55px]"
+                  onPanelClick={() => setShowMembersList(true)}
+                >
+                  <div className="flex justify-between items-center h-full ">
+                    {Object.keys(community?.members ?? {}).length} Members
+                    <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                </IPanel>
+              </div>
+            </div>
+          </IContainer>
+          <IContainer className="pb-8">
+            <div>
+              <IPanel title="Upcoming Events" height="600px">
+                {communityEvents && <IEventCard events={communityEvents} />}
+              </IPanel>
+            </div>
+          </IContainer>
         </div>
-      </IContainer>
+      )}
     </div>
   );
 }

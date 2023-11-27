@@ -2,11 +2,15 @@ import React from "react";
 
 // Assuming the shape of your event objects is something like this:
 interface Event {
-  eventName: string;
-  eventPicture: string;
-  eventLocation: string;
-  eventAttribute: string;
-  eventTime: string;
+  name: string;
+  picture: string;
+  address: string;
+  attribute: string;
+  type: string;
+  category?: string; // Optional
+  startTime?: string; // Optional
+  endTime?: string; // Optional
+  attendees?: number; // Optional
 }
 
 interface Events {
@@ -14,14 +18,15 @@ interface Events {
 }
 
 interface IEventPanelProps {
-  events: Events;
+  events: Events | Event[];
+  showAll?: boolean;
 }
 
-const IEventPanel: React.FC<IEventPanelProps> = ({ events }) => {
+const IEventPanel: React.FC<IEventPanelProps> = ({ events, showAll }) => {
   return (
-    <div className="xl:grid lg:grid grid-cols-4 gap-3 p-4 flex overflow-x-auto py-4 space-x-3">
+    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 p-4 overflow-x-auto py-4 space-x-3">
       {Object.entries(events)
-        .slice(0, 4)
+        .slice(0, showAll ? undefined : 4)
         .map(([id, event]) => (
           <div
             key={id}
@@ -29,19 +34,32 @@ const IEventPanel: React.FC<IEventPanelProps> = ({ events }) => {
             style={{ height: "275px" }}
           >
             <img
-              src={event.eventPicture}
-              alt=""
+              src={event.picture || "default-placeholder.jpg"}
+              alt={event.name}
               className="rounded-t-lg w-full h-32 object-cover"
             />
             <div className="p-4">
-              <h3>{event.eventName}</h3>
-              <p className="text-sm truncate">{event.eventLocation}</p>
+              <h3>{event.name}</h3>
+              {event.category && <p>{event.category}</p>}
+              <p className="text-sm truncate">{event.address}</p>
               <p className="text-xs text-gray-500 uppercase">
-                {event.eventAttribute}
+                {event.attribute}
               </p>
-              <p className="text-sm">
-                {new Date(event.eventTime).toLocaleDateString()}
-              </p>
+              {event.type && <p className="text-sm">{event.type}</p>}
+              {event.attendees && (
+                <p className="text-sm">Attendees: {event.attendees}</p>
+              )}
+              {event.startTime && (
+                <p className="text-sm">
+                  {event.startTime
+                    ? new Date(event.startTime).toLocaleDateString()
+                    : "Unknown start time"}
+                  {" - "}
+                  {event.endTime
+                    ? new Date(event.endTime).toLocaleDateString()
+                    : "Unknown end time"}
+                </p>
+              )}
             </div>
           </div>
         ))}

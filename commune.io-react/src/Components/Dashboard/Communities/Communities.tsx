@@ -128,7 +128,7 @@ function Communities() {
             </IContainer>
 
             {!showAllUpcoming && !showAllRecommended && (
-              <IContainer paddingY={8}>
+              <IContainer className="pb-8">
                 <IPanel
                   title="Trending"
                   buttonLabel={showAllTrending ? "Show Less" : "Show All"}
@@ -150,7 +150,7 @@ function Communities() {
             )}
 
             {!showAllTrending && !showAllRecommended && (
-              <IContainer>
+              <IContainer className="pb-8">
                 <IPanel
                   title="New"
                   buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
@@ -172,7 +172,7 @@ function Communities() {
             )}
 
             {!showAllTrending && !showAllUpcoming && (
-              <IContainer paddingY={8}>
+              <IContainer className="pb-8">
                 <IPanel
                   title="Recommended"
                   buttonLabel={showAllRecommended ? "Show Less" : "Show All"}

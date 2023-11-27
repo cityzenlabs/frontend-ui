@@ -26,6 +26,20 @@ export const fetchUserHome = async (token: any) => {
   }
 };
 
+export const fetchUser = async (token: any, id: any) => {
+  try {
+    const response = await fetch(`http://localhost:8080/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchProfilePicture = async (token: any) => {
   try {
     const response = await fetch(

@@ -1,12 +1,35 @@
-import React, { useState } from "react";
-import ManageEvents from "./ManageEvents/ManageEvents";
+import React, { useEffect, useState } from "react";
+import EventPortal from "./EventPortal/EventPortal";
 import { Visibility } from "./Enums/EventEnums";
 import CreateEvents from "./CreateEvents/CreateEvents";
+import * as EventService from "../../../Services/EventService/EventService";
+import { useAuth } from "../../../AuthContext";
+import IContainer from "../../../Library/Container/IContainer";
+import IPanel from "../../../Library/Panel/IPanel";
+import IEventPanel from "../../../Library/EventPanel/IEventPanel";
+import ILabel from "../../../Library/Label/ILabel";
+import IInput from "../../../Library/Input/IInput";
+import IButton from "../../../Library/Button/IButton";
 
 function Events() {
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
     Visibility.Events,
   );
+  const [eventsHome, setEventsHome] = useState<any>();
+  const accessToken = useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await EventService.getEventHome(accessToken.token);
+        setEventsHome(data);
+      } catch (error) {
+        //setError(error);
+      }
+    };
+
+    fetchData();
+  }, [eventsVisibility]);
 
   const handleMangeEvents = () => {
     setEventsVisibility(Visibility.Manage);
@@ -20,7 +43,7 @@ function Events() {
     <div>
       <div>
         {eventsVisibility === Visibility.Manage && (
-          <ManageEvents setEventsVisibility={setEventsVisibility} />
+          <EventPortal setEventsVisibility={setEventsVisibility} />
         )}
 
         {eventsVisibility === Visibility.Create && (
@@ -29,72 +52,51 @@ function Events() {
 
         {eventsVisibility === Visibility.Events && (
           <div>
-            <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8 xl:flex justify-between">
-              <label className="font-medium text-3xl">Events</label>
+            <IContainer paddingY={8}>
+              <div className="flex items-center justify-between flex-wrap">
+                <div className="inline-block">
+                  <ILabel text="Events" />
+                </div>
+
+                <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
+                  <IInput placeholder="Search Community" name="search" />
+
+                  <IButton text="Manage Events" onClick={handleMangeEvents} />
+                  <IButton
+                    text="Create Event"
+                    onClick={() => setEventsVisibility(Visibility.Create)}
+                    bgColor="bg-regal-blue"
+                    textColor="text-white"
+                    icon={<span>+</span>}
+                  />
+                </div>
+              </div>
+            </IContainer>
+            <IContainer className="pb-8">
               <div>
-                <input
-                  type="search"
-                  id="search"
-                  name="search"
-                  placeholder="Search Events"
-                  className="xl:mt-0 mt-4 rounded-2xl font-medium text-black text-md bg-white border py-2 px-6 mr-4"
-                />
-                <button
-                  className=" rounded-2xl font-light text-black text-md bg-white border py-2 px-6 mr-4 "
-                  onClick={handleMangeEvents}
+                <IPanel title="Trending" buttonLabel="See All" height="600px">
+                  <IEventPanel events={eventsHome?.trendingEvents ?? {}} />
+                </IPanel>
+              </div>
+            </IContainer>
+            <IContainer className="pb-8">
+              <div>
+                <IPanel title="Upcoming" buttonLabel="See All" height="600px">
+                  <IEventPanel events={eventsHome?.upcomingEvents ?? {}} />
+                </IPanel>
+              </div>
+            </IContainer>
+            <IContainer className="pb-8">
+              <div>
+                <IPanel
+                  title="Recommended"
+                  buttonLabel="See All"
+                  height="600px"
                 >
-                  Manage Events
-                </button>
-                <button
-                  className=" xl:mt-0 mt-4 rounded-2xl font-light text-white text-md bg-regal-blue py-2 px-6 "
-                  onClick={handleCreateEvent}
-                >
-                  Create Event <span>+</span>
-                </button>
+                  <IEventPanel events={eventsHome?.recommendedEvents ?? {}} />
+                </IPanel>
               </div>
-            </div>
-            <div className="xl:ml-[320px] md:ml-[320px] px-12">
-              <div className="w-full">
-                <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
-                  <div className="flex justify-between">
-                    <div className="text-xl">Trending</div>
-                    <div>
-                      <button className="text-sm border rounded py-1 px-4">
-                        See All
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="xl:ml-[320px] md:ml-[320px] px-12 py-8">
-              <div className="w-full">
-                <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
-                  <div className="flex justify-between">
-                    <div className="text-xl">Upcoming</div>
-                    <div>
-                      <button className="text-sm border rounded py-1 px-4">
-                        See All
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="xl:ml-[320px] md:ml-[320px] px-12">
-              <div className="w-full">
-                <div className="h-[244px] rounded-lg bg-white px-4 py-6 ">
-                  <div className="flex justify-between">
-                    <div className="text-xl">Recommended</div>
-                    <div>
-                      <button className="text-sm border rounded py-1 px-4">
-                        See All
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </IContainer>
           </div>
         )}
       </div>

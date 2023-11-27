@@ -3,7 +3,8 @@ import React from "react";
 interface IPanelProps {
   title?: string;
   buttonLabel?: string; // Label for the button
-  onButtonClick?: () => void; // Event handler for the button click
+  onButtonClick?: () => void;
+  onPanelClick?: () => void; // Event handler for the button click
   children?: React.ReactNode; // Optional children components
   height?: string; // New prop for custom height
   marginTop?: string; // New prop for custom top margin
@@ -14,13 +15,14 @@ function IPanel({
   title,
   buttonLabel,
   onButtonClick,
+  onPanelClick,
   children,
   height = "h-[244px]", // Default height
   marginTop = "mt-0", // Default top margin
   titleColor,
 }: IPanelProps) {
   return (
-    <div className={`w-full ${marginTop}`}>
+    <div className={`w-full ${marginTop}`} onClick={onPanelClick}>
       <div className={`${height} rounded-lg bg-white px-4 py-6`}>
         <div className="flex justify-between items-center">
           <div className="text-xl" style={{ color: titleColor }}>

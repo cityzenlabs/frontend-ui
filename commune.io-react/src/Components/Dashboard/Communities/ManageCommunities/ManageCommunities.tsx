@@ -51,22 +51,24 @@ function ManageCommunities({
       <IContainer>
         <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full">
           <IPanel height="h-[112px]">
-            <div className="text-3xl">
-              {communityPortal?.ongoingEvents.length}
+            <div className="text-3xl">{communityPortal?.ongoingEvents}</div>
+            <div className="text-xs pr-8">
+              ONGOING <br />
+              EVENTS
             </div>
-            <div className="text-xs pr-8">ONGOING EVENTS</div>
           </IPanel>
           <IPanel height="h-[112px]">
-            <div className="text-3xl">
-              {communityPortal?.pendingEvents.length}
+            <div className="text-3xl">{communityPortal?.pendingEvents}</div>
+            <div className="text-xs">
+              PENDING <br /> EVENTS
             </div>
-            <div className="text-xs">EVENTS IN PROGRESS</div>
           </IPanel>
           <IPanel height="h-[112px]">
-            <div className="text-3xl">
-              {communityPortal?.completedEvents.length}
+            <div className="text-3xl">{communityPortal?.completedEvents}</div>
+            <div className="text-xs">
+              EVENTS <br />
+              COMPLETED
             </div>
-            <div className="text-xs">EVENTS COMPLETED</div>
           </IPanel>
         </div>
       </IContainer>
