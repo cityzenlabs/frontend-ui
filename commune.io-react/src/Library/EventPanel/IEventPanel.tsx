@@ -28,25 +28,24 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
               className="rounded-t-lg w-full h-32 object-cover"
             />
             <div className="p-4">
-              <h3>{event.name}</h3>
-              {event.category && <p>{event?.category}</p>}
-              <p className="text-sm truncate">{event?.address}</p>
+              <div className="text-md">{event.name}</div>
+              {event.category && (
+                <p className="text-sm text-gray-500">{event?.category}</p>
+              )}
               <p className="text-xs text-gray-500 uppercase">
-                {event?.attribute}
+                {event?.type + " | " + event?.attribute}
               </p>
-              {event.type && <p className="text-sm">{event?.type}</p>}
+
               {event.attendees && (
-                <p className="text-sm">Attendees: {event?.attendees}</p>
+                <p className="text-sm text-gray-500">
+                  Attendees: {event?.attendees}
+                </p>
               )}
               {event.startTime && (
-                <p className="text-sm">
+                <p className="text-sm text-gray-500">
                   {event?.startTime
                     ? new Date(event.startTime).toLocaleDateString()
                     : "Unknown start time"}
-                  {" - "}
-                  {event?.endTime
-                    ? new Date(event.endTime).toLocaleDateString()
-                    : "Unknown end time"}
                 </p>
               )}
             </div>

@@ -81,7 +81,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
       category: "NETWORKING",
       attribute: "SOCIAL",
       host: community,
-      organizer: user.id,
     };
 
     console.log(event);

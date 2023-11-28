@@ -44,7 +44,7 @@ function EventDashboard({ setEventsVisibility, eventId, token }: any) {
           setAttendees(data);
           const user = await UserService.fetchUser(
             token,
-            data?.event.organizer,
+            data.event?.organizer,
           );
           if (isMounted) {
             setUser(user);

@@ -9,11 +9,13 @@ import IPanel from "../../../../Library/Panel/IPanel";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
+import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 
 function Event({ setEventsVisibility, eventId, token, user }: any) {
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
+  const [relatedEvents, setRelatedEvents] = useState<any>();
 
   useEffect(() => {
     let isMounted = true;
@@ -37,6 +39,20 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
       }
     };
 
+    const fetchRelatedEvents = async () => {
+      try {
+        const data = await EventService.getRelatedEvents(token, eventId);
+        if (isMounted) {
+          setRelatedEvents(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (isMounted) {
+        }
+      }
+    };
+
     const checkMembership = (eventData: any) => {
       if (user && eventData) {
         setHasJoined(user?.joinedEvents.includes(eventData.id));
@@ -44,9 +60,10 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
     };
 
     fetchData();
+    fetchRelatedEvents();
   }, []);
 
-  const handleJoin = () => {};
+  const handleJoinOrLeaveEvent = async () => {};
 
   return (
     <div>
@@ -60,8 +77,8 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
           </div>
           <div>
             <IButton
-              text={hasJoined ? "Leave Community" : "Join Community"}
-              onClick={handleJoin}
+              text={hasJoined ? "Leave Event" : "Join Event"}
+              onClick={handleJoinOrLeaveEvent}
               bgColor="bg-regal-blue"
               textColor="text-white"
               className="px-6 py-2"
@@ -129,6 +146,14 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
               </div>
             </IPanel>
           </div>
+        </div>
+      </IContainer>
+
+      <IContainer className="pb-8">
+        <div>
+          <IPanel title="Related" buttonLabel={"Show All"} height="600px">
+            <IEventPanel events={relatedEvents ?? {}} />
+          </IPanel>
         </div>
       </IContainer>
     </div>

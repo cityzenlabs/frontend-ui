@@ -6,6 +6,11 @@ import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
+import {
+  transformMembersAttendingEventsData,
+  transformMembersData,
+} from "./CommunityPortalGraphAnalytics";
+import IGraph from "../../../../Library/Graph/IGraph";
 
 function CommunityPortal({
   setCommunitiesVisibility,
@@ -37,6 +42,13 @@ function CommunityPortal({
 
     fetchData();
   }, []);
+
+  const membersChartData = communityPortal?.analytics
+    ? transformMembersData(communityPortal.analytics)
+    : null;
+  const membersAttendingEventsChartData = communityPortal?.analytics
+    ? transformMembersAttendingEventsData(communityPortal.analytics)
+    : null;
 
   return (
     <div>
@@ -75,9 +87,21 @@ function CommunityPortal({
       </IContainer>
 
       <IContainer className="pb-8">
-        <div className="grid grid-cols-2 gap-6 xl:w-full ">
-          <IPanel height="h-[300px]"></IPanel>
-          <IPanel height="h-[300px]"></IPanel>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
+          {membersChartData && (
+            <IGraph
+              data={membersChartData.series}
+              categories={membersChartData.categories}
+              title="Members"
+            />
+          )}
+          {membersAttendingEventsChartData && (
+            <IGraph
+              title="Members Attending Events"
+              data={membersAttendingEventsChartData.series}
+              categories={membersAttendingEventsChartData.categories}
+            />
+          )}
         </div>
       </IContainer>
 

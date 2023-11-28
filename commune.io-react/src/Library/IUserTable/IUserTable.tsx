@@ -49,7 +49,7 @@ const IUserTable: React.FC<IUserTableProps> = ({ users }) => {
   };
 
   return (
-    <div style={{ width: "100%", overflowX: "auto" }}>
+    <div className="rounded" style={{ width: "100%", overflowX: "auto" }}>
       <table style={tableStyle}>
         <thead>
           <tr>
