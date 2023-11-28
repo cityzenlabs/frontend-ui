@@ -7,7 +7,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
 
-function ManageCommunities({
+function CommunityPortal({
   setCommunitiesVisibility,
   token,
   setCommunityId,
@@ -28,6 +28,7 @@ function ManageCommunities({
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityPortal(token);
+        console.log(data);
         setCommunityPortal(data);
       } catch (error) {
       } finally {
@@ -39,7 +40,7 @@ function ManageCommunities({
 
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
             <IBackButton onClick={handleBack} />
@@ -48,7 +49,7 @@ function ManageCommunities({
         </div>
       </IContainer>
 
-      <IContainer>
+      <IContainer className="pb-8">
         <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full">
           <IPanel height="h-[112px]">
             <div className="text-3xl">{communityPortal?.ongoingEvents}</div>
@@ -73,14 +74,14 @@ function ManageCommunities({
         </div>
       </IContainer>
 
-      <IContainer paddingY={8}>
+      <IContainer className="pb-8">
         <div className="grid grid-cols-2 gap-6 xl:w-full ">
           <IPanel height="h-[300px]"></IPanel>
           <IPanel height="h-[300px]"></IPanel>
         </div>
       </IContainer>
 
-      <IContainer>
+      <IContainer className="pb-8">
         <IPanel
           title="Communities"
           buttonLabel={showAllCommunities ? "Show Less" : "Show All"}
@@ -103,4 +104,4 @@ function ManageCommunities({
   );
 }
 
-export default ManageCommunities;
+export default CommunityPortal;

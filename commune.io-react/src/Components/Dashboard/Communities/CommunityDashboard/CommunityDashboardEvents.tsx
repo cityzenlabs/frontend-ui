@@ -20,7 +20,7 @@ function CommunityDashboardEvents({
       let status;
       switch (dashboardEvents) {
         case "Pending Events":
-          status = "upcoming";
+          status = "pending";
           break;
         case "Ongoing Events":
           status = "ongoing";
@@ -55,7 +55,7 @@ function CommunityDashboardEvents({
 
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pb-8 pt-8">
         <div className="flex">
           <IBackButton onClick={() => setDashboardEvents("")} />
           {dashboardEvents && (

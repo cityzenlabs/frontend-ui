@@ -18,13 +18,21 @@ import {
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import IEventCard from "../../../../Library/EventPanel/IEventCard";
 import CommunityMembersList from "./CommunityMembersList";
+import { MapIcon } from "@heroicons/react/outline";
+import IButton from "../../../../Library/Button/IButton";
 
-function Community({ setCommunitiesVisibility, communityId, token }: any) {
+function Community({
+  setCommunitiesVisibility,
+  communityId,
+  token,
+  user,
+}: any) {
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [communityEvents, setCommunityEvents] = useState<[]>();
-  const [user, setUser] = useState<any>();
+  const [organizer, setOrganizer] = useState<any>();
   const [showMembersList, setShowMembersList] = useState<boolean>(false);
+  const [hasJoined, setHasJoined] = useState<boolean>();
 
   useEffect(() => {
     let isMounted = true;
@@ -34,10 +42,11 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
         const data = await CommunityService.getCommunity(communityId, token);
         if (isMounted) {
           setCommunity(data);
-          const user = await UserService.fetchUser(token, data.organizer);
+          const organizer = await UserService.fetchUser(token, data.organizer);
 
           if (isMounted) {
-            setUser(user);
+            setOrganizer(organizer);
+            checkMembership(data);
           }
         }
       } catch (error) {
@@ -85,6 +94,12 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
       }
     };
 
+    const checkMembership = (communityData: any) => {
+      if (user && communityData) {
+        setHasJoined(user?.joinedCommunities.includes(communityData.id));
+      }
+    };
+
     fetchData();
     fetchPicture();
     fetchCommunityEvents();
@@ -119,6 +134,8 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
     setCommunitiesVisibility(Visibility.Communities);
   };
 
+  const handleJoin = () => {};
+
   return (
     <div>
       {showMembersList && (
@@ -131,14 +148,25 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
 
       {!showMembersList && (
         <div>
-          <IContainer paddingY={8}>
-            <div className="flex">
-              <IBackButton onClick={handleBack} />
-              <ILabel className="ml-4" text={community?.name} />
+          <IContainer className="pt-8 pb-8">
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <IBackButton onClick={handleBack} />
+                <ILabel className="ml-4" text={community?.name} />
+              </div>
+              <div>
+                <IButton
+                  text={hasJoined ? "Leave Community" : "Join Community"}
+                  onClick={handleJoin}
+                  bgColor="bg-regal-blue"
+                  textColor="text-white"
+                  className="px-6 py-2"
+                />
+              </div>
             </div>
           </IContainer>
 
-          <IContainer>
+          <IContainer className="pb-8">
             <div className="w-full">
               <IPanel height="h-[320px]">
                 <ICarousel images={[communityPicture]} />
@@ -146,7 +174,7 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
             </div>
           </IContainer>
 
-          <IContainer paddingY={8}>
+          <IContainer className="pb-8">
             <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
               <div className="col-span-3 xl:col-span-2">
                 <IPanel height="h-[550px]">
@@ -156,8 +184,9 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
                         <ILabel text={community.name}></ILabel>
                       </div>
                     )}
-                    <div className="mt-5">
-                      {community?.city + ", " + community?.state}
+                    <div className="mt-5 flex">
+                      <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
+                      <div>{community?.city + ", " + community?.state}</div>
                     </div>
                     <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
                       {community?.description}
@@ -169,9 +198,9 @@ function Community({ setCommunitiesVisibility, communityId, token }: any) {
                 <IPanel height="h-[177px]">
                   <div>
                     <div className="font-bold text-md ">
-                      {user?.firstName + " " + user?.lastName}
+                      {organizer?.firstName + " " + organizer?.lastName}
                     </div>
-                    <div>Reputation Score - {user?.reputation}</div>
+                    <div>Reputation Score - {organizer?.reputation}</div>
                     <div className="font-bold text-md mt-4">Community</div>
                     <div>Reputation Score - {community?.reputation}</div>
                   </div>

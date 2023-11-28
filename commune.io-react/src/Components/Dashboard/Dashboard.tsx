@@ -13,7 +13,7 @@ function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
-  const [home, setHome] = useState<any>();
+  const [userHome, setUserHome] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -27,11 +27,11 @@ function Dashboard() {
           accessToken.token,
         );
 
-        const [dashboardData, imageUrl] = await Promise.all([
+        const [userHome, imageUrl] = await Promise.all([
           userDataPromise,
           profilePicturePromise,
         ]);
-        setHome(dashboardData);
+        setUserHome(userHome);
         setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {
@@ -60,19 +60,25 @@ function Dashboard() {
               setViewProfile={setViewProfile}
               viewProfile={viewProfile}
               setSideBarSelection={setSideBarSelection}
-              home={home}
+              home={userHome}
             />
           )}
         </div>
-        <div>{sideBarSelection === "Events" && <Events />}</div>
-        <div>{sideBarSelection === "Communities" && <Communities />}</div>
+        <div>
+          {sideBarSelection === "Events" && <Events user={userHome.user} />}
+        </div>
+        <div>
+          {sideBarSelection === "Communities" && (
+            <Communities user={userHome.user} />
+          )}
+        </div>
         <div>{sideBarSelection === "Leaderboard" && <Leaderboard />}</div>
         <div>{sideBarSelection === "Notifications" && <Notifications />}</div>
         <div>
           {sideBarSelection === "Settings" && (
             <Settings
-              setHome={setHome}
-              home={home}
+              setHome={setUserHome}
+              home={userHome}
               profilePicture={profilePicture}
             />
           )}

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { EventsProps } from "../types/EventsProps";
 import { Visibility } from "../Enums/EventEnums";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
@@ -9,9 +8,7 @@ import * as EventService from "../../../../Services/EventService/EventService";
 import { useAuth } from "../../../../AuthContext";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 
-function EventPortal({ setEventsVisibility }: EventsProps) {
-  const eventStats = [{ id: 1 }, { id: 2 }, { id: 3 }];
-  const graphs = [{ id: 1 }, { id: 2 }];
+function EventPortal({ setEventsVisibility, setEventId }: any) {
   const accessToken = useAuth();
   const [eventPortal, setEventPortal] = useState<any>();
 
@@ -23,7 +20,6 @@ function EventPortal({ setEventsVisibility }: EventsProps) {
     const fetchData = async () => {
       try {
         const data = await EventService.getEventPortal(accessToken.token);
-        console.log(data);
         setEventPortal(data);
       } catch (error) {
         //setError(error);
@@ -37,7 +33,7 @@ function EventPortal({ setEventsVisibility }: EventsProps) {
 
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
             <IBackButton onClick={handleBack} />
@@ -80,20 +76,38 @@ function EventPortal({ setEventsVisibility }: EventsProps) {
 
       <IContainer className="pb-8">
         <IPanel title="Ongoing Events" buttonLabel="See All" height="600px">
-          <IEventPanel events={eventPortal?.ongoingEvents ?? {}} />
+          <IEventPanel
+            events={eventPortal?.ongoingEvents ?? {}}
+            onEventClick={(id) => {
+              setEventsVisibility(Visibility.Dashboard);
+              setEventId(id);
+            }}
+          />
         </IPanel>
       </IContainer>
 
       <IContainer className="pb-8">
         <IPanel title="Pending Events" buttonLabel="See All" height="600px">
-          <IEventPanel events={eventPortal?.pendingEvents ?? {}} />
+          <IEventPanel
+            events={eventPortal?.pendingEvents ?? {}}
+            onEventClick={(id) => {
+              setEventsVisibility(Visibility.Dashboard);
+              setEventId(id);
+            }}
+          />
         </IPanel>
       </IContainer>
 
       <IContainer className="pb-8">
         <div>
           <IPanel title="Completed Events" buttonLabel="See All" height="600px">
-            <IEventPanel events={eventPortal?.completedEvents ?? {}} />
+            <IEventPanel
+              events={eventPortal?.completedEvents ?? {}}
+              onEventClick={(id) => {
+                setEventsVisibility(Visibility.Dashboard);
+                setEventId(id);
+              }}
+            />
           </IPanel>
         </div>
       </IContainer>

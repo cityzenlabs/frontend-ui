@@ -16,6 +16,7 @@ import {
 } from "@heroicons/react/solid";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import CommunityDashboardEvents from "./CommunityDashboardEvents";
+import { MapIcon } from "@heroicons/react/outline";
 
 function CommunityDashboard({
   setCommunitiesVisibility,
@@ -82,7 +83,7 @@ function CommunityDashboard({
 
       {!dashboardEvents && (
         <div>
-          <IContainer paddingY={8}>
+          <IContainer className="pb-8 pt-8">
             <div className="flex">
               <IBackButton onClick={handleBack} />
               {dashboardData && (
@@ -93,7 +94,7 @@ function CommunityDashboard({
               )}
             </div>
           </IContainer>
-          <IContainer>
+          <IContainer className="pb-8">
             <div className="grid xl:grid-cols-3 gap-6 xl:w-4/5 lg:w-full">
               <IPanel
                 height="h-[70px]"
@@ -124,14 +125,14 @@ function CommunityDashboard({
               </IPanel>
             </div>
           </IContainer>
-          <IContainer paddingY={8}>
+          <IContainer className="pb-8">
             <div className="grid xl:grid-cols-2 gap-6 xl:w-full lg:w-full">
               <IPanel height="h-[320px]"></IPanel>
               <IPanel height="h-[320px]"></IPanel>
             </div>
           </IContainer>
 
-          <IContainer>
+          <IContainer className="pb-8">
             <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
               <div className="col-span-3 xl:col-span-2">
                 <IPanel height="h-[550px]">
@@ -141,10 +142,13 @@ function CommunityDashboard({
                         <ILabel text={dashboardData.community.name}></ILabel>
                       </div>
                     )}
-                    <div className="mt-5">
-                      {dashboardData?.community.city +
-                        ", " +
-                        dashboardData?.community.state}
+                    <div className="mt-5 flex">
+                      <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
+                      <div>
+                        {dashboardData?.community.city +
+                          ", " +
+                          dashboardData?.community.state}
+                      </div>
                     </div>
                     <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
                       {dashboardData?.community.description}
@@ -203,7 +207,7 @@ function CommunityDashboard({
               </div>
             </div>
           </IContainer>
-          <IContainer paddingY={8}>
+          <IContainer className="pb-8">
             <div>
               <IPanel
                 title="Upcoming Hosted Events"

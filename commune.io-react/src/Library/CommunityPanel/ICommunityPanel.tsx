@@ -1,20 +1,4 @@
 import React from "react";
-interface Community {
-  communityName: string;
-  communityReputation: number;
-  memberCount: number;
-  premiumCommunity: boolean;
-  communityPicture?: string;
-  communityType?: string;
-}
-
-interface ManagedCommunities {
-  [key: string]: Community;
-}
-
-interface TrendingCommunities {
-  [key: string]: Community;
-}
 
 interface ICommunityPanelProps {
   communities: any[];

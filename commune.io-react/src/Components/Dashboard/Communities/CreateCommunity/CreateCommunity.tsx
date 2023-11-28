@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState } from "react";
-import { CommunitiesProps } from "../types/CommunityProps";
 import { Visibility } from "../Enums/CommunityEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
@@ -13,7 +12,7 @@ import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useAuth } from "../../../../AuthContext";
 
-function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
+function CreateCommunity({ setCommunitiesVisibility, setCommunityId }: any) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -60,7 +59,6 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
   const handleCreateCommunity = async () => {
     const community = {
       name: name,
-      picture: "",
       description: description,
       city: city,
       state: state,
@@ -102,13 +100,13 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
 
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pt-8 pb-8">
         <div className="flex">
           <IBackButton onClick={handleBack} />
           <ILabel text="Create Communities" className="ml-4"></ILabel>
         </div>
       </IContainer>
-      <IContainer>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
             label="Name"
@@ -121,7 +119,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
           ></IInput>
         </div>
       </IContainer>
-      <IContainer paddingY={4}>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInputGroup
             label="Location"
@@ -145,7 +143,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
         </div>
       </IContainer>
 
-      <IContainer>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInputGroup
             label="Age"
@@ -170,7 +168,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
           ></IInputGroup>
         </div>
       </IContainer>
-      <IContainer paddingY={4}>
+      <IContainer className="pb-4">
         <IToggleButtonGroup
           label="Gender Requirements"
           options={[
@@ -183,7 +181,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
         />
       </IContainer>
 
-      <IContainer>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-full">
           <IInputGroup
             label="Attributes"
@@ -220,7 +218,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
           ></IInputGroup>
         </div>
       </IContainer>
-      <IContainer>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2">
           <IInputGroup
             label=""
@@ -259,7 +257,7 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
         </div>
       </IContainer>
 
-      <IContainer paddingY={4}>
+      <IContainer className="pb-4">
         <div className="xl:w-1/2">
           <ITextArea
             name="description"
@@ -272,13 +270,14 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
         </div>
       </IContainer>
 
-      <IContainer>
+      <IContainer className="pb-4">
         <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
       </IContainer>
 
-      <IContainer paddingY={8}>
+      <IContainer className="pb-4">
         <IButton
           onClick={handleCreateCommunity}
+          className="px-4 py-2"
           text="Publish"
           bgColor="bg-regal-blue"
           textColor="text-white"
@@ -288,4 +287,4 @@ function CreateCommunities({ setCommunitiesVisibility, setCommunityId }: any) {
   );
 }
 
-export default CreateCommunities;
+export default CreateCommunity;

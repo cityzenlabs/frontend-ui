@@ -37,7 +37,7 @@ function CommunityMembersList({ setShowMembersList, token, communityId }: any) {
 
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pb-8 pt-8">
         <div className="flex">
           <IBackButton onClick={() => setShowMembersList(false)} />
           <ILabel className="ml-4" text="Members" />

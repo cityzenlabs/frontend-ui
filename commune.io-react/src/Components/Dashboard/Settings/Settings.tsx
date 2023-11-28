@@ -26,7 +26,7 @@ function Settings({ setHome, home, profilePicture }: SettingsProps) {
                   "Profile",
                   "Security",
                   "Notifications",
-                  "Payments",
+                  "Billing",
                   "Subscription",
                   "Support",
                 ].map((tab) => (

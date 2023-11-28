@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import ManageCommunities from "./ManageCommunities/ManageCommunities";
+import CommunityPortal from "./CommunityPortal/CommunityPortal";
 import { Visibility } from "./Enums/CommunityEnums";
-import CreateCommunities from "./CreateCommunities/CreateCommunities";
+import CreateCommunity from "./CreateCommunity/CreateCommunity";
 import IInput from "../../../Library/Input/IInput";
 import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
@@ -9,12 +9,11 @@ import IPanel from "../../../Library/Panel/IPanel";
 import IButton from "../../../Library/Button/IButton";
 import CommunityDashboard from "./CommunityDashboard/CommunityDashboard";
 import { useAuth } from "../../../AuthContext";
-
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import Community from "./Community/Community";
 
-function Communities() {
+function Communities({ user }: any) {
   const [communityHome, setCommunityHome] = useState<any>();
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
@@ -71,7 +70,7 @@ function Communities() {
     <div>
       <div>
         {communitiesVisibility === Visibility.Manage && (
-          <ManageCommunities
+          <CommunityPortal
             setCommunitiesVisibility={setCommunitiesVisibility}
             token={accessToken.token}
             setCommunityId={setCommunityId}
@@ -79,7 +78,7 @@ function Communities() {
         )}
 
         {communitiesVisibility === Visibility.Create && (
-          <CreateCommunities
+          <CreateCommunity
             setCommunitiesVisibility={setCommunitiesVisibility}
             setCommunityId={setCommunityId}
           />
@@ -98,12 +97,13 @@ function Communities() {
             setCommunitiesVisibility={setCommunitiesVisibility}
             communityId={communityId}
             token={accessToken.token}
+            user={user}
           />
         )}
 
         {communitiesVisibility === Visibility.Communities && (
           <div>
-            <IContainer paddingY={8}>
+            <IContainer className="pt-8 pb-8">
               <div className="flex items-center justify-between flex-wrap">
                 <div className="inline-block">
                   <ILabel text="Communities" />
@@ -112,12 +112,9 @@ function Communities() {
                 <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
                   <IInput placeholder="Search Community" name="search" />
 
+                  <IButton text="Manage" onClick={handleMangeCommunities} />
                   <IButton
-                    text="Manage Communities"
-                    onClick={handleMangeCommunities}
-                  />
-                  <IButton
-                    text="Create Community"
+                    text="Create"
                     onClick={() => setCommunitiesVisibility(Visibility.Create)}
                     bgColor="bg-regal-blue"
                     textColor="text-white"

@@ -32,8 +32,7 @@ function Home({ viewProfile, setViewProfile, home }: HomeProps) {
         <Profile setViewProfile={setViewProfile} home={home} />
       ) : (
         <div>
-          <IContainer paddingY={8}>
-            <ILabel text="Dashboard"></ILabel>
+          <IContainer className="pt-8 pb-8">
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
                 <IPanel
@@ -78,7 +77,7 @@ function Home({ viewProfile, setViewProfile, home }: HomeProps) {
             </div>
           </IContainer>
 
-          <IContainer>
+          <IContainer className="pb-8">
             <IPanel
               title="Recommended Communities"
               height="600px"
@@ -93,7 +92,7 @@ function Home({ viewProfile, setViewProfile, home }: HomeProps) {
               )}
             </IPanel>
           </IContainer>
-          <IContainer paddingY={8}>
+          <IContainer className="pb-8">
             <IPanel title="Upcoming Events" buttonLabel="See All"></IPanel>
           </IContainer>
         </div>

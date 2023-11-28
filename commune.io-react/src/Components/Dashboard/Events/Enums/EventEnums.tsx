@@ -1,8 +1,9 @@
 enum Visibility {
   Events = "Events",
-  Manage = "Manage",
+  Portal = "Portal",
   Create = "Create",
   Dashboard = "Dashboard",
+  Event = "Event",
 }
 
 export { Visibility };

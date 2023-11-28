@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EventPortal from "./EventPortal/EventPortal";
 import { Visibility } from "./Enums/EventEnums";
-import CreateEvents from "./CreateEvents/CreateEvents";
+import CreateEvent from "./CreateEvent/CreateEvent";
 import * as EventService from "../../../Services/EventService/EventService";
 import { useAuth } from "../../../AuthContext";
 import IContainer from "../../../Library/Container/IContainer";
@@ -10,13 +10,44 @@ import IEventPanel from "../../../Library/EventPanel/IEventPanel";
 import ILabel from "../../../Library/Label/ILabel";
 import IInput from "../../../Library/Input/IInput";
 import IButton from "../../../Library/Button/IButton";
+import Event from "./Event/Event";
+import EventDashboard from "./EventDashboard/EventDashboard";
 
-function Events() {
+function Events({ user }: any) {
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
     Visibility.Events,
   );
   const [eventsHome, setEventsHome] = useState<any>();
+  const [eventId, setEventId] = useState("");
+  const [showAllTrending, setShowAllTrending] = useState(false);
+  const [showAllUpcoming, setShowAllUpcoming] = useState(false);
+  const [showAllRecommended, setShowAllRecommended] = useState(false);
+
   const accessToken = useAuth();
+
+  const toggleShowAllTrending = () => {
+    setShowAllTrending((prev) => !prev);
+    if (!showAllTrending) {
+      setShowAllUpcoming(false);
+      setShowAllRecommended(false);
+    }
+  };
+
+  const toggleShowAllUpcoming = () => {
+    setShowAllUpcoming((prev) => !prev);
+    if (!showAllUpcoming) {
+      setShowAllTrending(false);
+      setShowAllRecommended(false);
+    }
+  };
+
+  const toggleShowAllRecommended = () => {
+    setShowAllRecommended((prev) => !prev);
+    if (!showAllRecommended) {
+      setShowAllTrending(false);
+      setShowAllUpcoming(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,27 +63,48 @@ function Events() {
   }, [eventsVisibility]);
 
   const handleMangeEvents = () => {
-    setEventsVisibility(Visibility.Manage);
-  };
-
-  const handleCreateEvent = () => {
-    setEventsVisibility(Visibility.Create);
+    setEventsVisibility(Visibility.Portal);
   };
 
   return (
     <div>
       <div>
-        {eventsVisibility === Visibility.Manage && (
-          <EventPortal setEventsVisibility={setEventsVisibility} />
+        {eventsVisibility === Visibility.Portal && (
+          <EventPortal
+            setEventsVisibility={setEventsVisibility}
+            setEventId={setEventId}
+          />
         )}
 
         {eventsVisibility === Visibility.Create && (
-          <CreateEvents setEventsVisibility={setEventsVisibility} />
+          <CreateEvent
+            setEventsVisibility={setEventsVisibility}
+            token={accessToken.token}
+            setEventId={setEventId}
+            user={user}
+          />
+        )}
+
+        {eventsVisibility === Visibility.Event && (
+          <Event
+            setEventsVisibility={setEventsVisibility}
+            eventId={eventId}
+            token={accessToken.token}
+            user={user}
+          />
+        )}
+
+        {eventsVisibility === Visibility.Dashboard && (
+          <EventDashboard
+            setEventsVisibility={setEventsVisibility}
+            eventId={eventId}
+            token={accessToken.token}
+          />
         )}
 
         {eventsVisibility === Visibility.Events && (
           <div>
-            <IContainer paddingY={8}>
+            <IContainer className="pt-8 pb-8">
               <div className="flex items-center justify-between flex-wrap">
                 <div className="inline-block">
                   <ILabel text="Events" />
@@ -61,9 +113,9 @@ function Events() {
                 <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
                   <IInput placeholder="Search Community" name="search" />
 
-                  <IButton text="Manage Events" onClick={handleMangeEvents} />
+                  <IButton text="Manage" onClick={handleMangeEvents} />
                   <IButton
-                    text="Create Event"
+                    text="Create"
                     onClick={() => setEventsVisibility(Visibility.Create)}
                     bgColor="bg-regal-blue"
                     textColor="text-white"
@@ -72,31 +124,68 @@ function Events() {
                 </div>
               </div>
             </IContainer>
-            <IContainer className="pb-8">
-              <div>
-                <IPanel title="Trending" buttonLabel="See All" height="600px">
-                  <IEventPanel events={eventsHome?.trendingEvents ?? {}} />
-                </IPanel>
-              </div>
-            </IContainer>
-            <IContainer className="pb-8">
-              <div>
-                <IPanel title="Upcoming" buttonLabel="See All" height="600px">
-                  <IEventPanel events={eventsHome?.upcomingEvents ?? {}} />
-                </IPanel>
-              </div>
-            </IContainer>
-            <IContainer className="pb-8">
-              <div>
-                <IPanel
-                  title="Recommended"
-                  buttonLabel="See All"
-                  height="600px"
-                >
-                  <IEventPanel events={eventsHome?.recommendedEvents ?? {}} />
-                </IPanel>
-              </div>
-            </IContainer>
+            {!showAllUpcoming && !showAllRecommended && (
+              <IContainer className="pb-8">
+                <div>
+                  <IPanel
+                    title="Trending"
+                    buttonLabel={showAllTrending ? "Show Less" : "Show All"}
+                    height="600px"
+                    onButtonClick={toggleShowAllTrending}
+                  >
+                    <IEventPanel
+                      events={eventsHome?.trendingEvents ?? {}}
+                      onEventClick={(id) => {
+                        setEventId(id);
+                        setEventsVisibility(Visibility.Event);
+                      }}
+                    />
+                  </IPanel>
+                </div>
+              </IContainer>
+            )}
+
+            {!showAllTrending && !showAllRecommended && (
+              <IContainer className="pb-8">
+                <div>
+                  <IPanel
+                    title="Upcoming"
+                    buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
+                    height="600px"
+                    onButtonClick={toggleShowAllUpcoming}
+                  >
+                    <IEventPanel
+                      events={eventsHome?.upcomingEvents ?? {}}
+                      onEventClick={(id) => {
+                        setEventId(id);
+                        setEventsVisibility(Visibility.Event);
+                      }}
+                    />
+                  </IPanel>
+                </div>
+              </IContainer>
+            )}
+
+            {!showAllTrending && !showAllUpcoming && (
+              <IContainer className="pb-8">
+                <div>
+                  <IPanel
+                    title="Recommended"
+                    buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
+                    height="600px"
+                    onButtonClick={toggleShowAllRecommended}
+                  >
+                    <IEventPanel
+                      events={eventsHome?.recommendedEvents ?? {}}
+                      onEventClick={(id) => {
+                        setEventId(id);
+                        setEventsVisibility(Visibility.Event);
+                      }}
+                    />
+                  </IPanel>
+                </div>
+              </IContainer>
+            )}
           </div>
         )}
       </div>
