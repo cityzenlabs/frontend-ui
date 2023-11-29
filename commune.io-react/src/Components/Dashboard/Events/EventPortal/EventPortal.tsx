@@ -7,6 +7,11 @@ import IPanel from "../../../../Library/Panel/IPanel";
 import * as EventService from "../../../../Services/EventService/EventService";
 import { useAuth } from "../../../../AuthContext";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import IGraph from "../../../../Library/Graph/IGraph";
+import {
+  transformAverageTimeSpent,
+  transformAverageUserLevel,
+} from "./EventPortalGraphAnalytics";
 
 function EventPortal({ setEventsVisibility, setEventId }: any) {
   const accessToken = useAuth();
@@ -30,6 +35,13 @@ function EventPortal({ setEventsVisibility, setEventId }: any) {
 
     fetchData();
   }, []);
+
+  const averageTimeSpent = eventPortal?.analytics
+    ? transformAverageTimeSpent(eventPortal.analytics)
+    : null;
+  const averageUserLevel = eventPortal?.analytics
+    ? transformAverageUserLevel(eventPortal.analytics)
+    : null;
 
   return (
     <div>
@@ -68,9 +80,21 @@ function EventPortal({ setEventsVisibility, setEventId }: any) {
       </IContainer>
 
       <IContainer className="pb-8">
-        <div className="grid grid-cols-2 gap-6 xl:w-full ">
-          <IPanel height="h-[300px]"></IPanel>
-          <IPanel height="h-[300px]"></IPanel>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
+          {averageTimeSpent && (
+            <IGraph
+              data={averageTimeSpent.series}
+              categories={averageTimeSpent.categories}
+              title="Average Time Spent"
+            />
+          )}
+          {averageUserLevel && (
+            <IGraph
+              title="Average User Level"
+              data={averageUserLevel.series}
+              categories={averageUserLevel.categories}
+            />
+          )}
         </div>
       </IContainer>
 

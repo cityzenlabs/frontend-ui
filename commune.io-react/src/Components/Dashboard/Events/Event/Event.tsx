@@ -11,7 +11,13 @@ import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 
-function Event({ setEventsVisibility, eventId, token, user }: any) {
+function Event({
+  setEventsVisibility,
+  eventId,
+  token,
+  user,
+  onEventUpdate,
+}: any) {
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
@@ -55,6 +61,8 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
 
     const checkMembership = (eventData: any) => {
       if (user && eventData) {
+        console.log(user.joinedEvents);
+        console.log(eventData.id);
         setHasJoined(user?.joinedEvents.includes(eventData.id));
       }
     };
@@ -63,7 +71,20 @@ function Event({ setEventsVisibility, eventId, token, user }: any) {
     fetchRelatedEvents();
   }, []);
 
-  const handleJoinOrLeaveEvent = async () => {};
+  const handleJoinOrLeaveEvent = async () => {
+    try {
+      const response = hasJoined
+        ? await EventService.leaveEvent(token, eventId)
+        : await EventService.joinEvent(token, eventId);
+
+      if (response.ok) {
+        onEventUpdate();
+        setHasJoined(!hasJoined);
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+    }
+  };
 
   return (
     <div>

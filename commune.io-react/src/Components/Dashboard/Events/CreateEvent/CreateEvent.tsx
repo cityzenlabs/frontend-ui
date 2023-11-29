@@ -17,7 +17,13 @@ import { months } from "./CreateEventConstants";
 import { years } from "./CreateEventConstants";
 import { times } from "./CreateEventConstants";
 
-function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
+function CreateEvent({
+  setEventsVisibility,
+  token,
+  setEventId,
+  user,
+  onEventUpdate,
+}: any) {
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -42,9 +48,9 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           user.id,
         );
 
-        const transformedData = data.map((item: any) => ({
-          label: item.communityName,
-          value: item.communityId,
+        const transformedData = data.map((community: any) => ({
+          label: community.name,
+          value: community.id,
         }));
 
         setJoinedCommunities(transformedData);
@@ -72,8 +78,8 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
     const event = {
       name: name,
       description: description,
-      city: city,
-      state: state,
+      city: user.city,
+      state: user.state,
       address: address,
       startTime: formatDateTime(day, month, year, startTime),
       endTime: formatDateTime(day, month, year, endTime),
@@ -83,13 +89,12 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
       host: community,
     };
 
-    console.log(event);
-
     try {
       const result = await EventService.createEvent(event, token);
       if (result.id) {
         setEventId(result.id);
         setEventsVisibility(Visibility.Dashboard);
+        onEventUpdate();
 
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
@@ -116,8 +121,8 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
       <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
-            label="Name"
-            placeholder="Event Name"
+            label="Event Name"
+            placeholder=""
             name="name"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -131,7 +136,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
         <div className="xl:w-1/2 lg:w-1/2">
           <IDropdown
             labelText="Community"
-            placeholder="Select Community"
             options={joinedCommunities}
             onChange={(newValue) => setCommunity(newValue)}
           ></IDropdown>
@@ -145,24 +149,19 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
             inputs={[
               {
                 name: "city",
-                placeholder: "City",
+                placeholder: user.city,
                 value: city,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value),
+                disabled: true,
               },
               {
                 name: "state",
-                placeholder: "State",
+                placeholder: user.state,
                 value: state,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setState(e.target.value),
-              },
-              {
-                name: "Address",
-                placeholder: "address",
-                value: address,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setAddress(e.target.value),
+                disabled: true,
               },
             ]}
           ></IInputGroup>
@@ -170,11 +169,25 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
       </IContainer>
 
       <IContainer className="pb-4">
+        <div className="xl:w-1/2 lg:w-1/2">
+          <IInput
+            label="Address"
+            placeholder=""
+            name="name"
+            value={address}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setAddress(e.target.value)
+            }
+          ></IInput>
+        </div>
+      </IContainer>
+
+      <IContainer className="pb-4">
         <IToggleButtonGroup
           label="Type"
           options={[
+            { value: "SOCIAL", label: "Social" },
             { value: "HOSTED", label: "Hosted" },
-            { value: "MOBILE", label: "Mobile" },
           ]}
           selectedValue={type}
           onChange={setType}
@@ -186,7 +199,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           <div className="mr-2 w-1/3">
             <IDropdown
               labelText="Month"
-              placeholder="MM"
               options={months}
               onChange={(newValue) => setMonth(newValue)}
             ></IDropdown>
@@ -195,7 +207,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           <div className="mr-2 w-1/3">
             <IDropdown
               labelText="Day"
-              placeholder="DD"
               options={days}
               onChange={(newValue) => setDay(newValue)}
             ></IDropdown>
@@ -203,7 +214,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           <div className="w-1/3">
             <IDropdown
               labelText="Year"
-              placeholder="YY"
               options={years}
               onChange={(newValue) => setYear(newValue)}
             ></IDropdown>
@@ -216,7 +226,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           <div className="w-1/2 mr-2">
             <IDropdown
               labelText="Start Time"
-              placeholder="00:00"
               options={times}
               onChange={(newValue) => setStartTime(newValue)}
             ></IDropdown>
@@ -224,7 +233,6 @@ function CreateEvent({ setEventsVisibility, token, setEventId, user }: any) {
           <div className="w-1/2 ">
             <IDropdown
               labelText="End Time"
-              placeholder="00:00"
               options={times}
               onChange={(newValue) => setEndTime(newValue)}
             ></IDropdown>

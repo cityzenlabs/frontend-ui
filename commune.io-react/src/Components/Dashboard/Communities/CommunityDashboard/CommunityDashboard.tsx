@@ -17,13 +17,18 @@ import {
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import CommunityDashboardEvents from "./CommunityDashboardEvents";
 import { MapIcon } from "@heroicons/react/outline";
+import {
+  transformMembersAttendingEventsData,
+  transformMembersData,
+} from "./CommunityDashboardGraphAnalytics";
+import IGraph from "../../../../Library/Graph/IGraph";
 
 function CommunityDashboard({
   setCommunitiesVisibility,
   communityId,
   token,
 }: any) {
-  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [communityDashboard, setCommunityDashboard] = useState<any>(null);
   const [dashboardEvents, setDashboardEvents] = useState("");
 
   const attributeColors = [
@@ -55,7 +60,7 @@ function CommunityDashboard({
           communityId,
           token,
         );
-        setDashboardData(data);
+        setCommunityDashboard(data);
       } catch (error) {
         //setError(error);
       } finally {
@@ -65,6 +70,16 @@ function CommunityDashboard({
 
     fetchData();
   }, []);
+
+  const membersChartData = communityDashboard?.community.analytics
+    ? transformMembersData(communityDashboard.community.analytics)
+    : null;
+  const membersAttendingEventsChartData = communityDashboard?.community
+    .analytics
+    ? transformMembersAttendingEventsData(
+        communityDashboard.community.analytics,
+      )
+    : null;
 
   const handleBack = () => {
     setCommunitiesVisibility(Visibility.Manage);
@@ -76,7 +91,7 @@ function CommunityDashboard({
         <CommunityDashboardEvents
           dashboardEvents={dashboardEvents}
           setDashboardEvents={setDashboardEvents}
-          communityId={dashboardData.community.id}
+          communityId={communityDashboard.community.id}
           token={token}
         />
       )}
@@ -86,9 +101,9 @@ function CommunityDashboard({
           <IContainer className="pb-8 pt-8">
             <div className="flex">
               <IBackButton onClick={handleBack} />
-              {dashboardData && (
+              {communityDashboard && (
                 <ILabel
-                  text={dashboardData.community.name}
+                  text={communityDashboard.community.name}
                   className="ml-4"
                 ></ILabel>
               )}
@@ -101,7 +116,7 @@ function CommunityDashboard({
                 onPanelClick={() => setDashboardEvents("Ongoing Events")}
               >
                 <div className="flex justify-between items-center">
-                  {dashboardData?.ongoingEvents + " Ongoing Events "}
+                  {communityDashboard?.ongoingEvents + " Ongoing Events "}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
               </IPanel>
@@ -110,7 +125,7 @@ function CommunityDashboard({
                 onPanelClick={() => setDashboardEvents("Pending Events")}
               >
                 <div className="flex justify-between items-center">
-                  {dashboardData?.pendingEvents + " Pending Events"}
+                  {communityDashboard?.pendingEvents + " Pending Events"}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
               </IPanel>
@@ -119,16 +134,28 @@ function CommunityDashboard({
                 onPanelClick={() => setDashboardEvents("Completed Events")}
               >
                 <div className="flex justify-between items-center">
-                  {dashboardData?.completedEvents + " Completed Events"}{" "}
+                  {communityDashboard?.completedEvents + " Completed Events"}{" "}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
               </IPanel>
             </div>
           </IContainer>
           <IContainer className="pb-8">
-            <div className="grid xl:grid-cols-2 gap-6 xl:w-full lg:w-full">
-              <IPanel height="h-[320px]"></IPanel>
-              <IPanel height="h-[320px]"></IPanel>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
+              {membersChartData && (
+                <IGraph
+                  data={membersChartData.series}
+                  categories={membersChartData.categories}
+                  title="Members"
+                />
+              )}
+              {membersAttendingEventsChartData && (
+                <IGraph
+                  title="Members Attending Events"
+                  data={membersAttendingEventsChartData.series}
+                  categories={membersAttendingEventsChartData.categories}
+                />
+              )}
             </div>
           </IContainer>
 
@@ -137,31 +164,35 @@ function CommunityDashboard({
               <div className="col-span-3 xl:col-span-2">
                 <IPanel height="h-[550px]">
                   <div className="h-full flex flex-col">
-                    {dashboardData && (
+                    {communityDashboard && (
                       <div>
-                        <ILabel text={dashboardData.community.name}></ILabel>
+                        <ILabel
+                          text={communityDashboard.community.name}
+                        ></ILabel>
                       </div>
                     )}
                     <div className="mt-5 flex">
                       <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
                       <div>
-                        {dashboardData?.community.city +
+                        {communityDashboard?.community.city +
                           ", " +
-                          dashboardData?.community.state}
+                          communityDashboard?.community.state}
                       </div>
                     </div>
                     <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                      {dashboardData?.community.description}
+                      {communityDashboard?.community.description}
                     </div>
                   </div>
                 </IPanel>
               </div>
+
               <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
                 <IPanel height="h-[177px]">
                   <div>
                     <div className="font-bold text-md ">Community</div>
                     <div>
-                      Reputation Score - {dashboardData?.community.reputation}
+                      Reputation Score -{" "}
+                      {communityDashboard?.community.reputation}
                     </div>
                   </div>
                 </IPanel>
@@ -170,12 +201,10 @@ function CommunityDashboard({
                   <div>
                     <div className="font-bold text-md mb-4">REQUIREMENTS</div>
                     <div className="grid grid-cols-2 gap-4">
-                      {dashboardData?.community.attributeRequirements &&
+                      {communityDashboard?.community.attributeRequirements &&
                         Object.entries(
-                          dashboardData.community.attributeRequirements as [
-                            string,
-                            number,
-                          ][],
+                          communityDashboard.community
+                            .attributeRequirements as [string, number][],
                         ).map(([attribute, level], index) => {
                           // Determine the color for the current attribute
                           const color =
@@ -215,7 +244,7 @@ function CommunityDashboard({
                 buttonLabel="See All"
               >
                 <IEventPanel
-                  events={dashboardData?.upcomingHostedEvents ?? {}}
+                  events={communityDashboard?.upcomingHostedEvents ?? {}}
                 />
               </IPanel>
             </div>
@@ -229,7 +258,7 @@ function CommunityDashboard({
                 height="600px"
               >
                 <IEventPanel
-                  events={dashboardData?.upcomingSocialEvents ?? {}}
+                  events={communityDashboard?.upcomingSocialEvents ?? {}}
                 />
               </IPanel>
             </div>

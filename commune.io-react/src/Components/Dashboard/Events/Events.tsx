@@ -13,7 +13,7 @@ import IButton from "../../../Library/Button/IButton";
 import Event from "./Event/Event";
 import EventDashboard from "./EventDashboard/EventDashboard";
 
-function Events({ user }: any) {
+function Events({ user, onEventUpdate }: any) {
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
     Visibility.Events,
   );
@@ -82,6 +82,7 @@ function Events({ user }: any) {
             token={accessToken.token}
             setEventId={setEventId}
             user={user}
+            onEventUpdate={onEventUpdate}
           />
         )}
 
@@ -91,6 +92,7 @@ function Events({ user }: any) {
             eventId={eventId}
             token={accessToken.token}
             user={user}
+            onEventUpdate={onEventUpdate}
           />
         )}
 

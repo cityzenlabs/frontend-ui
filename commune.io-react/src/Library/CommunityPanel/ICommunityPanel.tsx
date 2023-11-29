@@ -18,22 +18,18 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
           key={community.communityId} // Use communityId as key
           className="rounded-lg shadow-md"
           style={{ height: "275px" }}
-          onClick={() =>
-            onCommunityClick && onCommunityClick(community.communityId)
-          }
+          onClick={() => onCommunityClick && onCommunityClick(community.id)}
         >
           <img
-            src={community.communityPicture}
-            alt={community.communityName}
+            src={community.picture}
+            alt={community.name}
             className="rounded-t-lg w-full h-32 object-cover"
           />
           <div className="p-4">
-            <h3>{community.communityName}</h3>
-            <p className="text-sm">
-              Reputation: {community.communityReputation}
-            </p>
+            <h3>{community.name}</h3>
+            <p className="text-sm">Reputation: {community.reputation}</p>
             <p className="text-sm">Members: {community.memberCount}</p>
-            <p className="text-sm">Type: {community.communityType}</p>
+            <p className="text-sm">Type: {community.attribute}</p>
             <p className="text-xs text-gray-500 uppercase">
               {community.premium ? "Premium Community" : "Regular Community"}
             </p>

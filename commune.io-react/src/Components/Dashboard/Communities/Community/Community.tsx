@@ -20,6 +20,7 @@ import IEventCard from "../../../../Library/EventPanel/IEventCard";
 import CommunityMembersList from "./CommunityMembersList";
 import { MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
+import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 
 function Community({
   setCommunitiesVisibility,
@@ -257,7 +258,7 @@ function Community({
           <IContainer className="pb-8">
             <div>
               <IPanel title="Upcoming Events" height="600px">
-                {communityEvents && <IEventCard events={communityEvents} />}
+                {communityEvents && <IEventPanel events={communityEvents} />}
               </IPanel>
             </div>
           </IContainer>

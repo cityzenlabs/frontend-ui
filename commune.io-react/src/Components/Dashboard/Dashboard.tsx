@@ -18,6 +18,11 @@ function Dashboard() {
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
+  const [triggerRefresh, setTriggerRefresh] = useState(false);
+
+  const triggerDataRefresh = () => {
+    setTriggerRefresh((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +46,7 @@ function Dashboard() {
     };
 
     fetchData();
-  }, []);
+  }, [triggerRefresh]);
 
   return (
     <div>
@@ -65,7 +70,9 @@ function Dashboard() {
           )}
         </div>
         <div>
-          {sideBarSelection === "Events" && <Events user={userHome.user} />}
+          {sideBarSelection === "Events" && (
+            <Events user={userHome.user} onEventUpdate={triggerDataRefresh} />
+          )}
         </div>
         <div>
           {sideBarSelection === "Communities" && (

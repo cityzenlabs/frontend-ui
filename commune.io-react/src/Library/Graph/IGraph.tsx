@@ -5,13 +5,18 @@ const IGraph = ({ data, categories, type = "line", title }: any) => {
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    // Delay rendering
     const timer = setTimeout(() => {
       setIsRendered(true);
-    }, 200); // Adjust the timeout as needed
+      window.dispatchEvent(new Event("resize"));
+    }, 200);
 
     return () => clearTimeout(timer);
   }, []);
+
+  if (!data || !categories) {
+    return <div></div>;
+  }
+
   const chartOptions: any = {
     title: {
       text: title, // Your title text

@@ -39,9 +39,17 @@ function IDropdown({
                   ? "text-black"
                   : "text-gray-400"
               }`}
+              style={{
+                minHeight: "40px",
+                display: "flex",
+                alignItems: "center",
+              }} // Set a minimum height and use flexbox for centering
             >
               {options?.find((option) => option.value === selectedValue)
-                ?.label || placeholder}
+                ?.label ||
+                (placeholder && (
+                  <span className="text-gray-400">{placeholder}</span>
+                ))}
             </Listbox.Button>
 
             <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">

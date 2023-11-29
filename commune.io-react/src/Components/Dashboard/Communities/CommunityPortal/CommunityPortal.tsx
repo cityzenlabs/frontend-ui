@@ -18,7 +18,6 @@ function CommunityPortal({
   setCommunityId,
 }: any) {
   const [communityPortal, setCommunityPortal] = useState<any>();
-
   const [showAllCommunities, setShowAllCommunities] = useState(false);
 
   const handleSeeAll = () => {
@@ -33,7 +32,6 @@ function CommunityPortal({
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityPortal(token);
-        console.log(data);
         setCommunityPortal(data);
       } catch (error) {
       } finally {
