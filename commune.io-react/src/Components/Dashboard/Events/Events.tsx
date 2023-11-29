@@ -13,17 +13,17 @@ import IButton from "../../../Library/Button/IButton";
 import Event from "./Event/Event";
 import EventDashboard from "./EventDashboard/EventDashboard";
 
-function Events({ user, onEventUpdate }: any) {
+function Events({ user, getUpdatedUser }: any) {
+  const accessToken = useAuth();
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
     Visibility.Events,
   );
   const [eventsHome, setEventsHome] = useState<any>();
   const [eventId, setEventId] = useState("");
+
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
   const [showAllRecommended, setShowAllRecommended] = useState(false);
-
-  const accessToken = useAuth();
 
   const toggleShowAllTrending = () => {
     setShowAllTrending((prev) => !prev);
@@ -54,17 +54,11 @@ function Events({ user, onEventUpdate }: any) {
       try {
         const data = await EventService.getEventHome(accessToken.token);
         setEventsHome(data);
-      } catch (error) {
-        //setError(error);
-      }
+      } catch (error) {}
     };
 
     fetchData();
   }, [eventsVisibility]);
-
-  const handleMangeEvents = () => {
-    setEventsVisibility(Visibility.Portal);
-  };
 
   return (
     <div>
@@ -73,16 +67,17 @@ function Events({ user, onEventUpdate }: any) {
           <EventPortal
             setEventsVisibility={setEventsVisibility}
             setEventId={setEventId}
+            token={accessToken.token}
           />
         )}
 
         {eventsVisibility === Visibility.Create && (
           <CreateEvent
             setEventsVisibility={setEventsVisibility}
-            token={accessToken.token}
             setEventId={setEventId}
+            token={accessToken.token}
             user={user}
-            onEventUpdate={onEventUpdate}
+            getUpdatedUser={getUpdatedUser}
           />
         )}
 
@@ -92,7 +87,7 @@ function Events({ user, onEventUpdate }: any) {
             eventId={eventId}
             token={accessToken.token}
             user={user}
-            onEventUpdate={onEventUpdate}
+            getUpdatedUser={getUpdatedUser}
           />
         )}
 
@@ -115,7 +110,10 @@ function Events({ user, onEventUpdate }: any) {
                 <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
                   <IInput placeholder="Search Community" name="search" />
 
-                  <IButton text="Manage" onClick={handleMangeEvents} />
+                  <IButton
+                    text="Manage"
+                    onClick={() => setEventsVisibility(Visibility.Portal)}
+                  />
                   <IButton
                     text="Create"
                     onClick={() => setEventsVisibility(Visibility.Create)}

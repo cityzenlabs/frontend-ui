@@ -13,49 +13,34 @@ import EventAttendeesList from "./EventAttendeesList";
 
 function EventDashboard({ setEventsVisibility, eventId, token }: any) {
   const [event, setEvent] = useState<any>();
-  const [user, setUser] = useState<any>();
+  const [organizer, setOrganizer] = useState<any>();
   const [attendees, setAttendees] = useState<any>();
   const [showMembersList, setShowMembersList] = useState<boolean>(false);
 
   useEffect(() => {
-    let isMounted = true;
     const fetchData = async () => {
       try {
         const data = await EventService.getEventDashboard(token, eventId);
-        if (isMounted) {
+        if (data) {
           setEvent(data.event);
-          const user = await UserService.fetchUser(token, data.event.organizer);
-          if (isMounted) {
-            setUser(user);
+          const organizer = await UserService.fetchUser(
+            token,
+            data.event.organizer,
+          );
+          if (organizer) {
+            setOrganizer(organizer);
           }
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     const fetchAttendees = async () => {
       try {
-        const data = await EventService.getEventAttendees(token, eventId);
-        if (isMounted) {
-          setAttendees(data);
-          const user = await UserService.fetchUser(
-            token,
-            data.event?.organizer,
-          );
-          if (isMounted) {
-            setUser(user);
-          }
+        const attendees = await EventService.getEventAttendees(token, eventId);
+        if (attendees) {
+          setAttendees(attendees);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     fetchData();

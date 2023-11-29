@@ -5,7 +5,6 @@ import ILabel from "../../../../Library/Label/ILabel";
 import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import * as EventService from "../../../../Services/EventService/EventService";
-import { useAuth } from "../../../../AuthContext";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import IGraph from "../../../../Library/Graph/IGraph";
 import {
@@ -13,24 +12,17 @@ import {
   transformAverageUserLevel,
 } from "./EventPortalGraphAnalytics";
 
-function EventPortal({ setEventsVisibility, setEventId }: any) {
-  const accessToken = useAuth();
+function EventPortal({ setEventsVisibility, setEventId, token }: any) {
   const [eventPortal, setEventPortal] = useState<any>();
-
-  const handleBack = () => {
-    setEventsVisibility(Visibility.Events);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await EventService.getEventPortal(accessToken.token);
-        setEventPortal(data);
-      } catch (error) {
-        //setError(error);
-      } finally {
-        //setIsLoading(false);
-      }
+        const data = await EventService.getEventPortal(token);
+        if (data) {
+          setEventPortal(data);
+        }
+      } catch (error) {}
     };
 
     fetchData();
@@ -48,7 +40,9 @@ function EventPortal({ setEventsVisibility, setEventId }: any) {
       <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
-            <IBackButton onClick={handleBack} />
+            <IBackButton
+              onClick={() => setEventsVisibility(Visibility.Events)}
+            />
             <ILabel className="ml-4" text="Manage Events" />
           </div>
         </div>

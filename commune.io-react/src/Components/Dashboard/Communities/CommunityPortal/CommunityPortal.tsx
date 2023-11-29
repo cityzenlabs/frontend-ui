@@ -20,22 +20,14 @@ function CommunityPortal({
   const [communityPortal, setCommunityPortal] = useState<any>();
   const [showAllCommunities, setShowAllCommunities] = useState(false);
 
-  const handleSeeAll = () => {
-    setShowAllCommunities(!showAllCommunities);
-  };
-
-  const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Communities);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityPortal(token);
-        setCommunityPortal(data);
-      } catch (error) {
-      } finally {
-      }
+        if (data) {
+          setCommunityPortal(data);
+        }
+      } catch (error) {}
     };
 
     fetchData();
@@ -53,7 +45,9 @@ function CommunityPortal({
       <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
-            <IBackButton onClick={handleBack} />
+            <IBackButton
+              onClick={() => setCommunitiesVisibility(Visibility.Communities)}
+            />
             <ILabel className="ml-4" text="Manage Communities" />
           </div>
         </div>
@@ -108,7 +102,7 @@ function CommunityPortal({
           title="Communities"
           buttonLabel={showAllCommunities ? "Show Less" : "Show All"}
           height="600px"
-          onButtonClick={handleSeeAll}
+          onButtonClick={() => setShowAllCommunities(!showAllCommunities)}
         >
           {communityPortal?.communityCards && (
             <ICommunityPanel

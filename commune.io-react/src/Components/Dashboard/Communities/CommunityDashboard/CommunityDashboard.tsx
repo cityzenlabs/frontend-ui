@@ -22,6 +22,7 @@ import {
   transformMembersData,
 } from "./CommunityDashboardGraphAnalytics";
 import IGraph from "../../../../Library/Graph/IGraph";
+import { attributeColors } from "../Constants/CommunityConstants";
 
 function CommunityDashboard({
   setCommunitiesVisibility,
@@ -31,16 +32,6 @@ function CommunityDashboard({
   const [communityDashboard, setCommunityDashboard] = useState<any>(null);
   const [dashboardEvents, setDashboardEvents] = useState("");
 
-  const attributeColors = [
-    "#68BEF1", // Blue
-    "#40B87E", // Green
-    "#4BCEC9", // Teal
-    "#A979E6", // Purple
-    "#FFA656", // Orange
-    "#FF5050", // Red
-  ];
-
-  // This function returns the corresponding Heroicon component for an attribute
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
       social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
@@ -60,12 +51,10 @@ function CommunityDashboard({
           communityId,
           token,
         );
-        setCommunityDashboard(data);
-      } catch (error) {
-        //setError(error);
-      } finally {
-        //setIsLoading(false);
-      }
+        if (data) {
+          setCommunityDashboard(data);
+        }
+      } catch (error) {}
     };
 
     fetchData();
@@ -80,10 +69,6 @@ function CommunityDashboard({
         communityDashboard.community.analytics,
       )
     : null;
-
-  const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Manage);
-  };
 
   return (
     <div>
@@ -100,7 +85,9 @@ function CommunityDashboard({
         <div>
           <IContainer className="pb-8 pt-8">
             <div className="flex">
-              <IBackButton onClick={handleBack} />
+              <IBackButton
+                onClick={() => setCommunitiesVisibility(Visibility.Manage)}
+              />
               {communityDashboard && (
                 <ILabel
                   text={communityDashboard.community.name}

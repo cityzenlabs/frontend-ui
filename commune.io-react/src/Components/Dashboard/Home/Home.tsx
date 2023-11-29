@@ -1,46 +1,29 @@
 import React, { useState } from "react";
-import { HomeProps } from "./types/HomeProps";
 import Profile from "./Profile/Profile";
 import IContainer from "../../../Library/Container/IContainer";
 import IPanel from "../../../Library/Panel/IPanel";
-import ILabel from "../../../Library/Label/ILabel";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
+import { attributeColors } from "./Constants/HomeConstats";
 
-function Home({ viewProfile, setViewProfile, home }: HomeProps) {
-  const attributeColors = [
-    "#68BEF1",
-    "#40B87E",
-    "#4BCEC9",
-    "#A979E6",
-    "#FFA656",
-    "#FF5050",
-  ];
-  const handleSetViewProfile = (): void => {
-    setViewProfile(true);
-  };
-
+function Home({ viewProfile, setViewProfile, home, user }: any) {
   const [showAllRecommended, setShowAllRecommended] = useState(false);
-
-  const toggleShowAllRecommended = () => {
-    setShowAllRecommended((prev) => !prev);
-  };
 
   return (
     <div>
       {viewProfile ? (
-        <Profile setViewProfile={setViewProfile} home={home} />
+        <Profile setViewProfile={setViewProfile} user={user} />
       ) : (
         <div>
           <IContainer className="pt-8 pb-8">
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
                 <IPanel
-                  title={"Welcome, " + home.user.firstName}
+                  title={"Welcome, " + user.firstName}
                   height="80"
                   marginTop="mt-8"
                   buttonLabel="See Profile"
-                  onButtonClick={handleSetViewProfile}
+                  onButtonClick={() => setViewProfile(true)}
                 ></IPanel>
 
                 <IPanel
@@ -82,7 +65,9 @@ function Home({ viewProfile, setViewProfile, home }: HomeProps) {
               title="Recommended Communities"
               height="600px"
               buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-              onButtonClick={toggleShowAllRecommended}
+              onButtonClick={() =>
+                setShowAllRecommended(!setShowAllRecommended)
+              }
             >
               {home?.recommendedCommunities && (
                 <ICommunityPanel

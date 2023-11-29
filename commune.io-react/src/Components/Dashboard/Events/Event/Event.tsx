@@ -16,7 +16,7 @@ function Event({
   eventId,
   token,
   user,
-  onEventUpdate,
+  getUpdatedUser,
 }: any) {
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
@@ -24,46 +24,32 @@ function Event({
   const [relatedEvents, setRelatedEvents] = useState<any>();
 
   useEffect(() => {
-    let isMounted = true;
     const fetchData = async () => {
       try {
-        const data = await EventService.getEvent(token, eventId);
-        if (isMounted) {
-          setEvent(data);
-          const organizer = await UserService.fetchUser(token, data.organizer);
-
-          if (isMounted) {
+        const event = await EventService.getEvent(token, eventId);
+        if (event) {
+          setEvent(event);
+          const organizer = await UserService.fetchUser(token, event.organizer);
+          if (organizer) {
             setOrganizer(organizer);
-            checkMembership(data);
+            checkMembership(event);
           }
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     const fetchRelatedEvents = async () => {
       try {
         const data = await EventService.getRelatedEvents(token, eventId);
-        if (isMounted) {
+        if (data) {
           setRelatedEvents(data);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
-    const checkMembership = (eventData: any) => {
-      if (user && eventData) {
-        console.log(user.joinedEvents);
-        console.log(eventData.id);
-        setHasJoined(user?.joinedEvents.includes(eventData.id));
+    const checkMembership = (event: any) => {
+      if (user && event) {
+        setHasJoined(user?.joinedEvents.includes(event.id));
       }
     };
 
@@ -78,12 +64,10 @@ function Event({
         : await EventService.joinEvent(token, eventId);
 
       if (response.ok) {
-        onEventUpdate();
+        getUpdatedUser();
         setHasJoined(!hasJoined);
       }
-    } catch (error) {
-      console.error("Error occurred:", error);
-    }
+    } catch (error) {}
   };
 
   return (

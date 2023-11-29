@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ApexCharts from "react-apexcharts";
 
 const IGraph = ({ data, categories, type = "line", title }: any) => {
-  const [isRendered, setIsRendered] = useState(false);
+  const [chartRendered, setChartRendered] = useState(false);
+  const chartContainerRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsRendered(true);
-      window.dispatchEvent(new Event("resize"));
-    }, 200);
+    if (chartContainerRef.current) {
+      setChartRendered(true);
+    }
+  }, [chartContainerRef]);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!data || !categories) {
-    return <div></div>;
+  if (!data || !categories || !chartRendered) {
+    return <div ref={chartContainerRef}></div>;
   }
 
   const chartOptions: any = {
@@ -110,7 +108,7 @@ const IGraph = ({ data, categories, type = "line", title }: any) => {
 
   return (
     <div className=" w-full bg-white rounded shadow bg-white p-4 md:p-6">
-      <div id="line-chart w-full">
+      <div id="line-chart w-full" ref={chartContainerRef}>
         <ApexCharts options={chartOptions} series={data} type={type} />
       </div>
     </div>

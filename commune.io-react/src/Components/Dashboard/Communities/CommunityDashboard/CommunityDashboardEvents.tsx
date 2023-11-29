@@ -43,10 +43,7 @@ function CommunityDashboardEvents({
             status,
           );
           setEvents(fetchedEvents);
-        } catch (error) {
-          console.error("Error fetching events:", error);
-          // Handle the error appropriately
-        }
+        } catch (error) {}
       }
     };
 

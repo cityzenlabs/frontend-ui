@@ -22,7 +22,7 @@ function CreateEvent({
   token,
   setEventId,
   user,
-  onEventUpdate,
+  getUpdatedUser,
 }: any) {
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -54,9 +54,7 @@ function CreateEvent({
         }));
 
         setJoinedCommunities(transformedData);
-      } catch (error) {
-        //setError(error);
-      }
+      } catch (error) {}
     };
 
     fetchData();
@@ -94,7 +92,7 @@ function CreateEvent({
       if (result.id) {
         setEventId(result.id);
         setEventsVisibility(Visibility.Dashboard);
-        onEventUpdate();
+        getUpdatedUser();
 
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
@@ -104,9 +102,7 @@ function CreateEvent({
           );
         }
       }
-    } catch (error) {
-      // Handle the error
-    }
+    } catch (error) {}
   };
 
   return (

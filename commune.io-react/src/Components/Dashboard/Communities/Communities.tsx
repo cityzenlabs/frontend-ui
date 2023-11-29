@@ -14,14 +14,12 @@ import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import Community from "./Community/Community";
 
 function Communities({ user }: any) {
-  const [communityHome, setCommunityHome] = useState<any>();
+  const accessToken = useAuth();
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
+
+  const [communityHome, setCommunityHome] = useState<any>();
   const [communityId, setCommunityId] = useState("");
-  const accessToken = useAuth();
-  const handleMangeCommunities = () => {
-    setCommunitiesVisibility(Visibility.Manage);
-  };
 
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
@@ -55,12 +53,10 @@ function Communities({ user }: any) {
     const fetchData = async () => {
       try {
         const data = await CommunityService.getCommunityHome(accessToken.token);
-        setCommunityHome(data);
-      } catch (error) {
-        //setError(error);
-      } finally {
-        //setIsLoading(false);
-      }
+        if (data) {
+          setCommunityHome(data);
+        }
+      } catch (error) {}
     };
 
     fetchData();
@@ -112,7 +108,10 @@ function Communities({ user }: any) {
                 <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
                   <IInput placeholder="Search Community" name="search" />
 
-                  <IButton text="Manage" onClick={handleMangeCommunities} />
+                  <IButton
+                    text="Manage"
+                    onClick={() => setCommunitiesVisibility(Visibility.Manage)}
+                  />
                   <IButton
                     text="Create"
                     onClick={() => setCommunitiesVisibility(Visibility.Create)}

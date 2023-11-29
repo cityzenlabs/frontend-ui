@@ -16,11 +16,11 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/solid";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
-import IEventCard from "../../../../Library/EventPanel/IEventCard";
 import CommunityMembersList from "./CommunityMembersList";
 import { MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import { attributeColors } from "../Constants/CommunityConstants";
 
 function Community({
   setCommunitiesVisibility,
@@ -30,69 +30,58 @@ function Community({
 }: any) {
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
-  const [communityEvents, setCommunityEvents] = useState<[]>();
+  const [upcomingEvents, setUpcomingEvents] = useState<[]>();
   const [organizer, setOrganizer] = useState<any>();
   const [showMembersList, setShowMembersList] = useState<boolean>(false);
   const [hasJoined, setHasJoined] = useState<boolean>();
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchData = async () => {
       try {
-        const data = await CommunityService.getCommunity(communityId, token);
-        if (isMounted) {
-          setCommunity(data);
-          const organizer = await UserService.fetchUser(token, data.organizer);
+        const community = await CommunityService.getCommunity(
+          communityId,
+          token,
+        );
+        if (community) {
+          setCommunity(community);
+          const organizer = await UserService.fetchUser(
+            token,
+            community.organizer,
+          );
 
-          if (isMounted) {
+          if (organizer) {
             setOrganizer(organizer);
-            checkMembership(data);
+            checkMembership(community);
           }
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     const fetchCommunityEvents = async () => {
       try {
-        const data = await CommunityService.getCommunityEvents(
+        const upcomingEvents = await CommunityService.getCommunityEvents(
           communityId,
           token,
           "upcoming",
         );
 
-        if (isMounted) {
-          setCommunityEvents(data);
+        if (upcomingEvents) {
+          setUpcomingEvents(upcomingEvents);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     const fetchPicture = async () => {
       try {
-        const data = await CommunityService.getCommunityPicture(
+        const picture = await CommunityService.getCommunityPicture(
           communityId,
           token,
         );
 
-        if (isMounted) {
-          setCommunityPicture(data);
+        if (picture) {
+          setCommunityPicture(picture);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-        }
-      }
+      } catch (error) {}
     };
 
     const checkMembership = (communityData: any) => {
@@ -104,20 +93,7 @@ function Community({
     fetchData();
     fetchPicture();
     fetchCommunityEvents();
-
-    return () => {
-      isMounted = false; // Prevents state updates if the component unmounts
-    };
   }, [communityId, token]);
-
-  const attributeColors = [
-    "#68BEF1", // Blue
-    "#40B87E", // Green
-    "#4BCEC9", // Teal
-    "#A979E6", // Purple
-    "#FFA656", // Orange
-    "#FF5050", // Red
-  ];
 
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
@@ -129,10 +105,6 @@ function Community({
       adventure: <GlobeIcon className="h-6 w-6 " aria-hidden="true" />,
     };
     return icons[attribute.toLowerCase()];
-  };
-
-  const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Communities);
   };
 
   const handleJoin = () => {};
@@ -152,7 +124,11 @@ function Community({
           <IContainer className="pt-8 pb-8">
             <div className="flex justify-between items-center">
               <div className="flex">
-                <IBackButton onClick={handleBack} />
+                <IBackButton
+                  onClick={() =>
+                    setCommunitiesVisibility(Visibility.Communities)
+                  }
+                />
                 <ILabel className="ml-4" text={community?.name} />
               </div>
               <div>
@@ -258,7 +234,7 @@ function Community({
           <IContainer className="pb-8">
             <div>
               <IPanel title="Upcoming Events" height="600px">
-                {communityEvents && <IEventPanel events={communityEvents} />}
+                {upcomingEvents && <IEventPanel events={upcomingEvents} />}
               </IPanel>
             </div>
           </IContainer>

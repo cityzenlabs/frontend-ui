@@ -14,6 +14,7 @@ function Dashboard() {
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
   const [viewProfile, setViewProfile] = useState<boolean>(false);
   const [userHome, setUserHome] = useState<any>();
+  const [user, setUser] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,7 @@ function Dashboard() {
           profilePicturePromise,
         ]);
         setUserHome(userHome);
+        setUser(userHome.user);
         setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {
@@ -66,18 +68,17 @@ function Dashboard() {
               viewProfile={viewProfile}
               setSideBarSelection={setSideBarSelection}
               home={userHome}
+              user={user}
             />
           )}
         </div>
         <div>
           {sideBarSelection === "Events" && (
-            <Events user={userHome.user} onEventUpdate={triggerDataRefresh} />
+            <Events user={user} getUpdatedUser={triggerDataRefresh} />
           )}
         </div>
         <div>
-          {sideBarSelection === "Communities" && (
-            <Communities user={userHome.user} />
-          )}
+          {sideBarSelection === "Communities" && <Communities user={user} />}
         </div>
         <div>{sideBarSelection === "Leaderboard" && <Leaderboard />}</div>
         <div>{sideBarSelection === "Notifications" && <Notifications />}</div>

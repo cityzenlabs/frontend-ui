@@ -1,27 +1,18 @@
 import React from "react";
-import { ProfileProps } from "./types/ProfileProps";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
+import { attributeColors } from "../Constants/HomeConstats";
 
-function Profile({ setViewProfile, home }: ProfileProps) {
+function Profile({ setViewProfile, user }: any) {
   const handleSetViewProfile = (): void => {
     setViewProfile(false);
   };
 
-  const attributeColors = [
-    "#68BEF1",
-    "#40B87E",
-    "#4BCEC9",
-    "#A979E6",
-    "#FFA656",
-    "#FF5050",
-  ];
-
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pt-8 pb-8">
         <IBackButton onClick={handleSetViewProfile} />
         <IPanel height="h-full" marginTop="mt-8">
           <div className="px-12 py-6 ">
@@ -35,15 +26,15 @@ function Profile({ setViewProfile, home }: ProfileProps) {
               </div>
               <div className="ml-6 grid grid-rows">
                 <div className="text-2xl">
-                  {home.user?.firstName} {home.user?.lastName}
+                  {user?.firstName} {user?.lastName}
                 </div>
                 <div className="text-sm">
-                  Reputation Score - {home.user?.reputation}
+                  Reputation Score - {user?.reputation}
                 </div>
                 <div className="text-sm">
-                  {home.user?.city}, {home.user.state}{" "}
+                  {user?.city}, {user.state}{" "}
                   <div className="text-sm">
-                    {home.user?.dateOfBirth} - {home.user?.gender}
+                    {user?.dateOfBirth} - {user?.gender}
                   </div>
                 </div>
               </div>
@@ -52,7 +43,7 @@ function Profile({ setViewProfile, home }: ProfileProps) {
             <div className="xl:flex mt-3">
               <div className="w-full xl:w-full">
                 <div className="xl:flex xl:flex-wrap">
-                  {Object.entries(home?.user.attributes || {}).map(
+                  {Object.entries(user.attributes || {}).map(
                     ([attributeKey, attributeValue], index) => (
                       <IAttributeBar
                         key={attributeKey}
