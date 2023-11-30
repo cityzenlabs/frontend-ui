@@ -56,7 +56,7 @@ function CommunityDashboard({
       );
       if (data) {
         setCommunityDashboard(data);
-        if (callback && typeof callback === "function") {
+        if (callback) {
           callback();
         }
       }
