@@ -95,9 +95,7 @@ function Event({
 
       <IContainer className="pb-8">
         <div className="w-full">
-          <IPanel height="h-[320px]">
-            <ICarousel images={[event?.picture]} />
-          </IPanel>
+          <IPanel height="h-[320px]"></IPanel>
         </div>
       </IContainer>
 

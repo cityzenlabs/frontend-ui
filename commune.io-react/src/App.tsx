@@ -11,6 +11,7 @@ import Login from "./Components/Login/Login";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Success from "./Components/SignUp/Step5/Success";
 import ProtectedRoute from "./ProtectedRoute"; // Make sure this path is correct
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 function App() {
   return (

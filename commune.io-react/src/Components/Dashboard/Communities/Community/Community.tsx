@@ -36,6 +36,7 @@ function Community({
   const [organizer, setOrganizer] = useState<any>();
   const [showMembersList, setShowMembersList] = useState<boolean>(false);
   const [hasJoined, setHasJoined] = useState<boolean>();
+  const [gallery, setGallery] = useState<any>();
 
   const fetchCommunityData = async (callback = () => {}) => {
     try {
@@ -80,6 +81,18 @@ function Community({
     } catch (error) {}
   };
 
+  const fetchGallery = async () => {
+    try {
+      const gallery = await CommunityService.getCommunityPhotoGallery(
+        token,
+        communityId,
+      );
+      if (gallery) {
+        setGallery(gallery);
+      }
+    } catch (error) {}
+  };
+
   const checkMembership = (communityData: any) => {
     if (user && communityData) {
       setHasJoined(user?.joinedCommunities.includes(communityData.id));
@@ -90,6 +103,7 @@ function Community({
     fetchCommunityData();
     fetchPicture();
     fetchCommunityEvents();
+    fetchGallery();
   }, [communityId, token]);
 
   const getIconForAttribute = (attribute: any) => {
@@ -165,9 +179,7 @@ function Community({
 
           <IContainer className="pb-8">
             <div className="w-full">
-              <IPanel height="h-[320px]">
-                <ICarousel images={[communityPicture]} />
-              </IPanel>
+              <ICarousel imageUrls={gallery} />
             </div>
           </IContainer>
 

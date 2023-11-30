@@ -278,3 +278,25 @@ export const editCommunity = async (token: any, id: any, community: any) => {
     throw error;
   }
 };
+
+export const getCommunityPhotoGallery = async (token: any, id: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/communities/${id}/gallery`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};

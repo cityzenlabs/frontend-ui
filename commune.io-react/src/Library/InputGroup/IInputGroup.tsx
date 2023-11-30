@@ -80,7 +80,7 @@ const IInputGroup: React.FC<IInputGroupProps> = ({
                   onChange={input.onChange}
                   onKeyDown={(event) => handleKeyDown(event, input.numberOnly)}
                   disabled={input.disabled} // Apply the disabled attribute
-                  className="border border-slate-200 px-2 pb-1 pt-2 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer"
+                  className="border  px-2 pb-1 pt-2 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:border-blue-600 focus:outline-none focus:ring-0 peer"
                 />
                 <label
                   htmlFor={`input-${index}`}

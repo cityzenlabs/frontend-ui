@@ -7,7 +7,7 @@ const IGraph = ({ data, categories, title }: any) => {
     labels: categories,
     datasets: [
       {
-        label: "",
+        label: title,
         data: data.data,
         fill: false,
         backgroundColor: "rgb(80,129,255)",
@@ -26,7 +26,6 @@ const IGraph = ({ data, categories, title }: any) => {
 
   return (
     <div className="w-full bg-white rounded shadow p-4 md:p-6">
-      <div className="text-center">{title}</div>
       <Line data={chartData} options={options} />
     </div>
   );

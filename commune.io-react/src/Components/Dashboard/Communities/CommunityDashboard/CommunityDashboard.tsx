@@ -26,6 +26,7 @@ import { attributeColors } from "../Constants/CommunityConstants";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import CommunityDashboardEdit from "./CommunityDashboardEdit";
+import * as UserService from "../../../../Services/UserService/UserService";
 
 function CommunityDashboard({
   setCommunitiesVisibility,
@@ -35,6 +36,8 @@ function CommunityDashboard({
   const [communityDashboard, setCommunityDashboard] = useState<any>(null);
   const [dashboardEvents, setDashboardEvents] = useState("");
   const [editCommunity, setEditCommunity] = useState(false);
+
+  const [organizer, setOrganizer] = useState<any>();
 
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
@@ -56,6 +59,13 @@ function CommunityDashboard({
       );
       if (data) {
         setCommunityDashboard(data);
+        const organizer = await UserService.fetchUser(
+          token,
+          data.community.organizer,
+        );
+        if (organizer) {
+          setOrganizer(organizer);
+        }
         callback();
       }
     } catch (error) {}
@@ -218,7 +228,11 @@ function CommunityDashboard({
               <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
                 <IPanel height="h-[177px]">
                   <div>
-                    <div className="font-bold text-md ">Community</div>
+                    <div className="font-bold text-md ">
+                      {organizer?.firstName + " " + organizer?.lastName}
+                    </div>
+                    <div>Reputation Score - {organizer?.reputation}</div>
+                    <div className="font-bold text-md mt-4">Community</div>
                     <div>
                       Reputation Score -{" "}
                       {communityDashboard?.community.reputation}
@@ -226,7 +240,7 @@ function CommunityDashboard({
                   </div>
                 </IPanel>
 
-                <IPanel height="h-[350px]">
+                <IPanel height="h-[270px]">
                   <div>
                     <div className="font-bold text-md mb-4">REQUIREMENTS</div>
                     <div className="grid grid-cols-2 gap-4">
@@ -260,6 +274,17 @@ function CommunityDashboard({
                           );
                         })}
                     </div>
+                  </div>
+                </IPanel>
+
+                <IPanel height="h-[55px]">
+                  <div className="flex justify-between items-center h-full ">
+                    {
+                      Object.keys(communityDashboard?.community.members ?? {})
+                        .length
+                    }{" "}
+                    Members
+                    <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
                 </IPanel>
               </div>
