@@ -48,7 +48,7 @@ function CommunityDashboard({
     return icons[attribute.toLowerCase()];
   };
 
-  const getCommunityDashboard = async (callback?: any) => {
+  const getCommunityDashboard = async (callback = () => {}) => {
     try {
       const data = await CommunityService.getCommunityDashboard(
         communityId,
@@ -56,9 +56,7 @@ function CommunityDashboard({
       );
       if (data) {
         setCommunityDashboard(data);
-        if (callback) {
-          callback();
-        }
+        callback();
       }
     } catch (error) {}
   };
