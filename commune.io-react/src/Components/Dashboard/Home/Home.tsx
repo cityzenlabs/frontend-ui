@@ -19,7 +19,7 @@ function Home({ viewProfile, setViewProfile, home, user }: any) {
             <div className="grid xl:grid-cols-2 gap-8">
               <div>
                 <IPanel
-                  title={"Welcome, " + user.firstName}
+                  title={"Welcome, " + user?.firstName}
                   height="80"
                   marginTop="mt-8"
                   buttonLabel="See Profile"

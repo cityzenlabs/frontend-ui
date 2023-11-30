@@ -13,7 +13,7 @@ import * as CommunityService from "../../../Services/CommunityService/CommunityS
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import Community from "./Community/Community";
 
-function Communities({ user }: any) {
+function Communities({ user, getUpdatedUser }: any) {
   const accessToken = useAuth();
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
@@ -77,6 +77,7 @@ function Communities({ user }: any) {
           <CreateCommunity
             setCommunitiesVisibility={setCommunitiesVisibility}
             setCommunityId={setCommunityId}
+            getUpdatedUser={getUpdatedUser}
           />
         )}
 
@@ -94,6 +95,7 @@ function Communities({ user }: any) {
             communityId={communityId}
             token={accessToken.token}
             user={user}
+            getUpdatedUser={getUpdatedUser}
           />
         )}
 

@@ -6,6 +6,7 @@ interface IDropdownProps {
   placeholder?: string;
   onChange?: (value: string) => void;
   labelText: string;
+  value: any;
 }
 
 function IDropdown({
@@ -13,6 +14,7 @@ function IDropdown({
   placeholder,
   onChange,
   labelText,
+  value,
 }: IDropdownProps) {
   // Initialize the state with the first option's value or a default value
   const [selectedValue, setSelectedValue] = useState<string>();
@@ -30,7 +32,7 @@ function IDropdown({
   return (
     <div className="relative">
       {labelText && <label className="mb-1 font-thin">{labelText}</label>}
-      <Listbox value={selectedValue} onChange={handleValueChange}>
+      <Listbox value={value} onChange={handleValueChange}>
         {({ open }) => (
           <>
             <Listbox.Button

@@ -21,12 +21,14 @@ import { MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import { attributeColors } from "../Constants/CommunityConstants";
+import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 
 function Community({
   setCommunitiesVisibility,
   communityId,
   token,
   user,
+  getUpdatedUser,
 }: any) {
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
@@ -35,62 +37,57 @@ function Community({
   const [showMembersList, setShowMembersList] = useState<boolean>(false);
   const [hasJoined, setHasJoined] = useState<boolean>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const community = await CommunityService.getCommunity(
-          communityId,
+  const fetchCommunityData = async (callback = () => {}) => {
+    try {
+      const community = await CommunityService.getCommunity(communityId, token);
+      if (community) {
+        setCommunity(community);
+        const organizer = await UserService.fetchUser(
           token,
+          community.organizer,
         );
-        if (community) {
-          setCommunity(community);
-          const organizer = await UserService.fetchUser(
-            token,
-            community.organizer,
-          );
-
-          if (organizer) {
-            setOrganizer(organizer);
-            checkMembership(community);
-          }
+        if (organizer) {
+          setOrganizer(organizer);
+          checkMembership(community);
+          callback();
         }
-      } catch (error) {}
-    };
-
-    const fetchCommunityEvents = async () => {
-      try {
-        const upcomingEvents = await CommunityService.getCommunityEvents(
-          communityId,
-          token,
-          "upcoming",
-        );
-
-        if (upcomingEvents) {
-          setUpcomingEvents(upcomingEvents);
-        }
-      } catch (error) {}
-    };
-
-    const fetchPicture = async () => {
-      try {
-        const picture = await CommunityService.getCommunityPicture(
-          communityId,
-          token,
-        );
-
-        if (picture) {
-          setCommunityPicture(picture);
-        }
-      } catch (error) {}
-    };
-
-    const checkMembership = (communityData: any) => {
-      if (user && communityData) {
-        setHasJoined(user?.joinedCommunities.includes(communityData.id));
       }
-    };
+    } catch (error) {}
+  };
 
-    fetchData();
+  const fetchCommunityEvents = async () => {
+    try {
+      const upcomingEvents = await CommunityService.getCommunityEvents(
+        communityId,
+        token,
+        "upcoming",
+      );
+      if (upcomingEvents) {
+        setUpcomingEvents(upcomingEvents);
+      }
+    } catch (error) {}
+  };
+
+  const fetchPicture = async () => {
+    try {
+      const picture = await CommunityService.getCommunityPicture(
+        communityId,
+        token,
+      );
+      if (picture) {
+        setCommunityPicture(picture);
+      }
+    } catch (error) {}
+  };
+
+  const checkMembership = (communityData: any) => {
+    if (user && communityData) {
+      setHasJoined(user?.joinedCommunities.includes(communityData.id));
+    }
+  };
+
+  useEffect(() => {
+    fetchCommunityData();
     fetchPicture();
     fetchCommunityEvents();
   }, [communityId, token]);
@@ -107,7 +104,18 @@ function Community({
     return icons[attribute.toLowerCase()];
   };
 
-  const handleJoin = () => {};
+  const handleJoinOrLeaveCommunity = async () => {
+    try {
+      const response = hasJoined
+        ? await CommunityService.leaveCommunity(token, communityId)
+        : await CommunityService.joinCommunity(token, communityId);
+
+      if (response.ok) {
+        await getUpdatedUser();
+        fetchCommunityData(() => setHasJoined(!hasJoined));
+      }
+    } catch (error) {}
+  };
 
   return (
     <div>
@@ -131,13 +139,25 @@ function Community({
                 />
                 <ILabel className="ml-4" text={community?.name} />
               </div>
-              <div>
+              <div className="flex">
                 <IButton
                   text={hasJoined ? "Leave Community" : "Join Community"}
-                  onClick={handleJoin}
+                  onClick={handleJoinOrLeaveCommunity}
                   bgColor="bg-regal-blue"
                   textColor="text-white"
-                  className="px-6 py-2"
+                  className="px-6  mr-4"
+                />
+                <IMenuButton
+                  options={[
+                    {
+                      label: "Transfer",
+                      action: () => console.log(""),
+                    },
+                    {
+                      label: "Delete",
+                      action: () => console.log(""),
+                    },
+                  ]}
                 />
               </div>
             </div>

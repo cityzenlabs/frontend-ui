@@ -78,7 +78,9 @@ function Dashboard() {
           )}
         </div>
         <div>
-          {sideBarSelection === "Communities" && <Communities user={user} />}
+          {sideBarSelection === "Communities" && (
+            <Communities user={user} getUpdatedUser={triggerDataRefresh} />
+          )}
         </div>
         <div>{sideBarSelection === "Leaderboard" && <Leaderboard />}</div>
         <div>{sideBarSelection === "Notifications" && <Notifications />}</div>

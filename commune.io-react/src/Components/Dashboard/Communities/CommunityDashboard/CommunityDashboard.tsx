@@ -23,6 +23,9 @@ import {
 } from "./CommunityDashboardGraphAnalytics";
 import IGraph from "../../../../Library/Graph/IGraph";
 import { attributeColors } from "../Constants/CommunityConstants";
+import IButton from "../../../../Library/Button/IButton";
+import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
+import CommunityDashboardEdit from "./CommunityDashboardEdit";
 
 function CommunityDashboard({
   setCommunitiesVisibility,
@@ -31,6 +34,7 @@ function CommunityDashboard({
 }: any) {
   const [communityDashboard, setCommunityDashboard] = useState<any>(null);
   const [dashboardEvents, setDashboardEvents] = useState("");
+  const [editCommunity, setEditCommunity] = useState(false);
 
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
@@ -44,20 +48,23 @@ function CommunityDashboard({
     return icons[attribute.toLowerCase()];
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await CommunityService.getCommunityDashboard(
-          communityId,
-          token,
-        );
-        if (data) {
-          setCommunityDashboard(data);
+  const getCommunityDashboard = async (callback?: any) => {
+    try {
+      const data = await CommunityService.getCommunityDashboard(
+        communityId,
+        token,
+      );
+      if (data) {
+        setCommunityDashboard(data);
+        if (callback && typeof callback === "function") {
+          callback();
         }
-      } catch (error) {}
-    };
+      }
+    } catch (error) {}
+  };
 
-    fetchData();
+  useEffect(() => {
+    getCommunityDashboard();
   }, []);
 
   const membersChartData = communityDashboard?.community.analytics
@@ -72,7 +79,16 @@ function CommunityDashboard({
 
   return (
     <div>
-      {dashboardEvents && (
+      {editCommunity && (
+        <CommunityDashboardEdit
+          setEditCommunity={setEditCommunity}
+          community={communityDashboard.community}
+          token={token}
+          getCommunityDashboard={getCommunityDashboard}
+        />
+      )}
+
+      {dashboardEvents && !editCommunity && (
         <CommunityDashboardEvents
           dashboardEvents={dashboardEvents}
           setDashboardEvents={setDashboardEvents}
@@ -81,21 +97,49 @@ function CommunityDashboard({
         />
       )}
 
-      {!dashboardEvents && (
+      {!dashboardEvents && !editCommunity && (
         <div>
-          <IContainer className="pb-8 pt-8">
-            <div className="flex">
-              <IBackButton
-                onClick={() => setCommunitiesVisibility(Visibility.Manage)}
-              />
-              {communityDashboard && (
-                <ILabel
-                  text={communityDashboard.community.name}
-                  className="ml-4"
-                ></ILabel>
-              )}
-            </div>
-          </IContainer>
+          <div>
+            <IContainer className="pb-8 pt-8">
+              <div className="flex justify-between">
+                {/* Left side: Back Button and Label */}
+                <div className="flex">
+                  <IBackButton
+                    onClick={() => setCommunitiesVisibility(Visibility.Manage)}
+                  />
+                  {communityDashboard && (
+                    <ILabel
+                      text={communityDashboard.community.name}
+                      className="ml-4"
+                    ></ILabel>
+                  )}
+                </div>
+
+                <div className="flex">
+                  <IButton
+                    text={"Edit"}
+                    onClick={() => setEditCommunity(true)}
+                    bgColor="bg-regal-blue"
+                    textColor="text-white"
+                    className="px-6  mr-4"
+                  />
+                  <IMenuButton
+                    options={[
+                      {
+                        label: "Transfer",
+                        action: () => console.log("Transfer"),
+                      },
+                      {
+                        label: "Delete",
+                        action: () => console.log("Delete"),
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
+            </IContainer>
+          </div>
+
           <IContainer className="pb-8">
             <div className="grid xl:grid-cols-3 gap-6 xl:w-4/5 lg:w-full">
               <IPanel

@@ -23,39 +23,40 @@ function Event({
   const [hasJoined, setHasJoined] = useState<boolean>();
   const [relatedEvents, setRelatedEvents] = useState<any>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const event = await EventService.getEvent(token, eventId);
-        if (event) {
-          setEvent(event);
-          const organizer = await UserService.fetchUser(token, event.organizer);
-          if (organizer) {
-            setOrganizer(organizer);
-            checkMembership(event);
-          }
+  const fetchData = async (callback = () => {}) => {
+    try {
+      const event = await EventService.getEvent(token, eventId);
+      if (event) {
+        setEvent(event);
+        const organizer = await UserService.fetchUser(token, event.organizer);
+        if (organizer) {
+          setOrganizer(organizer);
+          checkMembership(event);
+          callback();
         }
-      } catch (error) {}
-    };
-
-    const fetchRelatedEvents = async () => {
-      try {
-        const data = await EventService.getRelatedEvents(token, eventId);
-        if (data) {
-          setRelatedEvents(data);
-        }
-      } catch (error) {}
-    };
-
-    const checkMembership = (event: any) => {
-      if (user && event) {
-        setHasJoined(user?.joinedEvents.includes(event.id));
       }
-    };
+    } catch (error) {}
+  };
 
+  const fetchRelatedEvents = async () => {
+    try {
+      const data = await EventService.getRelatedEvents(token, eventId);
+      if (data) {
+        setRelatedEvents(data);
+      }
+    } catch (error) {}
+  };
+
+  const checkMembership = (event: any) => {
+    if (user && event) {
+      setHasJoined(user?.joinedEvents.includes(event.id));
+    }
+  };
+
+  useEffect(() => {
     fetchData();
     fetchRelatedEvents();
-  }, []);
+  }, [eventId, token]);
 
   const handleJoinOrLeaveEvent = async () => {
     try {
@@ -64,8 +65,8 @@ function Event({
         : await EventService.joinEvent(token, eventId);
 
       if (response.ok) {
-        getUpdatedUser();
-        setHasJoined(!hasJoined);
+        await getUpdatedUser();
+        fetchData(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
   };

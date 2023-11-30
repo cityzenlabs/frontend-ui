@@ -214,3 +214,67 @@ export const getJoinedCommunities = async (token: any, id: any) => {
     throw error;
   }
 };
+
+export const leaveCommunity = async (token: any, id: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/communities/${id}/members`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response;
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const joinCommunity = async (token: any, id: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/communities/${id}/members`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response;
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editCommunity = async (token: any, id: any, community: any) => {
+  try {
+    const response = await fetch(`http://localhost:8080/communities/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(community),
+    });
+    if (response.ok) {
+      return response;
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};

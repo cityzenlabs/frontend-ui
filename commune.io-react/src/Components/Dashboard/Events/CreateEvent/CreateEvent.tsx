@@ -134,6 +134,7 @@ function CreateEvent({
             labelText="Community"
             options={joinedCommunities}
             onChange={(newValue) => setCommunity(newValue)}
+            value={community}
           ></IDropdown>
         </div>
       </IContainer>
@@ -197,6 +198,7 @@ function CreateEvent({
               labelText="Month"
               options={months}
               onChange={(newValue) => setMonth(newValue)}
+              value={month}
             ></IDropdown>
           </div>
 
@@ -205,6 +207,7 @@ function CreateEvent({
               labelText="Day"
               options={days}
               onChange={(newValue) => setDay(newValue)}
+              value={day}
             ></IDropdown>
           </div>
           <div className="w-1/3">
@@ -212,6 +215,7 @@ function CreateEvent({
               labelText="Year"
               options={years}
               onChange={(newValue) => setYear(newValue)}
+              value={year}
             ></IDropdown>
           </div>
         </div>
@@ -224,6 +228,7 @@ function CreateEvent({
               labelText="Start Time"
               options={times}
               onChange={(newValue) => setStartTime(newValue)}
+              value={startTime}
             ></IDropdown>
           </div>
           <div className="w-1/2 ">
@@ -231,6 +236,7 @@ function CreateEvent({
               labelText="End Time"
               options={times}
               onChange={(newValue) => setEndTime(newValue)}
+              value={endTime}
             ></IDropdown>
           </div>
         </div>
