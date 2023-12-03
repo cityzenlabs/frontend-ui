@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { Visibility } from "../Enums/CommunityEnums";
+import { Visibility } from "../Reusable/Enums/CommunityEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";

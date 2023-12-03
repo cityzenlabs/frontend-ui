@@ -6,7 +6,6 @@ import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";
 import IPanel from "../../../../Library/Panel/IPanel";
-import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
-import { Visibility } from "../Enums/CommunityEnums";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";
@@ -10,13 +9,14 @@ import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 
-function Event({
+function CommunityEvent({
   setShowCommunityEvent,
   eventId,
   token,
   user,
   getUpdatedUser,
   setCommunityEventId,
+  fetchCommunityEvents,
 }: any) {
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
@@ -71,6 +71,7 @@ function Event({
 
       if (response.ok) {
         await getUpdatedUser();
+        fetchCommunityEvents();
         fetchEvent(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
@@ -92,9 +93,10 @@ function Event({
             <IButton
               text={hasJoined ? "Leave Event" : "Join Event"}
               onClick={handleJoinOrLeaveEvent}
-              bgColor="bg-regal-blue"
-              textColor="text-white"
+              bgColor={user.id === organizer.id ? "bg-white" : "bg-regal-blue"}
+              textColor={user.id === organizer.id ? "text-black" : "text-white"}
               className="px-6 py-2"
+              disabled={user.id === organizer.id}
             />
           </div>
         </div>
@@ -176,4 +178,4 @@ function Event({
   );
 }
 
-export default Event;
+export default CommunityEvent;

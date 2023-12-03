@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Visibility } from "../Enums/CommunityEnums";
+import { Visibility } from "../Reusable/Enums/CommunityEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IBackButton from "../../../../Library/BackButton/IBackButton";

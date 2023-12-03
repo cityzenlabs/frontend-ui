@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
-import ILabel from "../../../../Library/Label/ILabel";
-import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import IUserTable from "../../../../Library/IUserTable/IUserTable";
+import IContainer from "../../../../../Library/Container/IContainer";
+import IBackButton from "../../../../../Library/BackButton/IBackButton";
+import ILabel from "../../../../../Library/Label/ILabel";
+import * as CommunityService from "../../../../../Services/CommunityService/CommunityService";
+import IUserTable from "../../../../../Library/IUserTable/IUserTable";
 
 function CommunityMembersList({ setShowMembersList, token, communityId }: any) {
   const [members, setMembers] = useState<any>();

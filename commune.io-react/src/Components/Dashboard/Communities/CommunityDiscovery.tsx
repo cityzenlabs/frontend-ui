@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Visibility } from "./Enums/CommunityEnums";
+import { Visibility } from "./Reusable/Enums/CommunityEnums";
 import CreateCommunity from "./CreateCommunity/CreateCommunity";
 import IInput from "../../../Library/Input/IInput";
 import IContainer from "../../../Library/Container/IContainer";
