@@ -7,6 +7,7 @@ import IUserTable from "../../../../Library/IUserTable/IUserTable";
 
 function CommunityMembersList({ setShowMembersList, token, communityId }: any) {
   const [members, setMembers] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -20,6 +21,7 @@ function CommunityMembersList({ setShowMembersList, token, communityId }: any) {
 
         if (isMounted) {
           setMembers(data);
+          setIsLoading(false);
         }
       } catch (error) {
       } finally {
@@ -31,9 +33,13 @@ function CommunityMembersList({ setShowMembersList, token, communityId }: any) {
     fetchMembers();
 
     return () => {
-      isMounted = false; // Prevents state updates if the component unmounts
+      isMounted = false;
     };
   }, [communityId, token]);
+
+  if (isLoading) {
+    return <div></div>;
+  }
 
   return (
     <div>

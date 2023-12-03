@@ -42,13 +42,16 @@ export const getCommunityDashboard = async (communityId: any, token: any) => {
 
 export const getCommunityHome = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities/home`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `http://localhost:8080/communities/discovery`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     if (response.ok) {
       return response.json();
     } else {
@@ -146,7 +149,7 @@ export const getCommunity = async (id: any, token: any) => {
 
 export const getCommunityPortal = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities/portal`, {
+    const response = await fetch(`http://localhost:8080/communities/home`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CommunityPortal from "./CommunityPortal/CommunityPortal";
 import { Visibility } from "./Enums/CommunityEnums";
 import CreateCommunity from "./CreateCommunity/CreateCommunity";
 import IInput from "../../../Library/Input/IInput";
@@ -12,18 +11,20 @@ import { useAuth } from "../../../AuthContext";
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import Community from "./Community/Community";
+import CommunityHome from "./CommunityHome/CommunityHome";
 
-function Communities({ user, getUpdatedUser }: any) {
+function CommunityDiscovery({ user, getUpdatedUser }: any) {
   const accessToken = useAuth();
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
-
   const [communityHome, setCommunityHome] = useState<any>();
   const [communityId, setCommunityId] = useState("");
-
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
   const [showAllRecommended, setShowAllRecommended] = useState(false);
+  const [pageState, setPageState] = useState<Visibility[]>([
+    Visibility.Communities,
+  ]);
 
   const toggleShowAllTrending = () => {
     setShowAllTrending((prev) => !prev);
@@ -49,6 +50,20 @@ function Communities({ user, getUpdatedUser }: any) {
     }
   };
 
+  const handleBack = () => {
+    setCommunitiesVisibility(pageState[pageState.length - 1]);
+    if (pageState.length > 1) {
+      setPageState((prevState) => prevState.slice(0, -1));
+    }
+  };
+
+  const handleForward = (previousPage: Visibility, nextPage: Visibility) => {
+    setCommunitiesVisibility(nextPage);
+    setPageState((prev) => {
+      return [...prev, previousPage];
+    });
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,27 +80,32 @@ function Communities({ user, getUpdatedUser }: any) {
   return (
     <div>
       <div>
-        {communitiesVisibility === Visibility.Manage && (
-          <CommunityPortal
+        {communitiesVisibility === Visibility.CommunityHome && (
+          <CommunityHome
             setCommunitiesVisibility={setCommunitiesVisibility}
             token={accessToken.token}
             setCommunityId={setCommunityId}
+            pageState={pageState}
+            handleBack={handleBack}
+            handleForward={handleForward}
           />
         )}
 
-        {communitiesVisibility === Visibility.Create && (
+        {communitiesVisibility === Visibility.CommunityCreate && (
           <CreateCommunity
             setCommunitiesVisibility={setCommunitiesVisibility}
             setCommunityId={setCommunityId}
             getUpdatedUser={getUpdatedUser}
+            handleBack={handleBack}
           />
         )}
 
-        {communitiesVisibility === Visibility.Dashboard && (
+        {communitiesVisibility === Visibility.CommunityDashboard && (
           <CommunityDashboard
             setCommunitiesVisibility={setCommunitiesVisibility}
             communityId={communityId}
             token={accessToken.token}
+            handleBack={handleBack}
           />
         )}
 
@@ -96,6 +116,7 @@ function Communities({ user, getUpdatedUser }: any) {
             token={accessToken.token}
             user={user}
             getUpdatedUser={getUpdatedUser}
+            handleBack={handleBack}
           />
         )}
 
@@ -111,12 +132,17 @@ function Communities({ user, getUpdatedUser }: any) {
                   <IInput placeholder="Search Community" name="search" />
 
                   <IButton
-                    text="Manage"
-                    onClick={() => setCommunitiesVisibility(Visibility.Manage)}
+                    text="Home"
+                    onClick={() => {
+                      setCommunitiesVisibility(Visibility.CommunityHome);
+                    }}
                   />
+
                   <IButton
                     text="Create"
-                    onClick={() => setCommunitiesVisibility(Visibility.Create)}
+                    onClick={() =>
+                      setCommunitiesVisibility(Visibility.CommunityCreate)
+                    }
                     bgColor="bg-regal-blue"
                     textColor="text-white"
                     icon={<span>+</span>}
@@ -197,4 +223,4 @@ function Communities({ user, getUpdatedUser }: any) {
   );
 }
 
-export default Communities;
+export default CommunityDiscovery;

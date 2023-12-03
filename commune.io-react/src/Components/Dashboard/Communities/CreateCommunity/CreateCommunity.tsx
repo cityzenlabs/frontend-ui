@@ -17,6 +17,7 @@ function CreateCommunity({
   setCommunitiesVisibility,
   setCommunityId,
   getUpdatedUser,
+  handleBack,
 }: any) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
@@ -39,10 +40,6 @@ function CreateCommunity({
     if (selectedImageFiles && selectedImageFiles[0]) {
       setImageFiles([selectedImageFiles[0]]);
     }
-  };
-
-  const handleBack = () => {
-    setCommunitiesVisibility(Visibility.Communities);
   };
 
   const resetFields = () => {
@@ -88,7 +85,7 @@ function CreateCommunity({
       if (result.id) {
         resetFields();
         setCommunityId(result.id);
-        setCommunitiesVisibility(Visibility.Dashboard);
+        setCommunitiesVisibility(Visibility.CommunityDashboard);
         getUpdatedUser();
 
         if (imageFiles.length > 0) {
@@ -99,9 +96,7 @@ function CreateCommunity({
           );
         }
       }
-    } catch (error) {
-      // Handle the error
-    }
+    } catch (error) {}
   };
 
   return (

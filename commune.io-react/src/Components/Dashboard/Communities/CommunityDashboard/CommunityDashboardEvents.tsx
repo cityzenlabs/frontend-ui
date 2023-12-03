@@ -14,6 +14,7 @@ function CommunityDashboardEvents({
 }: any) {
   const [eventState, setEventState] = useState("");
   const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -48,7 +49,12 @@ function CommunityDashboardEvents({
     };
 
     fetchEvents();
+    setIsLoading(false);
   }, [dashboardEvents, communityId, token]);
+
+  if (isLoading) {
+    return <div></div>;
+  }
 
   return (
     <div>

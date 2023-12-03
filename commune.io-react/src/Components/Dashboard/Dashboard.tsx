@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import Home from "./Home/Home";
 import Events from "./Events/Events";
-import Communities from "./Communities/Communities";
+import Communities from "./Communities/CommunityDiscovery";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import Notifications from "./Notifications/Notifications";
 import Settings from "./Settings/Settings";

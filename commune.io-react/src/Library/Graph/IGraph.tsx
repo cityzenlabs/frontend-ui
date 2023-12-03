@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 
@@ -17,6 +17,8 @@ const IGraph = ({ data, categories, title }: any) => {
   };
 
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -25,7 +27,10 @@ const IGraph = ({ data, categories, title }: any) => {
   };
 
   return (
-    <div className="w-full bg-white rounded shadow p-4 md:p-6">
+    <div
+      className="w-full bg-white rounded shadow p-4 md:p-6 "
+      style={{ height: "300px" }}
+    >
       <Line data={chartData} options={options} />
     </div>
   );
