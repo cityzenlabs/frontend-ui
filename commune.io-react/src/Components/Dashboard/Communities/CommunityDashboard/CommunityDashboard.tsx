@@ -17,7 +17,7 @@ import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import CommunityDashboardEdit from "./CommunityDashboardEdit";
 import * as UserService from "../../../../Services/UserService/UserService";
 import CommunityMembersList from "../Reusable/CommunityMembersList/CommunityMembersList";
-import CommunityEvent from "../CommunityEvent/CommunityEvent";
+import CommunityEvent from "../Reusable/CommunityEvent/CommunityEvent";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 
 function CommunityDashboard({ communityId, token, handleBack }: any) {

@@ -9,7 +9,7 @@ import ICarousel from "../../../../Library/Carousel/ICarousel";
 import CommunityMembersList from "../Reusable/CommunityMembersList/CommunityMembersList";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import CommunityEvent from "../CommunityEvent/CommunityEvent";
+import CommunityEvent from "../Reusable/CommunityEvent/CommunityEvent";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 
 function Community({
@@ -59,6 +59,7 @@ function Community({
         "upcoming",
       );
       if (upcomingEvents) {
+        console.log(upcomingEvents);
         const hostedEvents = upcomingEvents.filter(
           (event: any) => event.type === "HOSTED",
         );

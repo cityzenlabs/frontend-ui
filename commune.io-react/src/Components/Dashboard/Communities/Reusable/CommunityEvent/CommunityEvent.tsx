@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
-import * as EventService from "../../../../Services/EventService/EventService";
-import * as UserService from "../../../../Services/UserService/UserService";
-import ILabel from "../../../../Library/Label/ILabel";
-import IPanel from "../../../../Library/Panel/IPanel";
+import IContainer from "../../../../../Library/Container/IContainer";
+import IBackButton from "../../../../../Library/BackButton/IBackButton";
+import * as EventService from "../../../../../Services/EventService/EventService";
+import * as UserService from "../../../../../Services/UserService/UserService";
+import ILabel from "../../../../../Library/Label/ILabel";
+import IPanel from "../../../../../Library/Panel/IPanel";
 import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
-import IButton from "../../../../Library/Button/IButton";
-import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import IButton from "../../../../../Library/Button/IButton";
+import IEventPanel from "../../../../../Library/EventPanel/IEventPanel";
 
 function CommunityEvent({
   setShowCommunityEvent,

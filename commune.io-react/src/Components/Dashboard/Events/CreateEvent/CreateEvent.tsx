@@ -36,7 +36,7 @@ function CreateEvent({
   const [month, setMonth] = useState<any>();
   const [day, setDay] = useState<any>();
   const [year, setYear] = useState<any>();
-  const [community, setCommunity] = useState<any>();
+  const [community, setCommunity] = useState<any>("");
 
   const [joinedCommunities, setJoinedCommunities] = useState<any>();
 
