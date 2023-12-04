@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
-import { Visibility } from "../Enums/EventEnums";
+import { Visibility } from "../Reusable/Enums/EventEnums";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";

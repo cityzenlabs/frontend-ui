@@ -14,10 +14,11 @@ import Community from "./Community/Community";
 import CommunityHome from "./CommunityHome/CommunityHome";
 
 function CommunityDiscovery({ user, getUpdatedUser }: any) {
+  const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
   const [communitiesVisibility, setCommunitiesVisibility] =
     useState<Visibility>(Visibility.Communities);
-  const [communityHome, setCommunityHome] = useState<any>();
+  const [communityDiscovery, setCommunityDiscovery] = useState<any>();
   const [communityId, setCommunityId] = useState("");
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
@@ -64,18 +65,28 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
     });
   };
 
+  const fetchCommunityDiscovery = async () => {
+    try {
+      const data = await CommunityService.getCommunityDiscovery(
+        accessToken.token,
+      );
+      if (data) {
+        setCommunityDiscovery(data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await CommunityService.getCommunityHome(accessToken.token);
-        if (data) {
-          setCommunityHome(data);
-        }
-      } catch (error) {}
+      await Promise.all([fetchCommunityDiscovery()]);
+      setIsLoading(false);
     };
-
     fetchData();
   }, [communitiesVisibility]);
+
+  if (isLoading) {
+    return <div></div>;
+  }
 
   return (
     <div>
@@ -159,9 +170,9 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                   height="600px"
                   onButtonClick={toggleShowAllTrending}
                 >
-                  {communityHome?.trendingCommunities && (
+                  {communityDiscovery?.trendingCommunities && (
                     <ICommunityPanel
-                      communities={communityHome.trendingCommunities}
+                      communities={communityDiscovery.trendingCommunities}
                       showAll={showAllTrending}
                       onCommunityClick={(id) => {
                         setCommunityId(id);
@@ -181,9 +192,9 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                   height="600px"
                   onButtonClick={toggleShowAllUpcoming}
                 >
-                  {communityHome?.newCommunities && (
+                  {communityDiscovery?.newCommunities && (
                     <ICommunityPanel
-                      communities={communityHome.newCommunities}
+                      communities={communityDiscovery.newCommunities}
                       showAll={showAllUpcoming}
                       onCommunityClick={(id) => {
                         setCommunityId(id);
@@ -203,9 +214,9 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                   height="600px"
                   onButtonClick={toggleShowAllRecommended}
                 >
-                  {communityHome?.recommendedCommunities && (
+                  {communityDiscovery?.recommendedCommunities && (
                     <ICommunityPanel
-                      communities={communityHome.recommendedCommunities}
+                      communities={communityDiscovery.recommendedCommunities}
                       showAll={showAllRecommended}
                       onCommunityClick={(id) => {
                         setCommunityId(id);

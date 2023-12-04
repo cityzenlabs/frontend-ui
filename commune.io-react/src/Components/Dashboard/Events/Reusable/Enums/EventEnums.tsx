@@ -1,6 +1,6 @@
 enum Visibility {
   Events = "Events",
-  Portal = "Portal",
+  Home = "Home",
   Create = "Create",
   Dashboard = "Dashboard",
   Event = "Event",

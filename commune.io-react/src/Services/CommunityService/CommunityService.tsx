@@ -40,7 +40,7 @@ export const getCommunityDashboard = async (communityId: any, token: any) => {
   }
 };
 
-export const getCommunityHome = async (token: any) => {
+export const getCommunityDiscovery = async (token: any) => {
   try {
     const response = await fetch(
       `http://localhost:8080/communities/discovery`,
@@ -147,7 +147,7 @@ export const getCommunity = async (id: any, token: any) => {
   }
 };
 
-export const getCommunityPortal = async (token: any) => {
+export const getCommunityHome = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/communities/home`, {
       method: "GET",

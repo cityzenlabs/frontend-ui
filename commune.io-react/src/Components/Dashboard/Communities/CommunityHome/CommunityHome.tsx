@@ -34,9 +34,9 @@ function CommunityHome({
     }
   };
 
-  const fetchPortal = async () => {
+  const fetchHome = async () => {
     try {
-      const data = await CommunityService.getCommunityPortal(token);
+      const data = await CommunityService.getCommunityHome(token);
       if (data) {
         setCommunityHome(data);
       }
@@ -45,7 +45,7 @@ function CommunityHome({
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchPortal()]);
+      await Promise.all([fetchHome()]);
       setIsLoading(false);
     };
     fetchData();

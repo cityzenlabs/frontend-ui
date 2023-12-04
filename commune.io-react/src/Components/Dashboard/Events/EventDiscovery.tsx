@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import EventPortal from "./EventPortal/EventPortal";
-import { Visibility } from "./Enums/EventEnums";
-import CreateEvent from "./CreateEvent/CreateEvent";
+import { Visibility } from "./Reusable/Enums/EventEnums";
+import CreateEvent from "./EventCreate/EventCreate";
 import * as EventService from "../../../Services/EventService/EventService";
 import { useAuth } from "../../../AuthContext";
 import IContainer from "../../../Library/Container/IContainer";
@@ -12,18 +11,21 @@ import IInput from "../../../Library/Input/IInput";
 import IButton from "../../../Library/Button/IButton";
 import Event from "./Event/Event";
 import EventDashboard from "./EventDashboard/EventDashboard";
+import EventHome from "./EventHome/EventHome";
 
-function Events({ user, getUpdatedUser }: any) {
+function EventDiscovery({ user, getUpdatedUser }: any) {
+  const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
     Visibility.Events,
   );
-  const [eventsHome, setEventsHome] = useState<any>();
+  const [eventDiscovery, setEventDiscovery] = useState<any>();
   const [eventId, setEventId] = useState("");
 
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
   const [showAllRecommended, setShowAllRecommended] = useState(false);
+  const [pageState, setPageState] = useState<Visibility[]>([Visibility.Events]);
 
   const toggleShowAllTrending = () => {
     setShowAllTrending((prev) => !prev);
@@ -49,25 +51,48 @@ function Events({ user, getUpdatedUser }: any) {
     }
   };
 
+  const fetchEventHome = async () => {
+    try {
+      const data = await EventService.getEventDiscovery(accessToken.token);
+      setEventDiscovery(data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await EventService.getEventHome(accessToken.token);
-        setEventsHome(data);
-      } catch (error) {}
+      await Promise.all([fetchEventHome()]);
+      setIsLoading(false);
     };
-
     fetchData();
   }, [eventsVisibility]);
+
+  const handleBack = () => {
+    setEventsVisibility(pageState[pageState.length - 1]);
+    if (pageState.length > 1) {
+      setPageState((prevState) => prevState.slice(0, -1));
+    }
+  };
+
+  const handleForward = (previousPage: Visibility, nextPage: Visibility) => {
+    setEventsVisibility(nextPage);
+    setPageState((prev) => {
+      return [...prev, previousPage];
+    });
+  };
+
+  if (isLoading) {
+    return <div></div>;
+  }
 
   return (
     <div>
       <div>
-        {eventsVisibility === Visibility.Portal && (
-          <EventPortal
+        {eventsVisibility === Visibility.Home && (
+          <EventHome
             setEventsVisibility={setEventsVisibility}
             setEventId={setEventId}
             token={accessToken.token}
+            handleBack={handleBack}
           />
         )}
 
@@ -111,8 +136,8 @@ function Events({ user, getUpdatedUser }: any) {
                   <IInput placeholder="Search Community" name="search" />
 
                   <IButton
-                    text="Manage"
-                    onClick={() => setEventsVisibility(Visibility.Portal)}
+                    text="Home"
+                    onClick={() => setEventsVisibility(Visibility.Home)}
                   />
                   <IButton
                     text="Create"
@@ -134,7 +159,7 @@ function Events({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllTrending}
                   >
                     <IEventPanel
-                      events={eventsHome?.trendingEvents ?? {}}
+                      events={eventDiscovery?.trendingEvents ?? {}}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);
@@ -155,7 +180,7 @@ function Events({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllUpcoming}
                   >
                     <IEventPanel
-                      events={eventsHome?.upcomingEvents ?? {}}
+                      events={eventDiscovery?.upcomingEvents ?? {}}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);
@@ -176,7 +201,7 @@ function Events({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllRecommended}
                   >
                     <IEventPanel
-                      events={eventsHome?.recommendedEvents ?? {}}
+                      events={eventDiscovery?.recommendedEvents ?? {}}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);
@@ -193,4 +218,4 @@ function Events({ user, getUpdatedUser }: any) {
   );
 }
 
-export default Events;
+export default EventDiscovery;

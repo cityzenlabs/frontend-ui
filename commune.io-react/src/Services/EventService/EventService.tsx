@@ -1,4 +1,4 @@
-export const getEventHome = async (token: any) => {
+export const getEventDiscovery = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/events/home`, {
       method: "GET",
@@ -17,7 +17,7 @@ export const getEventHome = async (token: any) => {
   }
 };
 
-export const getEventPortal = async (token: any) => {
+export const getEventHome = async (token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/events/portal`, {
       method: "GET",

@@ -93,10 +93,12 @@ function CommunityEvent({
             <IButton
               text={hasJoined ? "Leave Event" : "Join Event"}
               onClick={handleJoinOrLeaveEvent}
-              bgColor={user.id === organizer.id ? "bg-white" : "bg-regal-blue"}
-              textColor={user.id === organizer.id ? "text-black" : "text-white"}
+              bgColor={user?.id === organizer.id ? "bg-white" : "bg-regal-blue"}
+              textColor={
+                user?.id === organizer.id ? "text-black" : "text-white"
+              }
               className="px-6 py-2"
-              disabled={user.id === organizer.id}
+              disabled={user?.id === organizer.id}
             />
           </div>
         </div>

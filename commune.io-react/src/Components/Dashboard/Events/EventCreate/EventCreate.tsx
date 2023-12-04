@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Visibility } from "../Enums/EventEnums";
+import { Visibility } from "../Reusable/Enums/EventEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
@@ -12,12 +12,12 @@ import IToggleButtonGroup from "../../../../Library/ToggleButtonGroup/IToggleBut
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
-import { days } from "./CreateEventConstants";
-import { months } from "./CreateEventConstants";
-import { years } from "./CreateEventConstants";
-import { times } from "./CreateEventConstants";
+import { days } from "./EventCreateConstants";
+import { months } from "./EventCreateConstants";
+import { years } from "./EventCreateConstants";
+import { times } from "./EventCreateConstants";
 
-function CreateEvent({
+function EventCreate({
   setEventsVisibility,
   token,
   setEventId,
@@ -272,4 +272,4 @@ function CreateEvent({
   );
 }
 
-export default CreateEvent;
+export default EventCreate;

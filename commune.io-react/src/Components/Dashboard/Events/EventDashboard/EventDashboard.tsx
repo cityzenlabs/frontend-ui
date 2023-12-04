@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import { Visibility } from "../Enums/EventEnums";
+import { Visibility } from "../Reusable/Enums/EventEnums";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
@@ -65,7 +65,7 @@ function EventDashboard({ setEventsVisibility, eventId, token }: any) {
               <div className="xl:flex lg:flex items-center justify-between">
                 <div className="flex items-center">
                   <IBackButton
-                    onClick={() => setEventsVisibility(Visibility.Portal)}
+                    onClick={() => setEventsVisibility(Visibility.Home)}
                   />
                   <ILabel className="ml-4" text={event?.name} />
                 </div>

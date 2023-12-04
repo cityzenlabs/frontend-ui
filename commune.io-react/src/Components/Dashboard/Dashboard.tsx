@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import Home from "./Home/Home";
-import Events from "./Events/Events";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import Notifications from "./Notifications/Notifications";
 import Settings from "./Settings/Settings";
 import * as UserService from "../../Services/UserService/UserService";
 import { useAuth } from "../../AuthContext";
 import CommunityDiscovery from "./Communities/CommunityDiscovery";
+import EventDiscovery from "./Events/EventDiscovery";
 
 function Dashboard() {
   const [sideBarSelection, setSideBarSelection] = useState<string>("Home");
@@ -16,7 +16,6 @@ function Dashboard() {
   const [userHome, setUserHome] = useState<any>();
   const [user, setUser] = useState<any>();
   const [profilePicture, setProfilePicture] = useState<any>();
-  const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
   const [triggerRefresh, setTriggerRefresh] = useState(false);
@@ -41,10 +40,7 @@ function Dashboard() {
         setUser(userHome.user);
         setProfilePicture(imageUrl);
         setIsLoading(false);
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
+      } catch (error) {}
     };
 
     fetchData();
@@ -74,7 +70,7 @@ function Dashboard() {
         </div>
         <div>
           {sideBarSelection === "Events" && (
-            <Events user={user} getUpdatedUser={triggerDataRefresh} />
+            <EventDiscovery user={user} getUpdatedUser={triggerDataRefresh} />
           )}
         </div>
         <div>
