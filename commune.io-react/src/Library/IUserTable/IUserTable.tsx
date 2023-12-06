@@ -14,9 +14,10 @@ interface User {
 
 interface IUserTableProps {
   users: User[];
+  onRowClick: (userId: string) => void;
 }
 
-const IUserTable: React.FC<IUserTableProps> = ({ users }) => {
+const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
   const tableStyle = {
     width: "100%",
     borderCollapse: "collapse" as "collapse",
@@ -62,7 +63,11 @@ const IUserTable: React.FC<IUserTableProps> = ({ users }) => {
         </thead>
         <tbody style={{ backgroundColor: "white" }}>
           {users?.map((user) => (
-            <tr key={user.id} style={{ border: "1px solid #DADEE5" }}>
+            <tr
+              key={user.id}
+              style={{ border: "1px solid #DADEE5" }}
+              onClick={() => onRowClick(user.id)}
+            >
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
                   <img

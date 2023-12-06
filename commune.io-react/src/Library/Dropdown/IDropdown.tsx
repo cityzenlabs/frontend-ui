@@ -17,7 +17,7 @@ function IDropdown({
   value,
 }: IDropdownProps) {
   // Initialize the state with the first option's value or a default value
-  const [selectedValue, setSelectedValue] = useState<string>();
+  const [selectedValue, setSelectedValue] = useState<string>(value);
 
   // Effect to update the selected value when options change
 
@@ -32,11 +32,11 @@ function IDropdown({
   return (
     <div className="relative">
       {labelText && <label className="mb-1 font-thin">{labelText}</label>}
-      <Listbox value={value} onChange={handleValueChange}>
+      <Listbox value={selectedValue} onChange={handleValueChange}>
         {({ open }) => (
           <>
             <Listbox.Button
-              className={`relative w-full cursor-default bg-white py-2 pl-3 pr-10 text-left block rounded-2xl font-medium text-md border focus:outline-none focus-visible:border-sky-500 focus-visible:ring-sky-500 shadow-sm focus:border-sky-500 focus:ring-sky-500 ${
+              className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
                 options?.find((option) => option.value === selectedValue)
                   ? "text-black"
                   : "text-gray-400"

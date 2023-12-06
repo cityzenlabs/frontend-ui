@@ -1,37 +1,52 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
-import { Visibility } from "../Reusable/Enums/EventEnums";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
+import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ILabel from "../../../../Library/Label/ILabel";
 import IPanel from "../../../../Library/Panel/IPanel";
-import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import EventDetails from "../Reusable/EventDetails/EventDetails";
+import ICarousel from "../../../../Library/Carousel/ICarousel";
+import EventAttendeesList from "../Reusable/EventAttendeesList/EventAttendeesList";
 
 function Event({
-  setEventsVisibility,
+  handleBack,
   eventId,
   token,
   user,
   getUpdatedUser,
+  setEventId,
 }: any) {
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
   const [relatedEvents, setRelatedEvents] = useState<any>();
+  const [eventPicture, setEventPicture] = useState<any>();
+  const [community, setCommunity] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showAttendeesList, setShowAttendeesList] = useState<boolean>(false);
+  const [triggerFetch, setTriggerFetch] = useState(false);
 
-  const fetchData = async (callback = () => {}) => {
+  const fetchEvent = async (callback = () => {}) => {
     try {
       const event = await EventService.getEvent(token, eventId);
       if (event) {
         setEvent(event);
+        const community = await CommunityService.getCommunity(
+          event.host,
+          token,
+        );
         const organizer = await UserService.fetchUser(token, event.organizer);
         if (organizer) {
           setOrganizer(organizer);
           checkMembership(event);
           callback();
+        }
+        if (community) {
+          setCommunity(community);
         }
       }
     } catch (error) {}
@@ -46,6 +61,15 @@ function Event({
     } catch (error) {}
   };
 
+  const fetchPicture = async () => {
+    try {
+      const data = await EventService.getEventPicture(token, eventId);
+      if (data) {
+        setEventPicture(data);
+      }
+    } catch (error) {}
+  };
+
   const checkMembership = (event: any) => {
     if (user && event) {
       setHasJoined(user?.joinedEvents.includes(event.id));
@@ -53,9 +77,13 @@ function Event({
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([fetchEvent(), fetchRelatedEvents(), fetchPicture()]);
+      setIsLoading(false);
+    };
+
     fetchData();
-    fetchRelatedEvents();
-  }, [eventId, token]);
+  }, [eventId, token, triggerFetch]);
 
   const handleJoinOrLeaveEvent = async () => {
     try {
@@ -65,100 +93,77 @@ function Event({
 
       if (response.ok) {
         await getUpdatedUser();
-        fetchData(() => setHasJoined(!hasJoined));
+        fetchEvent(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
   };
 
+  if (isLoading) {
+    return <div></div>;
+  }
+
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
-        <div className="flex justify-between items-center">
-          <div className="flex">
-            <IBackButton
-              onClick={() => setEventsVisibility(Visibility.Events)}
-            />
-            <ILabel className="ml-4" text={event?.name} />
-          </div>
-          <div>
-            <IButton
-              text={hasJoined ? "Leave Event" : "Join Event"}
-              onClick={handleJoinOrLeaveEvent}
-              bgColor="bg-regal-blue"
-              textColor="text-white"
-              className="px-6 py-2"
-            />
-          </div>
-        </div>
-      </IContainer>
+      {showAttendeesList && (
+        <EventAttendeesList
+          setShowAttendeesList={setShowAttendeesList}
+          token={token}
+          eventId={eventId}
+        />
+      )}
 
-      <IContainer className="pb-8">
-        <div className="w-full">
-          <IPanel height="h-[320px]"></IPanel>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-8">
-        <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
-          <div className="col-span-3 xl:col-span-2">
-            <IPanel height="h-[550px]">
-              <div className=" h-full flex flex-col">
-                {event && (
-                  <div>
-                    <ILabel text={event.name}></ILabel>
-                  </div>
-                )}
-                <div className="mt-5 flex">
-                  <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-                  <div>{event?.city + ", " + event?.state}</div>
-                </div>
-                <div className="mt-5 flex">
-                  <CalendarIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-                  <div>
-                    {event &&
-                      `${new Date(
-                        event.startTime,
-                      ).toLocaleDateString()} ${new Date(
-                        event.startTime,
-                      ).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })} - ${new Date(
-                        event.endTime,
-                      ).toLocaleDateString()} ${new Date(
-                        event.endTime,
-                      ).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}`}
-                  </div>
-                </div>
-                <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                  {event?.description}
-                </div>
-              </div>
-            </IPanel>
-          </div>
-          <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
-            <IPanel height="h-[177px]">
-              <div>
-                <div className="font-bold text-md ">
-                  {organizer?.firstName + " " + organizer?.lastName}
-                </div>
-                <div>Reputation Score - {organizer?.reputation}</div>
-              </div>
-            </IPanel>
-          </div>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-8">
+      {!showAttendeesList && (
         <div>
-          <IPanel title="Related" buttonLabel={"Show All"} height="600px">
-            <IEventPanel events={relatedEvents ?? {}} />
-          </IPanel>
+          <IContainer className="pb-8 pt-8">
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <IBackButton onClick={handleBack} />
+                <ILabel className="ml-4" text={event?.name} />
+              </div>
+              <div>
+                <IButton
+                  text={hasJoined ? "Leave Event" : "Join Event"}
+                  onClick={handleJoinOrLeaveEvent}
+                  bgColor={
+                    user.id === organizer?.id ? "bg-white" : "bg-regal-blue"
+                  }
+                  textColor={
+                    user.id === organizer?.id ? "text-black" : "text-white"
+                  }
+                  className="px-6 py-2"
+                  disabled={user.id === organizer?.id}
+                />
+              </div>
+            </div>
+          </IContainer>
+          <IContainer className="pb-8">
+            <div className="w-full">
+              <ICarousel imageUrls={[eventPicture]} />
+            </div>
+          </IContainer>
+          <IContainer className="pb-8">
+            <EventDetails
+              event={event}
+              organizer={organizer}
+              user={user}
+              community={community}
+              setShowAttendeesList={setShowAttendeesList}
+            />
+          </IContainer>
+          <IContainer className="pb-8">
+            <div>
+              <IPanel title="Related" buttonLabel={"Show All"} height="600px">
+                <IEventPanel
+                  events={relatedEvents}
+                  onEventClick={(id) => {
+                    setEventId(id);
+                  }}
+                />
+              </IPanel>
+            </div>
+          </IContainer>
         </div>
-      </IContainer>
+      )}
     </div>
   );
 }

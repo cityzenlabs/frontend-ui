@@ -53,23 +53,13 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
 
   const handleEditProfile = async (): Promise<void> => {
     try {
-      const updatePromises = [];
-
-      if (email !== "") {
-        updatePromises.push(UserService.updateEmail(email, accessToken.token));
-      }
-
-      if (phoneNumber !== "") {
-        updatePromises.push(
-          UserService.updatePhoneNumber(phoneNumber, accessToken.token),
-        );
-      }
-
       const fieldsToUpdate: any = {
         firstName,
         lastName,
         city,
         state,
+        phoneNumber,
+        email,
       };
 
       const nonEmptyFields: { [key: string]: string } = {};
@@ -89,15 +79,9 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
         resetForm();
       }
 
-      const updateResults = await Promise.all(updatePromises);
-      const hasErrors = updateResults.some((result) => result !== "success");
-
-      if (!hasErrors) {
-        const updatedUser = await UserService.fetchUserHome(accessToken.token);
-        setHome(updatedUser);
-        resetForm();
-      } else {
-      }
+      const updatedUser = await UserService.fetchUserHome(accessToken.token);
+      setHome(updatedUser);
+      resetForm();
     } catch (error) {}
   };
 

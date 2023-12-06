@@ -1,6 +1,6 @@
 export const getEventDiscovery = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/events/home`, {
+    const response = await fetch(`http://localhost:8080/events/discovery`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const getEventDiscovery = async (token: any) => {
 
 export const getEventHome = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/events/portal`, {
+    const response = await fetch(`http://localhost:8080/events/home`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -207,6 +207,28 @@ export const joinEvent = async (token: any, id: any) => {
     );
     if (response.ok) {
       return response;
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getEventPicture = async (token: any, id: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/events/${id}/event-picture`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.text();
     } else {
       return response;
     }

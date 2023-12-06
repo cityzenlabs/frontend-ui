@@ -110,7 +110,7 @@ function CreateCommunity({
       <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
-            label="Name"
+            label="Community Name"
             placeholder="Name"
             name="name"
             value={name}

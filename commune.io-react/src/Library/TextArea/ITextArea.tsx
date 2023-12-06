@@ -21,7 +21,7 @@ const ITextArea: React.FC<ITextAreaProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder} // Include the placeholder attribute here
-        className="w-full h-[200px] rounded-2xl font-medium text-black text-md bg-white border px-6 mr-4"
+        className="h-[200px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       ></textarea>
     </div>
   );

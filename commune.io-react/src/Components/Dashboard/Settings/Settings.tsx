@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Tab } from "@headlessui/react";
-import "./Settings.css";
 import EditProfile from "./EditProfile/EditProfile";
 import Security from "./Security/Security";
 import SecurityNotifications from "./Notifications/SecurityNotifications";
@@ -9,14 +8,14 @@ import ILabel from "../../../Library/Label/ILabel";
 
 interface SettingsProps {
   setHome: Dispatch<SetStateAction<any>>;
-  home: any; // Use the appropriate type instead of 'any'
+  home: any;
   profilePicture: string;
 }
 
 function Settings({ setHome, home, profilePicture }: SettingsProps) {
   return (
     <div>
-      <IContainer paddingY={8}>
+      <IContainer className="pt-8">
         <ILabel text="Settings"></ILabel>
         <div className="tab-scroll-container mt-10">
           <Tab.Group>
@@ -26,8 +25,8 @@ function Settings({ setHome, home, profilePicture }: SettingsProps) {
                   "Profile",
                   "Security",
                   "Notifications",
-                  "Billing",
                   "Subscription",
+                  "Billing",
                   "Support",
                 ].map((tab) => (
                   <Tab

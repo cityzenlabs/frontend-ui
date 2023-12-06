@@ -144,7 +144,7 @@ const CommunityDetails = ({
 
         <IPanel height="h-[55px]" onPanelClick={() => setShowMembersList(true)}>
           <div className="flex justify-between items-center h-full">
-            {Object.keys(community?.members ?? {}).length} Members
+            {community?.members.length} Members
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>

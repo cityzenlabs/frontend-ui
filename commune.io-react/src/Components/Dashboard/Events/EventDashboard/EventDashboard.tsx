@@ -1,28 +1,40 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import { Visibility } from "../Reusable/Enums/EventEnums";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
+import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ILabel from "../../../../Library/Label/ILabel";
-import IPanel from "../../../../Library/Panel/IPanel";
-import { ArrowRightIcon } from "@heroicons/react/solid";
-import { MapIcon } from "@heroicons/react/outline";
-import { CalendarIcon } from "@heroicons/react/outline";
-import EventAttendeesList from "./EventAttendeesList";
+import EventAttendeesList from "../Reusable/EventAttendeesList/EventAttendeesList";
+import IGraph from "../../../../Library/Graph/IGraph";
+import {
+  fakeAverageTimeSpent,
+  fakeAverageUserLevel,
+  transformAverageTimeSpent,
+  transformAverageUserLevel,
+} from "./EventDashboardGraphAnalytics";
+import EventDetails from "../Reusable/EventDetails/EventDetails";
+import IButton from "../../../../Library/Button/IButton";
+import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
+import EventDashboardEdit from "./EventDashboardEdit";
 
-function EventDashboard({ setEventsVisibility, eventId, token }: any) {
-  const [event, setEvent] = useState<any>();
+function EventDashboard({ eventId, token, handleBack }: any) {
+  const [eventDashboard, setEventDashboard] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
-  const [attendees, setAttendees] = useState<any>();
-  const [showMembersList, setShowMembersList] = useState<boolean>(false);
+  const [community, setCommunity] = useState<any>();
+  const [showAttendeesList, setShowAttendeesList] = useState<boolean>(false);
+  const [editEvent, setEditEvent] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await EventService.getEventDashboard(token, eventId);
         if (data) {
-          setEvent(data.event);
+          setEventDashboard(data);
+          const community = await CommunityService.getCommunity(
+            data?.event.host,
+            token,
+          );
           const organizer = await UserService.fetchUser(
             token,
             data.event.organizer,
@@ -30,112 +42,110 @@ function EventDashboard({ setEventsVisibility, eventId, token }: any) {
           if (organizer) {
             setOrganizer(organizer);
           }
-        }
-      } catch (error) {}
-    };
 
-    const fetchAttendees = async () => {
-      try {
-        const attendees = await EventService.getEventAttendees(token, eventId);
-        if (attendees) {
-          setAttendees(attendees);
+          if (community) {
+            setCommunity(community);
+          }
         }
       } catch (error) {}
     };
 
     fetchData();
-    fetchAttendees();
   }, []);
+
+  const averageTimeSpent = eventDashboard?.event.eventAnalytics
+    ? transformAverageTimeSpent(eventDashboard?.event.eventAnalytics)
+    : transformAverageTimeSpent(fakeAverageTimeSpent);
+  const averageUserLevel = eventDashboard?.event.eventAnalytics
+    ? transformAverageUserLevel(eventDashboard?.event.eventAnalytics)
+    : transformAverageUserLevel(fakeAverageUserLevel);
 
   return (
     <div>
       <div>
-        {showMembersList && (
-          <EventAttendeesList
-            setShowMembersList={setShowMembersList}
-            attendees={attendees}
+        {editEvent && (
+          <EventDashboardEdit
+            setEditEvent={setEditEvent}
+            event={eventDashboard.event}
           />
         )}
       </div>
 
       <div>
-        {!showMembersList && (
+        {showAttendeesList && !editEvent && (
+          <EventAttendeesList
+            token={token}
+            eventId={eventId}
+            setShowAttendeesList={setShowAttendeesList}
+          />
+        )}
+      </div>
+
+      <div>
+        {!showAttendeesList && !editEvent && (
           <div>
             <IContainer className="pb-8 pt-8">
-              <div className="xl:flex lg:flex items-center justify-between">
-                <div className="flex items-center">
-                  <IBackButton
-                    onClick={() => setEventsVisibility(Visibility.Home)}
+              <div className="flex justify-between">
+                <div className="flex">
+                  <IBackButton onClick={handleBack} />
+                  {eventDashboard && (
+                    <ILabel
+                      text={eventDashboard?.event.name}
+                      className="ml-4"
+                    ></ILabel>
+                  )}
+                </div>
+
+                <div className="flex">
+                  <IButton
+                    text={"Edit"}
+                    onClick={() => setEditEvent(true)}
+                    bgColor="bg-regal-blue"
+                    textColor="text-white"
+                    className="px-6  mr-4"
                   />
-                  <ILabel className="ml-4" text={event?.name} />
+                  <IMenuButton
+                    options={[
+                      {
+                        label: "Transfer",
+                        action: () => console.log("Transfer"),
+                      },
+                      {
+                        label: "Delete",
+                        action: () => console.log("Delete"),
+                      },
+                    ]}
+                  />
                 </div>
               </div>
             </IContainer>
 
             <IContainer className="pb-8">
-              <div className="grid xl:grid-cols-2 gap-6 xl:w-full lg:w-full">
-                <IPanel height="h-[320px]"></IPanel>
-                <IPanel height="h-[320px]"></IPanel>
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
+                {averageTimeSpent && (
+                  <IGraph
+                    data={averageTimeSpent.series}
+                    categories={averageTimeSpent.categories}
+                    title="Average Time Spent"
+                  />
+                )}
+                {averageUserLevel && (
+                  <IGraph
+                    title="Average User Level"
+                    data={averageUserLevel.series}
+                    categories={averageUserLevel.categories}
+                  />
+                )}
               </div>
             </IContainer>
 
             <IContainer className="pb-8">
-              <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
-                <div className="col-span-3 xl:col-span-2">
-                  <IPanel height="h-[550px]">
-                    <div className="h-full flex flex-col">
-                      {event && (
-                        <div>
-                          <ILabel text={event?.name}></ILabel>
-                        </div>
-                      )}
-                      <div className="mt-5 flex">
-                        <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-                        <div>{event?.city + ", " + event?.state}</div>
-                      </div>
-                      <div className="mt-5 flex">
-                        <CalendarIcon
-                          className="h-6 w-6 mr-2"
-                          aria-hidden="true"
-                        />
-                        <div>
-                          {event &&
-                            `${new Date(
-                              event.startTime,
-                            ).toLocaleDateString()} ${new Date(
-                              event.startTime,
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })} - ${new Date(
-                              event.endTime,
-                            ).toLocaleDateString()} ${new Date(
-                              event.endTime,
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}`}
-                        </div>
-                      </div>
-                      <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                        {event?.description}
-                      </div>
-                    </div>
-                  </IPanel>
-                </div>
-                <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
-                  <IPanel height="h-[177px]"></IPanel>
-                  <IPanel
-                    height="h-[55px]"
-                    onPanelClick={() => setShowMembersList(true)}
-                  >
-                    <div className="flex justify-between items-center h-full ">
-                      {event?.attendees.length + " Attendees "}
-                      <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                  </IPanel>
-                </div>
-              </div>
+              <EventDetails
+                event={eventDashboard?.event}
+                organizer={organizer}
+                community={community}
+                setShowAttendeesList={setShowAttendeesList}
+              />
             </IContainer>
           </div>
         )}

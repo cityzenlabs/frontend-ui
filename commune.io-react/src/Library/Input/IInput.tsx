@@ -55,7 +55,7 @@ function IInput({
   return (
     <div>
       {label && (
-        <label htmlFor={name} className="mb-1 font-thin">
+        <label htmlFor={name} className=" font-thin">
           {label}
         </label>
       )}
@@ -67,7 +67,7 @@ function IInput({
         value={value}
         onChange={onChange}
         onKeyDown={handleKeyDown} // Add the onKeyDown event handler
-        className="block w-full rounded-2xl font-medium text-black text-md bg-white border py-2 px-6 "
+        className="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       />
     </div>
   );

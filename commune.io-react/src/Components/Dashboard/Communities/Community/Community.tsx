@@ -59,7 +59,6 @@ function Community({
         "upcoming",
       );
       if (upcomingEvents) {
-        console.log(upcomingEvents);
         const hostedEvents = upcomingEvents.filter(
           (event: any) => event.type === "HOSTED",
         );
@@ -167,6 +166,8 @@ function Community({
           setShowMembersList={setShowMembersList}
           token={token}
           communityId={community.id}
+          user={user}
+          getUpdatedUser={getUpdatedUser}
         />
       )}
 

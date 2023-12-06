@@ -17,7 +17,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
   const [eventsVisibility, setEventsVisibility] = useState<Visibility>(
-    Visibility.Events,
+    Visibility.Discovery,
   );
   const [eventDiscovery, setEventDiscovery] = useState<any>();
   const [eventId, setEventId] = useState("");
@@ -25,7 +25,9 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
   const [showAllRecommended, setShowAllRecommended] = useState(false);
-  const [pageState, setPageState] = useState<Visibility[]>([Visibility.Events]);
+  const [pageState, setPageState] = useState<Visibility[]>([
+    Visibility.Discovery,
+  ]);
 
   const toggleShowAllTrending = () => {
     setShowAllTrending((prev) => !prev);
@@ -87,12 +89,13 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
   return (
     <div>
       <div>
-        {eventsVisibility === Visibility.Home && (
+        {eventsVisibility === Visibility.EventHome && (
           <EventHome
             setEventsVisibility={setEventsVisibility}
             setEventId={setEventId}
             token={accessToken.token}
             handleBack={handleBack}
+            handleForward={handleForward}
           />
         )}
 
@@ -103,6 +106,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
             token={accessToken.token}
             user={user}
             getUpdatedUser={getUpdatedUser}
+            handleBack={handleBack}
           />
         )}
 
@@ -113,6 +117,8 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
             token={accessToken.token}
             user={user}
             getUpdatedUser={getUpdatedUser}
+            handleBack={handleBack}
+            setEventId={setEventId}
           />
         )}
 
@@ -121,10 +127,11 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
             setEventsVisibility={setEventsVisibility}
             eventId={eventId}
             token={accessToken.token}
+            handleBack={handleBack}
           />
         )}
 
-        {eventsVisibility === Visibility.Events && (
+        {eventsVisibility === Visibility.Discovery && (
           <div>
             <IContainer className="pt-8 pb-8">
               <div className="flex items-center justify-between flex-wrap">
@@ -137,7 +144,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
 
                   <IButton
                     text="Home"
-                    onClick={() => setEventsVisibility(Visibility.Home)}
+                    onClick={() => setEventsVisibility(Visibility.EventHome)}
                   />
                   <IButton
                     text="Create"
@@ -159,7 +166,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllTrending}
                   >
                     <IEventPanel
-                      events={eventDiscovery?.trendingEvents ?? {}}
+                      events={eventDiscovery?.trendingEvents}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);
@@ -180,7 +187,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllUpcoming}
                   >
                     <IEventPanel
-                      events={eventDiscovery?.upcomingEvents ?? {}}
+                      events={eventDiscovery?.upcomingEvents}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);
@@ -201,7 +208,7 @@ function EventDiscovery({ user, getUpdatedUser }: any) {
                     onButtonClick={toggleShowAllRecommended}
                   >
                     <IEventPanel
-                      events={eventDiscovery?.recommendedEvents ?? {}}
+                      events={eventDiscovery?.recommendedEvents}
                       onEventClick={(id) => {
                         setEventId(id);
                         setEventsVisibility(Visibility.Event);

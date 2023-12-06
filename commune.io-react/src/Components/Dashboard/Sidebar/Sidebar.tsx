@@ -45,6 +45,7 @@ function Sidebar({
   const handleMenuItemClick = (route: string) => {
     setSideBarVisibility(false);
     setSideBarSelection(route);
+    console.log(route);
   };
 
   const handleViewProfile = () => {

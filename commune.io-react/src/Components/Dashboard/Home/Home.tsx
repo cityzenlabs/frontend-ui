@@ -78,7 +78,18 @@ function Home({ viewProfile, setViewProfile, home, user }: any) {
             </IPanel>
           </IContainer>
           <IContainer className="pb-8">
-            <IPanel title="Upcoming Events" buttonLabel="See All"></IPanel>
+            <IPanel
+              title="Upcoming Events"
+              height="600px"
+              buttonLabel="Show All"
+            >
+              {home?.recommendedCommunities && (
+                <ICommunityPanel
+                  communities={home.upcomingEvents}
+                  showAll={true}
+                />
+              )}
+            </IPanel>
           </IContainer>
         </div>
       )}

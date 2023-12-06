@@ -99,7 +99,7 @@ function CommunityHome({
       {!showAllCreatedCommunities && (
         <IContainer className="pb-8">
           <IPanel
-            title="Your Communities"
+            title="Joined Communities"
             buttonLabel={showAllJoinedCommunities ? "Show Less" : "Show All"}
             height="600px"
             onButtonClick={toggleShowAllJoinedCommunities}
@@ -121,7 +121,7 @@ function CommunityHome({
       {!showAllJoinedCommunities && (
         <IContainer className="pb-8">
           <IPanel
-            title="Manage Communities"
+            title="Created Communities"
             buttonLabel={showAllCreatedCommunities ? "Show Less" : "Show All"}
             height="600px"
             onButtonClick={toggleShowAllCreatedCommunities}

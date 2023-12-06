@@ -23,6 +23,7 @@ function EventCreate({
   setEventId,
   user,
   getUpdatedUser,
+  handleBack,
 }: any) {
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -109,7 +110,7 @@ function EventCreate({
     <div>
       <IContainer className="pt-8 pb-8">
         <div className="flex">
-          <IBackButton onClick={() => setEventsVisibility(Visibility.Events)} />
+          <IBackButton onClick={handleBack} />
           <ILabel text="Create Event" className="ml-4"></ILabel>
         </div>
       </IContainer>
@@ -118,7 +119,7 @@ function EventCreate({
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
             label="Event Name"
-            placeholder=""
+            placeholder="Name"
             name="name"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -180,15 +181,17 @@ function EventCreate({
       </IContainer>
 
       <IContainer className="pb-4">
-        <IToggleButtonGroup
-          label="Type"
-          options={[
-            { value: "SOCIAL", label: "Social" },
-            { value: "HOSTED", label: "Hosted" },
-          ]}
-          selectedValue={type}
-          onChange={setType}
-        />
+        <div className="xl:w-1/2 lg:w-1/2">
+          <IDropdown
+            labelText="Type"
+            options={[
+              { value: "SOCIAL", label: "Social" },
+              { value: "HOSTED", label: "Hosted" },
+            ]}
+            value={type}
+            onChange={setType}
+          />
+        </div>
       </IContainer>
 
       <IContainer className="pb-4">
