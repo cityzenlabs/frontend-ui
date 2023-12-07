@@ -67,6 +67,8 @@ function CommunityMembersList({
               handleForward(
                 Visibility.CommunityMembersList,
                 Visibility.CommunityProfile,
+                communityId,
+                userId,
               );
             }}
           />

@@ -88,6 +88,8 @@ function EventCreate({
       host: community,
     };
 
+    console.log(event);
+
     try {
       const result = await EventService.createEvent(event, token);
       if (result.id) {

@@ -15,8 +15,6 @@ function CommunityProfile({
   otherUserId,
   handleBack,
   handleForward,
-  setCommunityId,
-  setCommunityState,
 }: any) {
   const [user, setUser] = useState<any>();
   const [communities, setCommunities] = useState<any>();
@@ -117,12 +115,11 @@ function CommunityProfile({
             <ICommunityPanel
               communities={communities}
               showAll={true}
-              onCommunityClick={(id) => {
-                setCommunityId(id);
-                setCommunityState((prev: any) => [...prev, id]);
+              onCommunityClick={(communityId) => {
                 handleForward(
                   Visibility.CommunityProfile,
                   Visibility.Community,
+                  communityId,
                 );
               }}
             />

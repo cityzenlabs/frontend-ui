@@ -28,6 +28,11 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   const [pageState, setPageState] = useState<Visibility[]>([
     Visibility.Communities,
   ]);
+
+  const [navigationState, setNavigationState] = useState<any>([
+    { previousPage: Visibility.Communities },
+  ]);
+
   const [otherUserId, setOtherUserId] = useState<any>();
 
   const toggleShowAllTrending = () => {
@@ -55,17 +60,43 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   };
 
   const handleBack = () => {
-    setCommunitiesVisibility(pageState[pageState.length - 1]);
-    if (pageState.length > 1) {
-      setPageState((prevState) => prevState.slice(0, -1));
+    const navState = navigationState[navigationState.length - 1];
+    setCommunitiesVisibility(navState.previousPage);
+    if (navState.communityId) {
+      setCommunityId(navState.communityId);
+    }
+
+    if (navState.userId) {
+      setOtherUserId(navState.userId);
+    }
+    if (navigationState.length > 1) {
+      setNavigationState((prevState: any) => prevState.slice(0, -1));
     }
   };
 
-  const handleForward = (previousPage: Visibility, nextPage: Visibility) => {
+  const handleForward = (
+    previousPage: any,
+    nextPage: any,
+    communityId?: any,
+    userId?: any,
+  ) => {
+    setNavigationState((prev: any) => [
+      ...prev,
+      {
+        previousPage,
+        nextPage,
+        communityId,
+        userId,
+      },
+    ]);
     setCommunitiesVisibility(nextPage);
-    setPageState((prev) => {
-      return [...prev, previousPage];
-    });
+    if (communityId) {
+      setCommunityId(communityId);
+    }
+
+    if (userId) {
+      setOtherUserId(userId);
+    }
   };
 
   const fetchCommunityDiscovery = async () => {
@@ -109,7 +140,6 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
             otherUserId={otherUserId}
             handleBack={handleBack}
             handleForward={handleForward}
-            setCommunityId={setCommunityId}
           />
         )}
 
@@ -117,7 +147,6 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
           <CommunityHome
             setCommunitiesVisibility={setCommunitiesVisibility}
             token={accessToken.token}
-            setCommunityId={setCommunityId}
             pageState={pageState}
             handleBack={handleBack}
             handleForward={handleForward}
@@ -126,10 +155,9 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
 
         {communitiesVisibility === Visibility.CommunityCreate && (
           <CreateCommunity
-            setCommunitiesVisibility={setCommunitiesVisibility}
-            setCommunityId={setCommunityId}
             getUpdatedUser={getUpdatedUser}
             handleBack={handleBack}
+            handleForward={handleForward}
           />
         )}
 
@@ -168,15 +196,21 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                   <IButton
                     text="Home"
                     onClick={() => {
-                      setCommunitiesVisibility(Visibility.CommunityHome);
+                      handleForward(
+                        Visibility.Communities,
+                        Visibility.CommunityHome,
+                      );
                     }}
                   />
 
                   <IButton
                     text="Create"
-                    onClick={() =>
-                      setCommunitiesVisibility(Visibility.CommunityCreate)
-                    }
+                    onClick={() => {
+                      handleForward(
+                        Visibility.Communities,
+                        Visibility.CommunityCreate,
+                      );
+                    }}
                     bgColor="bg-regal-blue"
                     textColor="text-white"
                     icon={<span>+</span>}
@@ -197,9 +231,12 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                     <ICommunityPanel
                       communities={communityDiscovery.trendingCommunities}
                       showAll={showAllTrending}
-                      onCommunityClick={(id) => {
-                        setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Community);
+                      onCommunityClick={(communityId) => {
+                        handleForward(
+                          Visibility.Communities,
+                          Visibility.Community,
+                          communityId,
+                        );
                       }}
                     />
                   )}
@@ -219,9 +256,12 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                     <ICommunityPanel
                       communities={communityDiscovery.newCommunities}
                       showAll={showAllUpcoming}
-                      onCommunityClick={(id) => {
-                        setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Community);
+                      onCommunityClick={(communityId) => {
+                        handleForward(
+                          Visibility.Communities,
+                          Visibility.Community,
+                          communityId,
+                        );
                       }}
                     />
                   )}
@@ -241,9 +281,12 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
                     <ICommunityPanel
                       communities={communityDiscovery.recommendedCommunities}
                       showAll={showAllRecommended}
-                      onCommunityClick={(id) => {
-                        setCommunityId(id);
-                        setCommunitiesVisibility(Visibility.Community);
+                      onCommunityClick={(communityId) => {
+                        handleForward(
+                          Visibility.Communities,
+                          Visibility.Community,
+                          communityId,
+                        );
                       }}
                     />
                   )}

@@ -1,23 +1,11 @@
-import React, {
-  ChangeEvent,
-  useState,
-  useRef,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { ChangeEvent, useState, useRef } from "react";
 import IInput from "../../../../Library/Input/IInput";
 import * as UserService from "../../../../Services/UserService/UserService";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import IButton from "../../../../Library/Button/IButton";
 import { useAuth } from "../../../../AuthContext";
 
-interface EditProfileProps {
-  setHome: Dispatch<SetStateAction<any>>;
-  home: any;
-  profilePicture: string;
-}
-
-function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
+function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
   const [image, setImage] = useState<string>(profilePicture);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -75,12 +63,13 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
           nonEmptyFields,
           accessToken.token,
         );
-        setHome(updatedUser);
+        getUpdatedUser();
         resetForm();
       }
 
       const updatedUser = await UserService.fetchUserHome(accessToken.token);
-      setHome(updatedUser);
+
+      getUpdatedUser();
       resetForm();
     } catch (error) {}
   };
@@ -129,7 +118,7 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
         <IInput
           name="firstName"
           label="First Name"
-          placeholder={home.user?.firstName}
+          placeholder={userHome?.firstName}
           value={firstName}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFirstName(e.target.value)
@@ -141,7 +130,7 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
         <IInput
           name="lastName"
           label="Last Name"
-          placeholder={home.user?.lastName}
+          placeholder={userHome?.lastName}
           value={lastName}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setLastName(e.target.value)
@@ -152,7 +141,7 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
         <IInput
           name="email"
           label="Email"
-          placeholder={home.user?.email}
+          placeholder={userHome?.email}
           value={email}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -163,7 +152,7 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
         <IInput
           name="phoneNumber"
           label="Phone Number"
-          placeholder={home.user?.phoneNumber}
+          placeholder={userHome?.phoneNumber}
           value={phoneNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setPhoneNumber(e.target.value)
@@ -176,14 +165,14 @@ function EditProfile({ setHome, home, profilePicture }: EditProfileProps) {
           inputs={[
             {
               name: "City",
-              placeholder: home.user?.city,
+              placeholder: userHome?.city,
               value: city,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setCity(e.target.value),
             },
             {
               name: "State",
-              placeholder: home.user?.state,
+              placeholder: userHome?.state,
               value: state,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setState(e.target.value),

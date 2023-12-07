@@ -86,9 +86,10 @@ function Dashboard() {
         <div>
           {sideBarSelection === "Settings" && (
             <Settings
-              setHome={setUserHome}
-              home={userHome}
+              userHome={userHome}
               profilePicture={profilePicture}
+              getUpdatedUser={triggerDataRefresh}
+              token={accessToken.token}
             />
           )}
         </div>

@@ -21,7 +21,12 @@ import {
 } from "@heroicons/react/solid";
 import { Visibility } from "../Enums/CommunityEnums";
 
-const CommunityDetails = ({ community, organizer, handleForward }: any) => {
+const CommunityDetails = ({
+  community,
+  organizer,
+  handleForward,
+  communityId,
+}: any) => {
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
       social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
@@ -145,6 +150,7 @@ const CommunityDetails = ({ community, organizer, handleForward }: any) => {
             handleForward(
               Visibility.Community,
               Visibility.CommunityMembersList,
+              communityId,
             );
           }}
         >

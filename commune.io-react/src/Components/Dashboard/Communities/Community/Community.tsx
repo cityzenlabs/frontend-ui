@@ -202,6 +202,7 @@ function Community({
               organizer={organizer}
               handleForward={handleForward}
               handleBack={handleBack}
+              communityId={communityId}
             />
           </IContainer>
 

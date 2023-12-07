@@ -4,7 +4,6 @@ import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
-import IToggleButtonGroup from "../../../../Library/ToggleButtonGroup/IToggleButtonGroup";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
@@ -18,6 +17,7 @@ function CreateCommunity({
   setCommunityId,
   getUpdatedUser,
   handleBack,
+  handleForward,
 }: any) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
@@ -84,8 +84,11 @@ function CreateCommunity({
       );
       if (result.id) {
         resetFields();
-        setCommunityId(result.id);
-        setCommunitiesVisibility(Visibility.CommunityDashboard);
+        handleForward(
+          Visibility.Communities,
+          Visibility.CommunityDashboard,
+          result.id,
+        );
         getUpdatedUser();
 
         if (imageFiles.length > 0) {

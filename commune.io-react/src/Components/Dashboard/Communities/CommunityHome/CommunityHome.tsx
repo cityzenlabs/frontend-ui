@@ -7,12 +7,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
 
-function CommunityHome({
-  token,
-  setCommunityId,
-  handleBack,
-  handleForward,
-}: any) {
+function CommunityHome({ token, handleBack, handleForward }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [communityHome, setCommunityHome] = useState<any>();
   const [showAllCreatedCommunities, setShowAllCreatedCommunities] =
@@ -108,9 +103,12 @@ function CommunityHome({
               <ICommunityPanel
                 communities={communityHome.joinedCommunities}
                 showAll={showAllJoinedCommunities}
-                onCommunityClick={(id) => {
-                  setCommunityId(id);
-                  handleForward(Visibility.CommunityHome, Visibility.Community);
+                onCommunityClick={(communityId) => {
+                  handleForward(
+                    Visibility.CommunityHome,
+                    Visibility.Community,
+                    communityId,
+                  );
                 }}
               />
             )}
@@ -130,11 +128,11 @@ function CommunityHome({
               <ICommunityPanel
                 communities={communityHome.createdCommunities}
                 showAll={showAllCreatedCommunities}
-                onCommunityClick={(id) => {
-                  setCommunityId(id);
+                onCommunityClick={(communityId) => {
                   handleForward(
                     Visibility.CommunityHome,
                     Visibility.CommunityDashboard,
+                    communityId,
                   );
                 }}
               />
