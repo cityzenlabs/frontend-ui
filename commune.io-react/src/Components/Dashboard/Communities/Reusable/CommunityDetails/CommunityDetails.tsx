@@ -19,12 +19,9 @@ import {
   StarIcon,
   MoonIcon,
 } from "@heroicons/react/solid";
+import { Visibility } from "../Enums/CommunityEnums";
 
-const CommunityDetails = ({
-  community,
-  organizer,
-  setShowMembersList,
-}: any) => {
+const CommunityDetails = ({ community, organizer, handleForward }: any) => {
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
       social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
@@ -142,7 +139,15 @@ const CommunityDetails = ({
           </div>
         </IPanel>
 
-        <IPanel height="h-[55px]" onPanelClick={() => setShowMembersList(true)}>
+        <IPanel
+          height="h-[55px]"
+          onPanelClick={() => {
+            handleForward(
+              Visibility.Community,
+              Visibility.CommunityMembersList,
+            );
+          }}
+        >
           <div className="flex justify-between items-center h-full">
             {community?.members.length} Members
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />

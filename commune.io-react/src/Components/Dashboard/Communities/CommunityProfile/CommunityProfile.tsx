@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import IAttributeBar from "../../../../../Library/AttributeBar/IAttributeBar";
-import IPanel from "../../../../../Library/Panel/IPanel";
-import IContainer from "../../../../../Library/Container/IContainer";
-import IBackButton from "../../../../../Library/BackButton/IBackButton";
-import { attributeColors } from "../Constants/CommunityConstants";
-import * as UserService from "../../../../../Services/UserService/UserService";
-import * as CommunityService from "../../../../../Services/CommunityService/CommunityService";
-import ICommunityPanel from "../../../../../Library/CommunityPanel/ICommunityPanel";
+import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
+import IPanel from "../../../../Library/Panel/IPanel";
+import IContainer from "../../../../Library/Container/IContainer";
+import IBackButton from "../../../../Library/BackButton/IBackButton";
+import { attributeColors } from "../Reusable/Constants/CommunityConstants";
+import * as UserService from "../../../../Services/UserService/UserService";
+import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
+import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
+import { Visibility } from "../Reusable/Enums/CommunityEnums";
 
 function CommunityProfile({
   userId,
   token,
-  setShowUserProfile,
-  setShowUserCommunity,
-  setUserCommunityId,
+  otherUserId,
+  handleBack,
+  handleForward,
+  setCommunityId,
+  setCommunityState,
 }: any) {
   const [user, setUser] = useState<any>();
   const [communities, setCommunities] = useState<any>();
@@ -21,7 +24,7 @@ function CommunityProfile({
 
   const getUser = async () => {
     try {
-      const user = await UserService.fetchUser(token, userId);
+      const user = await UserService.fetchUser(token, otherUserId);
       if (user) {
         setUser(user);
       }
@@ -32,7 +35,7 @@ function CommunityProfile({
     try {
       const communities = await CommunityService.getJoinedCommunities(
         token,
-        userId,
+        otherUserId,
       );
       if (communities) {
         setCommunities(communities);
@@ -55,7 +58,7 @@ function CommunityProfile({
   return (
     <div>
       <IContainer className="pt-8 pb-8">
-        <IBackButton onClick={() => setShowUserProfile(false)} />
+        <IBackButton onClick={() => handleBack()} />
         <IPanel height="h-full" marginTop="mt-8">
           <div className="px-12 py-6 ">
             <div className="flex">
@@ -115,8 +118,12 @@ function CommunityProfile({
               communities={communities}
               showAll={true}
               onCommunityClick={(id) => {
-                setShowUserCommunity(true);
-                setUserCommunityId(id);
+                setCommunityId(id);
+                setCommunityState((prev: any) => [...prev, id]);
+                handleForward(
+                  Visibility.CommunityProfile,
+                  Visibility.Community,
+                );
               }}
             />
           )}

@@ -12,6 +12,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Success from "./Components/SignUp/Step5/Success";
 import ProtectedRoute from "./ProtectedRoute"; // Make sure this path is correct
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import CommunityDiscovery from "./Components/Dashboard/Communities/CommunityDiscovery";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             }
           />
           <Route path="/account-created-successfully" element={<Success />} />
+          <Route path="/communities" element={<CommunityDiscovery />} />
         </Routes>
       </Router>
     </div>

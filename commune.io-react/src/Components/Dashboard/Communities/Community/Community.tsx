@@ -6,7 +6,6 @@ import * as CommunityService from "../../../../Services/CommunityService/Communi
 import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
-import CommunityMembersList from "../Reusable/CommunityMembersList/CommunityMembersList";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import CommunityEvent from "../Reusable/CommunityEvent/CommunityEvent";
@@ -18,11 +17,11 @@ function Community({
   user,
   getUpdatedUser,
   handleBack,
+  handleForward,
 }: any) {
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
-  const [showMembersList, setShowMembersList] = useState<boolean>(false);
   const [hasJoined, setHasJoined] = useState<boolean>();
   const [gallery, setGallery] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -161,22 +160,16 @@ function Community({
         />
       )}
 
-      {showMembersList && !showCommunityEvent && (
-        <CommunityMembersList
-          setShowMembersList={setShowMembersList}
-          token={token}
-          communityId={community.id}
-          user={user}
-          getUpdatedUser={getUpdatedUser}
-        />
-      )}
-
-      {!showMembersList && !showCommunityEvent && (
+      {!showCommunityEvent && (
         <div>
           <IContainer className="pt-8 pb-8">
             <div className="flex justify-between items-center">
               <div className="flex">
-                <IBackButton onClick={handleBack} />
+                <IBackButton
+                  onClick={() => {
+                    handleBack();
+                  }}
+                />
                 <ILabel className="ml-4" text={community?.name} />
               </div>
               <div className="flex">
@@ -207,7 +200,8 @@ function Community({
             <CommunityDetails
               community={community}
               organizer={organizer}
-              setShowMembersList={setShowMembersList}
+              handleForward={handleForward}
+              handleBack={handleBack}
             />
           </IContainer>
 

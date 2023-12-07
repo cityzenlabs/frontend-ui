@@ -20,7 +20,7 @@ function IPanel({
   height = "h-[244px]", // Default height
   marginTop = "mt-0", // Default top margin
   titleColor,
-}: IPanelProps) {
+}: any) {
   return (
     <div className={`w-full ${marginTop}`} onClick={onPanelClick}>
       <div className={`${height} rounded-lg bg-white px-4 py-6`}>

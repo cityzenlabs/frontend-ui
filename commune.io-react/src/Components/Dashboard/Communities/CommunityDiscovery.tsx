@@ -12,6 +12,8 @@ import * as CommunityService from "../../../Services/CommunityService/CommunityS
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import Community from "./Community/Community";
 import CommunityHome from "./CommunityHome/CommunityHome";
+import CommunityMembersList from "./CommunityMembersList/CommunityMembersList";
+import CommunityProfile from "./CommunityProfile/CommunityProfile";
 
 function CommunityDiscovery({ user, getUpdatedUser }: any) {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +28,8 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   const [pageState, setPageState] = useState<Visibility[]>([
     Visibility.Communities,
   ]);
+  const [communityState, setCommunityState] = useState<any>([]);
+  const [otherUserId, setOtherUserId] = useState<any>();
 
   const toggleShowAllTrending = () => {
     setShowAllTrending((prev) => !prev);
@@ -77,6 +81,10 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   };
 
   useEffect(() => {
+    setCommunityState([]);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchCommunityDiscovery()]);
       setIsLoading(false);
@@ -91,6 +99,26 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   return (
     <div>
       <div>
+        {communitiesVisibility === Visibility.CommunityMembersList && (
+          <CommunityMembersList
+            communityId={communityId}
+            token={accessToken.token}
+            handleBack={handleBack}
+            handleForward={handleForward}
+            setOtherUserId={setOtherUserId}
+          />
+        )}
+
+        {communitiesVisibility === Visibility.CommunityProfile && (
+          <CommunityProfile
+            otherUserId={otherUserId}
+            handleBack={handleBack}
+            handleForward={handleForward}
+            setCommunityId={setCommunityId}
+            setCommunityState={setCommunityState}
+          />
+        )}
+
         {communitiesVisibility === Visibility.CommunityHome && (
           <CommunityHome
             setCommunitiesVisibility={setCommunitiesVisibility}
@@ -128,6 +156,7 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
             user={user}
             getUpdatedUser={getUpdatedUser}
             handleBack={handleBack}
+            handleForward={handleForward}
           />
         )}
 

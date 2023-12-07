@@ -5,6 +5,8 @@ enum Visibility {
   CommunityDashboard = "Dashboard",
   Community = "Community",
   CommunityEvent = "CommunityEvent",
+  CommunityMembersList = "CommunityMembersList",
+  CommunityProfile = "CommunityProfile",
 }
 
 export { Visibility };
