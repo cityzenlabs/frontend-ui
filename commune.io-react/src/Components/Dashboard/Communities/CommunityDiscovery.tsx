@@ -28,7 +28,6 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   const [pageState, setPageState] = useState<Visibility[]>([
     Visibility.Communities,
   ]);
-  const [communityState, setCommunityState] = useState<any>([]);
   const [otherUserId, setOtherUserId] = useState<any>();
 
   const toggleShowAllTrending = () => {
@@ -81,10 +80,6 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
   };
 
   useEffect(() => {
-    setCommunityState([]);
-  }, []);
-
-  useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchCommunityDiscovery()]);
       setIsLoading(false);
@@ -115,7 +110,6 @@ function CommunityDiscovery({ user, getUpdatedUser }: any) {
             handleBack={handleBack}
             handleForward={handleForward}
             setCommunityId={setCommunityId}
-            setCommunityState={setCommunityState}
           />
         )}
 
