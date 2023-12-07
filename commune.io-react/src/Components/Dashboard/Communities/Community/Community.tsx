@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import IPanel from "../../../../Library/Panel/IPanel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import * as UserService from "../../../../Services/UserService/UserService";
@@ -8,17 +7,18 @@ import ILabel from "../../../../Library/Label/ILabel";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import CommunityEvent from "../Reusable/CommunityEvent/CommunityEvent";
+import CommunityEvent from "../CommunityEvent/CommunityEvent";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
+import { useDash } from "../../../../Context/DashboardContext";
 
-function Community({
-  communityId,
-  token,
-  user,
-  getUpdatedUser,
-  handleBack,
-  handleForward,
-}: any) {
+import { useNavigate } from "react-router-dom";
+function Community() {
+  const { communityId } = useParams();
+  const accessToken = useAuth();
+  const { user, triggerDataRefresh } = useDash();
+  const navigate = useNavigate();
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
@@ -34,11 +34,14 @@ function Community({
 
   const fetchCommunityData = async (callback = () => {}) => {
     try {
-      const community = await CommunityService.getCommunity(communityId, token);
+      const community = await CommunityService.getCommunity(
+        communityId,
+        accessToken.token,
+      );
       if (community) {
         setCommunity(community);
         const organizer = await UserService.fetchUser(
-          token,
+          accessToken.token,
           community.organizer,
         );
         if (organizer) {
@@ -54,7 +57,7 @@ function Community({
     try {
       const upcomingEvents = await CommunityService.getCommunityEvents(
         communityId,
-        token,
+        accessToken.token,
         "upcoming",
       );
       if (upcomingEvents) {
@@ -75,7 +78,7 @@ function Community({
     try {
       const picture = await CommunityService.getCommunityPicture(
         communityId,
-        token,
+        accessToken.token,
       );
       if (picture) {
         setCommunityPicture(picture);
@@ -86,7 +89,7 @@ function Community({
   const fetchGallery = async () => {
     try {
       const gallery = await CommunityService.getCommunityPhotoGallery(
-        token,
+        accessToken.token,
         communityId,
       );
       if (gallery) {
@@ -113,16 +116,16 @@ function Community({
     };
 
     fetchData();
-  }, [communityId, token]);
+  }, [communityId, accessToken.token]);
 
   const handleJoinOrLeaveCommunity = async () => {
     try {
       const response = hasJoined
-        ? await CommunityService.leaveCommunity(token, communityId)
-        : await CommunityService.joinCommunity(token, communityId);
+        ? await CommunityService.leaveCommunity(accessToken.token, communityId)
+        : await CommunityService.joinCommunity(accessToken.token, communityId);
 
       if (response.ok) {
-        await getUpdatedUser();
+        await triggerDataRefresh();
         fetchCommunityData(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
@@ -148,109 +151,86 @@ function Community({
 
   return (
     <div>
-      {showCommunityEvent && (
-        <CommunityEvent
-          eventId={communityEventId}
-          setShowCommunityEvent={setShowCommunityEvent}
-          setCommunityEventId={setCommunityEventId}
-          token={token}
-          user={user}
-          getUpdatedUser={getUpdatedUser}
-          fetchCommunityEvents={fetchCommunityEvents}
-        />
-      )}
+      <div>
+        <IContainer className="pt-8 pb-8">
+          <div className="flex justify-between items-center">
+            <div className="flex">
+              <ILabel className="ml-4" text={community?.name} />
+            </div>
+            <div className="flex">
+              <IButton
+                text={hasJoined ? "Leave Community" : "Join Community"}
+                onClick={handleJoinOrLeaveCommunity}
+                bgColor={
+                  user?.id === organizer.id ? "bg-white" : "bg-regal-blue"
+                }
+                textColor={
+                  user?.id === organizer.id ? "text-black" : "text-white"
+                }
+                className="px-6 py-2 "
+                disabled={user?.id === organizer.id}
+              />
+            </div>
+          </div>
+        </IContainer>
 
-      {!showCommunityEvent && (
-        <div>
-          <IContainer className="pt-8 pb-8">
-            <div className="flex justify-between items-center">
-              <div className="flex">
-                <IBackButton
-                  onClick={() => {
-                    handleBack();
+        <IContainer className="pb-8">
+          <div className="w-full">
+            {hasJoined && <ICarousel imageUrls={gallery} />}
+            {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
+          </div>
+        </IContainer>
+
+        <IContainer className="pb-8">
+          <CommunityDetails
+            community={community}
+            organizer={organizer}
+            communityId={communityId}
+          />
+        </IContainer>
+
+        {hasJoined && !showAllSocialEvents && (
+          <IContainer className="pb-8">
+            <div>
+              <IPanel
+                title="Upcoming Hosted Events"
+                height="600px"
+                buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
+                onButtonClick={toggleShowAllHostedEvents}
+              >
+                <IEventPanel
+                  events={hostedEvents}
+                  showAll={showAllHostedEvents}
+                  onEventClick={(eventId) => {
+                    navigate(`/dashboard/communities/event/${eventId}`);
                   }}
-                />
-                <ILabel className="ml-4" text={community?.name} />
-              </div>
-              <div className="flex">
-                <IButton
-                  text={hasJoined ? "Leave Community" : "Join Community"}
-                  onClick={handleJoinOrLeaveCommunity}
-                  bgColor={
-                    user.id === organizer.id ? "bg-white" : "bg-regal-blue"
-                  }
-                  textColor={
-                    user.id === organizer.id ? "text-black" : "text-white"
-                  }
-                  className="px-6 py-2 "
-                  disabled={user.id === organizer.id}
-                />
-              </div>
+                ></IEventPanel>
+              </IPanel>
             </div>
           </IContainer>
+        )}
 
+        {hasJoined && !showAllHostedEvents && (
           <IContainer className="pb-8">
-            <div className="w-full">
-              {hasJoined && <ICarousel imageUrls={gallery} />}
-              {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
+            <div>
+              <IPanel
+                title="Upcoming Social Events"
+                height="600px"
+                buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
+                onButtonClick={toggleShowAllSocialEvents}
+              >
+                <IEventPanel
+                  events={socialEvents}
+                  showAll={showAllSocialEvents}
+                  onEventClick={(eventId) => {
+                    navigate(`/dashboard/communities/event/${eventId}`);
+                  }}
+                ></IEventPanel>
+              </IPanel>
             </div>
           </IContainer>
-
-          <IContainer className="pb-8">
-            <CommunityDetails
-              community={community}
-              organizer={organizer}
-              handleForward={handleForward}
-              handleBack={handleBack}
-              communityId={communityId}
-            />
-          </IContainer>
-
-          {hasJoined && !showAllSocialEvents && (
-            <IContainer className="pb-8">
-              <div>
-                <IPanel
-                  title="Upcoming Hosted Events"
-                  height="600px"
-                  buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
-                  onButtonClick={toggleShowAllHostedEvents}
-                >
-                  <IEventPanel
-                    events={hostedEvents}
-                    showAll={showAllHostedEvents}
-                    onEventClick={(id) => {
-                      setCommunityEventId(id);
-                      setShowCommunityEvent(true);
-                    }}
-                  ></IEventPanel>
-                </IPanel>
-              </div>
-            </IContainer>
-          )}
-
-          {hasJoined && !showAllHostedEvents && (
-            <IContainer className="pb-8">
-              <div>
-                <IPanel
-                  title="Upcoming Social Events"
-                  height="600px"
-                  buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
-                  onButtonClick={toggleShowAllSocialEvents}
-                >
-                  <IEventPanel
-                    events={socialEvents}
-                    showAll={showAllSocialEvents}
-                    onEventClick={(id) => {
-                      setCommunityEventId(id);
-                      setShowCommunityEvent(true);
-                    }}
-                  ></IEventPanel>
-                </IPanel>
-              </div>
-            </IContainer>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

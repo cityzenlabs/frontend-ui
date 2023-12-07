@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Profile from "./Profile/Profile";
 import IContainer from "../../../Library/Container/IContainer";
 import IPanel from "../../../Library/Panel/IPanel";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
 import { attributeColors } from "./Constants/HomeConstats";
+import { useDash } from "../../../Context/DashboardContext";
 
-function Home({ viewProfile, setViewProfile, home, user }: any) {
+function Home() {
   const [showAllRecommended, setShowAllRecommended] = useState(false);
+  const [viewProfile, setViewProfile] = useState<boolean>(false);
+  const { userHome, user, isLoading } = useDash();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -34,7 +41,7 @@ function Home({ viewProfile, setViewProfile, home, user }: any) {
                   <div className="xl:flex mt-3">
                     <div className="w-full xl:w-full">
                       <div className="xl:flex xl:flex-wrap">
-                        {Object.entries(home?.topFourAttributes || {}).map(
+                        {Object.entries(userHome?.topFourAttributes || {}).map(
                           ([attributeKey, attributeValue], index) => (
                             <IAttributeBar
                               key={attributeKey}
@@ -69,9 +76,9 @@ function Home({ viewProfile, setViewProfile, home, user }: any) {
                 setShowAllRecommended(!setShowAllRecommended)
               }
             >
-              {home?.recommendedCommunities && (
+              {userHome?.recommendedCommunities && (
                 <ICommunityPanel
-                  communities={home.recommendedCommunities}
+                  communities={userHome?.recommendedCommunities}
                   showAll={showAllRecommended}
                 />
               )}
@@ -83,9 +90,9 @@ function Home({ viewProfile, setViewProfile, home, user }: any) {
               height="600px"
               buttonLabel="Show All"
             >
-              {home?.recommendedCommunities && (
+              {userHome?.recommendedCommunities && (
                 <ICommunityPanel
-                  communities={home.upcomingEvents}
+                  communities={user?.upcomingEvents}
                   showAll={true}
                 />
               )}

@@ -11,6 +11,7 @@ import {
 import { attributeColors } from "../Constants/CommunityConstants";
 import { MapIcon } from "@heroicons/react/outline";
 
+import { useNavigate } from "react-router-dom";
 import {
   UsersIcon,
   FireIcon,
@@ -19,7 +20,6 @@ import {
   StarIcon,
   MoonIcon,
 } from "@heroicons/react/solid";
-import { Visibility } from "../Enums/CommunityEnums";
 
 const CommunityDetails = ({
   community,
@@ -38,7 +38,7 @@ const CommunityDetails = ({
     };
     return icons[attribute.toLowerCase()];
   };
-
+  let navigate = useNavigate();
   const getColorByGenderRequirements = () => {
     switch (community?.genderRequirements) {
       case "MALE":
@@ -147,15 +147,11 @@ const CommunityDetails = ({
         <IPanel
           height="h-[55px]"
           onPanelClick={() => {
-            handleForward(
-              Visibility.Community,
-              Visibility.CommunityMembersList,
-              communityId,
-            );
+            navigate(`/dashboard/communities/members/${communityId}`);
           }}
         >
           <div className="flex justify-between items-center h-full">
-            {community?.members.length} Members
+            {community?.members?.length} Members
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>

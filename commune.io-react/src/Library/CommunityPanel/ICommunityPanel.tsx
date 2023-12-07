@@ -13,7 +13,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 p-4 overflow-x-auto py-4 space-x-3">
-      {communities.slice(0, showAll ? undefined : 4).map((community) => (
+      {communities?.slice(0, showAll ? undefined : 4).map((community) => (
         <div
           key={community.communityId} // Use communityId as key
           className="rounded-lg shadow-md"

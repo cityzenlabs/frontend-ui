@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Visibility } from "../Reusable/Enums/CommunityEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
+import { useAuth } from "../../../../AuthContext";
 
-function CommunityHome({ token, handleBack, handleForward }: any) {
-  const [isLoading, setIsLoading] = useState(true);
+import { useNavigate } from "react-router-dom";
+function CommunityHome() {
+  const accessToken = useAuth();
+  const navigate = useNavigate();
+
   const [communityHome, setCommunityHome] = useState<any>();
   const [showAllCreatedCommunities, setShowAllCreatedCommunities] =
     useState(false);
@@ -31,7 +33,7 @@ function CommunityHome({ token, handleBack, handleForward }: any) {
 
   const fetchHome = async () => {
     try {
-      const data = await CommunityService.getCommunityHome(token);
+      const data = await CommunityService.getCommunityHome(accessToken.token);
       if (data) {
         setCommunityHome(data);
       }
@@ -41,21 +43,15 @@ function CommunityHome({ token, handleBack, handleForward }: any) {
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchHome()]);
-      setIsLoading(false);
     };
     fetchData();
   }, []);
-
-  if (isLoading) {
-    return <div></div>;
-  }
 
   return (
     <div>
       <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
-            <IBackButton onClick={handleBack} />
             <ILabel className="ml-4" text="Community Home" />
           </div>
         </div>
@@ -104,11 +100,7 @@ function CommunityHome({ token, handleBack, handleForward }: any) {
                 communities={communityHome.joinedCommunities}
                 showAll={showAllJoinedCommunities}
                 onCommunityClick={(communityId) => {
-                  handleForward(
-                    Visibility.CommunityHome,
-                    Visibility.Community,
-                    communityId,
-                  );
+                  navigate(`/dashboard/communities/${communityId}`);
                 }}
               />
             )}
@@ -129,11 +121,7 @@ function CommunityHome({ token, handleBack, handleForward }: any) {
                 communities={communityHome.createdCommunities}
                 showAll={showAllCreatedCommunities}
                 onCommunityClick={(communityId) => {
-                  handleForward(
-                    Visibility.CommunityHome,
-                    Visibility.CommunityDashboard,
-                    communityId,
-                  );
+                  navigate(`/dashboard/communities/manage/${communityId}`);
                 }}
               />
             )}

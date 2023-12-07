@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../../Library/Container/IContainer";
-import IBackButton from "../../../../../Library/BackButton/IBackButton";
-import * as EventService from "../../../../../Services/EventService/EventService";
-import * as UserService from "../../../../../Services/UserService/UserService";
-import ILabel from "../../../../../Library/Label/ILabel";
-import IPanel from "../../../../../Library/Panel/IPanel";
+import IContainer from "../../../../Library/Container/IContainer";
+import * as EventService from "../../../../Services/EventService/EventService";
+import * as UserService from "../../../../Services/UserService/UserService";
+import ILabel from "../../../../Library/Label/ILabel";
+import IPanel from "../../../../Library/Panel/IPanel";
 import { CalendarIcon, MapIcon } from "@heroicons/react/outline";
-import IButton from "../../../../../Library/Button/IButton";
-import IEventPanel from "../../../../../Library/EventPanel/IEventPanel";
+import IButton from "../../../../Library/Button/IButton";
+import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
+import { useDash } from "../../../../Context/DashboardContext";
 
-function CommunityEvent({
-  setShowCommunityEvent,
-  eventId,
-  token,
-  user,
-  getUpdatedUser,
-  setCommunityEventId,
-  fetchCommunityEvents,
-}: any) {
+import { useNavigate } from "react-router-dom";
+
+function CommunityEvent() {
+  const accessToken = useAuth();
+  const { user, triggerDataRefresh } = useDash();
+  const { communityName, eventId } = useParams();
+
+  const navigate = useNavigate();
+
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
@@ -26,10 +28,13 @@ function CommunityEvent({
 
   const fetchEvent = async (callback = () => {}) => {
     try {
-      const event = await EventService.getEvent(token, eventId);
+      const event = await EventService.getEvent(accessToken.token, eventId);
       if (event) {
         setEvent(event);
-        const organizer = await UserService.fetchUser(token, event.organizer);
+        const organizer = await UserService.fetchUser(
+          accessToken.token,
+          event.organizer,
+        );
         if (organizer) {
           setOrganizer(organizer);
           checkMembership(event);
@@ -41,7 +46,10 @@ function CommunityEvent({
 
   const fetchRelatedEvents = async () => {
     try {
-      const data = await EventService.getRelatedEvents(token, eventId);
+      const data = await EventService.getRelatedEvents(
+        accessToken.token,
+        eventId,
+      );
       if (data) {
         setRelatedEvents(data);
       }
@@ -61,17 +69,16 @@ function CommunityEvent({
     };
 
     fetchData();
-  }, [eventId, token]);
+  }, [eventId, accessToken.token]);
 
   const handleJoinOrLeaveEvent = async () => {
     try {
       const response = hasJoined
-        ? await EventService.leaveEvent(token, eventId)
-        : await EventService.joinEvent(token, eventId);
+        ? await EventService.leaveEvent(accessToken.token, eventId)
+        : await EventService.joinEvent(accessToken.token, eventId);
 
       if (response.ok) {
-        await getUpdatedUser();
-        fetchCommunityEvents();
+        triggerDataRefresh();
         fetchEvent(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
@@ -86,7 +93,6 @@ function CommunityEvent({
       <IContainer className="pb-8 pt-8">
         <div className="flex justify-between items-center">
           <div className="flex">
-            <IBackButton onClick={() => setShowCommunityEvent(false)} />
             <ILabel className="ml-4" text={event?.name} />
           </div>
           <div>
@@ -169,8 +175,8 @@ function CommunityEvent({
           <IPanel title="Related" buttonLabel={"Show All"} height="600px">
             <IEventPanel
               events={relatedEvents ?? {}}
-              onEventClick={(id) => {
-                setCommunityEventId(id);
+              onEventClick={(eventId) => {
+                navigate(`/dashboard/communities/event/${eventId}`);
               }}
             />
           </IPanel>

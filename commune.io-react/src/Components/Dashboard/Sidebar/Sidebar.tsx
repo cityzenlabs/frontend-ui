@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { SIDE_BAR_ITEMS, HAMBURGER_ICON } from "../../../constants";
 import { SideBarProps } from "./types/SidebarProps";
 
+import { useNavigate } from "react-router-dom";
+
 function Sidebar({
   sideBarSelection,
   sideBarVisibility,
@@ -10,6 +12,7 @@ function Sidebar({
   setSideBarSelection,
   setSideBarVisibility,
 }: SideBarProps) {
+  let navigate = useNavigate();
   const toggleSidebar = () => {
     setSideBarVisibility(!sideBarVisibility);
   };
@@ -17,6 +20,7 @@ function Sidebar({
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    navigate("home");
     const handleClickOutside = (event: MouseEvent) => {
       if (
         sidebarRef.current &&
@@ -45,7 +49,17 @@ function Sidebar({
   const handleMenuItemClick = (route: string) => {
     setSideBarVisibility(false);
     setSideBarSelection(route);
-    console.log(route);
+    if (route === "Home") {
+      navigate("home");
+    }
+
+    if (route === "Communities") {
+      navigate("communities");
+    }
+
+    if (route === "Events") {
+      navigate("events");
+    }
   };
 
   const handleViewProfile = () => {

@@ -1,27 +1,29 @@
 import React, { ChangeEvent, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
+import { useAuth } from "../../../../AuthContext";
+import IDropdown from "../../../../Library/Dropdown/IDropdown";
 
-function CommunityDashboardEdit({
-  setEditCommunity,
-  community,
-  token,
-  getCommunityDashboard,
-}: any) {
+import { useDash } from "../../../../Context/DashboardContext";
+import { useNavigate } from "react-router-dom";
+
+function CommunityCreate() {
+  let navigate = useNavigate();
+  const accessToken = useAuth();
+  const { triggerDataRefresh } = useDash();
+
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
-  const [minimumAge, setMinAge] = useState<string>("");
-  const [maximumAge, setMaxAge] = useState<string>("");
+  const [minAge, setMinAge] = useState<string>("");
+  const [maxAge, setMaxAge] = useState<string>("");
   const [genderRequirements, setGenderRequirements] = useState("");
   const [social, setSocial] = useState("");
   const [intelligence, setIntelligence] = useState("");
@@ -38,115 +40,37 @@ function CommunityDashboardEdit({
     }
   };
 
-  const resetFields = () => {
-    setName("");
-    setCity("");
-    setState("");
-    setMinAge("");
-    setMaxAge("");
-    setGenderRequirements("");
-    setSocial("");
-    setIntelligence("");
-    setNightLife("");
-    setAdventure("");
-    setCulture("");
-    setFitness("");
-    setDescription("");
-    setImageFiles([]);
-  };
-
-  const handleEditCommunity = async () => {
-    const fieldsToCheck: any = [
-      { stateKey: "name", original: community?.name },
-      { stateKey: "city", original: community?.city },
-      { stateKey: "state", original: community?.state },
-      { stateKey: "minimumAge", original: community?.minimumAge },
-      { stateKey: "maximumAge", original: community?.maximumAge },
-      {
-        stateKey: "genderRequirements",
-        original: community?.genderRequirements,
+  const handleCreateCommunity = async () => {
+    const community = {
+      name: name,
+      description: description,
+      city: city,
+      state: state,
+      minimumAge: parseInt(minAge),
+      maximumAge: parseInt(maxAge),
+      genderRequirements: genderRequirements,
+      attributeRequirements: {
+        SOCIAL: parseInt(social, 10) || 0,
+        INTELLIGENCE: parseInt(intelligence, 10) || 0,
+        ADVENTURE: parseInt(adventure, 10) || 0,
+        CULTURE: parseInt(culture, 10) || 0,
+        NIGHTLIFE: parseInt(nightLife, 10) || 0,
+        FITNESS: parseInt(fitness, 10) || 0,
       },
-      { stateKey: "social", original: community?.attributeRequirements.SOCIAL },
-      {
-        stateKey: "intelligence",
-        original: community?.attributeRequirements.INTELLIGENCE,
-      },
-      {
-        stateKey: "nightLife",
-        original: community?.attributeRequirements.NIGHTLIFE,
-      },
-      {
-        stateKey: "adventure",
-        original: community?.attributeRequirements.ADVENTURE,
-      },
-      {
-        stateKey: "culture",
-        original: community?.attributeRequirements.CULTURE,
-      },
-      {
-        stateKey: "fitness",
-        original: community?.attributeRequirements.FITNESS,
-      },
-      { stateKey: "description", original: community?.description },
-    ];
-
-    const updatedFields = fieldsToCheck.reduce((acc: any, field: any) => {
-      const stateValues: any = {
-        name,
-        city,
-        state,
-        minimumAge,
-        maximumAge,
-        genderRequirements,
-        social,
-        intelligence,
-        nightLife,
-        adventure,
-        culture,
-        fitness,
-        description,
-      };
-      const currentValue = stateValues[field.stateKey];
-
-      // Always include the attribute requirements with their original or updated values
-      if (
-        [
-          "social",
-          "intelligence",
-          "nightLife",
-          "adventure",
-          "culture",
-          "fitness",
-        ].includes(field.stateKey)
-      ) {
-        if (!acc.attributeRequirements) {
-          acc.attributeRequirements = {};
-        }
-        acc.attributeRequirements[field.stateKey.toUpperCase()] =
-          currentValue !== "" ? Number(currentValue) : field.original;
-      } else {
-        // For other fields, update only if there is a change
-        if (currentValue !== "" && currentValue !== field.original) {
-          acc[field.stateKey] = currentValue;
-        }
-      }
-      return acc;
-    }, {});
+    };
 
     try {
-      const result = await CommunityService.editCommunity(
-        token,
-        community?.id,
-        updatedFields,
+      const result = await CommunityService.createCommunity(
+        community,
+        accessToken.token,
       );
-      if (result) {
-        getCommunityDashboard(() => {
-          resetFields();
-        });
+      if (result.id) {
+        navigate(`/dashboard/communities/manage/${result.id}`);
+        triggerDataRefresh();
         if (imageFiles.length > 0) {
           await CommunityService.updateCommunityPicture(
-            token,
-            community?.id,
+            accessToken.token,
+            result.id,
             imageFiles[0],
           );
         }
@@ -156,20 +80,14 @@ function CommunityDashboardEdit({
 
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
-        <div className="xl:flex lg:flex items-center justify-between">
-          <div className="flex items-center">
-            <IBackButton onClick={() => setEditCommunity(false)} />
-            <ILabel className="ml-4" text="Edit Community" />
-          </div>
-        </div>
+      <IContainer className="pt-8 pb-8">
+        <ILabel text="Create Communities"></ILabel>
       </IContainer>
-
       <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
-            label="Name"
-            placeholder={community?.name}
+            label="Community Name"
+            placeholder="Name"
             name="name"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -185,19 +103,17 @@ function CommunityDashboardEdit({
             inputs={[
               {
                 name: "city",
-                placeholder: community?.city,
+                placeholder: "City",
                 value: city,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value),
-                disabled: true,
               },
               {
                 name: "state",
-                placeholder: community?.state,
+                placeholder: "State",
                 value: state,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setState(e.target.value),
-                disabled: true,
               },
             ]}
           ></IInputGroup>
@@ -211,16 +127,16 @@ function CommunityDashboardEdit({
             inputs={[
               {
                 name: "min",
-                placeholder: community?.minimumAge,
-                value: minimumAge,
+                placeholder: "Min age",
+                value: minAge,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setMinAge(e.target.value),
                 numberOnly: true,
               },
               {
-                name: "max",
-                placeholder: community?.maximumAge,
-                value: maximumAge,
+                name: "Max Age",
+                placeholder: "Max age",
+                value: maxAge,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setMaxAge(e.target.value),
                 numberOnly: true,
@@ -239,7 +155,7 @@ function CommunityDashboardEdit({
               {
                 name: "Social",
                 placeholder: "Social",
-                displayLabel: `Social- ${community?.attributeRequirements.SOCIAL}`,
+                displayLabel: "Social",
                 value: social,
                 numberOnly: true,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -247,8 +163,8 @@ function CommunityDashboardEdit({
               },
               {
                 name: "Intelligence",
-                placeholder: "",
-                displayLabel: `Intelligence - ${community?.attributeRequirements.INTELLIGENCE}`,
+                placeholder: "Intelligence",
+                displayLabel: "Intelligence",
                 numberOnly: true,
                 value: intelligence,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -257,7 +173,7 @@ function CommunityDashboardEdit({
               {
                 name: "Night Life",
                 placeholder: "Night Life",
-                displayLabel: `Night Life - ${community?.attributeRequirements.NIGHTLIFE}`,
+                displayLabel: "Night Life",
                 numberOnly: true,
                 value: nightLife,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -276,7 +192,7 @@ function CommunityDashboardEdit({
               {
                 name: "Adventure",
                 placeholder: "Adventure",
-                displayLabel: `Adventure - ${community?.attributeRequirements.ADVENTURE}`,
+                displayLabel: "Adventure",
                 numberOnly: true,
                 value: adventure,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -285,7 +201,7 @@ function CommunityDashboardEdit({
               {
                 name: "Culture",
                 placeholder: "Culture",
-                displayLabel: `Culture - ${community?.attributeRequirements.CULTURE}`,
+                displayLabel: "Culture",
                 numberOnly: true,
                 value: culture,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -295,7 +211,7 @@ function CommunityDashboardEdit({
               {
                 name: "Fitness",
                 placeholder: "Fitness",
-                displayLabel: `Fitness - ${community?.attributeRequirements.FITNESS}`,
+                displayLabel: "Fitness",
                 numberOnly: true,
                 value: fitness,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -305,21 +221,18 @@ function CommunityDashboardEdit({
           ></IInputGroup>
         </div>
       </IContainer>
+
       <IContainer className="pb-4">
-        <div className="flex xl:w-1/2 lg:w-1/2">
+        <div className="flex xl:w-1/2 lg:w-full">
           <div className="mr-2 w-full">
             <IDropdown
+              onChange={setGenderRequirements}
               labelText="Gender Requirements"
-              placeholder={
-                community?.genderRequirements.toUpperCase()[0] +
-                community?.genderRequirements.toLowerCase().slice(1)
-              }
               options={[
                 { label: "Male", value: "MALE" },
                 { label: "Female", value: "FEMALE" },
                 { label: "Neutral", value: "NEUTRAL" },
               ]}
-              onChange={(newValue) => setGenderRequirements(newValue)}
               value={genderRequirements}
             ></IDropdown>
           </div>
@@ -330,7 +243,7 @@ function CommunityDashboardEdit({
         <div className="xl:w-1/2">
           <ITextArea
             name="description"
-            placeholder={community?.description}
+            placeholder=""
             value={description}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setDescription(e.target.value)
@@ -345,9 +258,9 @@ function CommunityDashboardEdit({
 
       <IContainer className="pb-4">
         <IButton
-          onClick={handleEditCommunity}
+          onClick={handleCreateCommunity}
           className="px-4 py-2"
-          text="Edit"
+          text="Publish"
           bgColor="bg-regal-blue"
           textColor="text-white"
         />
@@ -356,4 +269,4 @@ function CommunityDashboardEdit({
   );
 }
 
-export default CommunityDashboardEdit;
+export default CommunityCreate;

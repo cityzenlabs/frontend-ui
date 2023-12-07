@@ -1,30 +1,27 @@
-import React, { ChangeEvent, useState } from "react";
-import { Visibility } from "../Reusable/Enums/CommunityEnums";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
-import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import { useAuth } from "../../../../AuthContext";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
+import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
 
-function CreateCommunity({
-  setCommunitiesVisibility,
-  setCommunityId,
-  getUpdatedUser,
-  handleBack,
-  handleForward,
-}: any) {
+function CommunityDashboardEdit() {
+  const { communityId } = useParams();
+  const accessToken = useAuth();
+
+  const [community, setCommunity] = useState<any>();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
-  const [minAge, setMinAge] = useState<string>("");
-  const [maxAge, setMaxAge] = useState<string>("");
+  const [minimumAge, setMinAge] = useState<string>("");
+  const [maximumAge, setMaxAge] = useState<string>("");
   const [genderRequirements, setGenderRequirements] = useState("");
   const [social, setSocial] = useState("");
   const [intelligence, setIntelligence] = useState("");
@@ -33,7 +30,6 @@ function CreateCommunity({
   const [culture, setCulture] = useState("");
   const [fitness, setFitness] = useState("");
   const [description, setDescription] = useState("");
-  const accessToken = useAuth();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -56,45 +52,119 @@ function CreateCommunity({
     setCulture("");
     setFitness("");
     setDescription("");
+    setImageFiles([]);
   };
-
-  const handleCreateCommunity = async () => {
-    const community = {
-      name: name,
-      description: description,
-      city: city,
-      state: state,
-      minimumAge: parseInt(minAge),
-      maximumAge: parseInt(maxAge),
-      genderRequirements: genderRequirements,
-      attributeRequirements: {
-        SOCIAL: parseInt(social, 10) || 0,
-        INTELLIGENCE: parseInt(intelligence, 10) || 0,
-        ADVENTURE: parseInt(adventure, 10) || 0,
-        CULTURE: parseInt(culture, 10) || 0,
-        NIGHTLIFE: parseInt(nightLife, 10) || 0,
-        FITNESS: parseInt(fitness, 10) || 0,
-      },
-    };
-
+  const fetchCommunityData = async (callback = () => {}) => {
     try {
-      const result = await CommunityService.createCommunity(
-        community,
+      const community = await CommunityService.getCommunity(
+        communityId,
         accessToken.token,
       );
-      if (result.id) {
-        resetFields();
-        handleForward(
-          Visibility.Communities,
-          Visibility.CommunityDashboard,
-          result.id,
-        );
-        getUpdatedUser();
+      if (community) {
+        setCommunity(community);
+      }
+    } catch (error) {}
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([fetchCommunityData()]);
+    };
+
+    fetchData();
+  }, [communityId, accessToken.token]);
+
+  const handleEditCommunity = async () => {
+    const fieldsToCheck: any = [
+      { stateKey: "name", original: community?.name },
+      { stateKey: "city", original: community?.city },
+      { stateKey: "state", original: community?.state },
+      { stateKey: "minimumAge", original: community?.minimumAge },
+      { stateKey: "maximumAge", original: community?.maximumAge },
+      {
+        stateKey: "genderRequirements",
+        original: community?.genderRequirements,
+      },
+      { stateKey: "social", original: community?.attributeRequirements.SOCIAL },
+      {
+        stateKey: "intelligence",
+        original: community?.attributeRequirements.INTELLIGENCE,
+      },
+      {
+        stateKey: "nightLife",
+        original: community?.attributeRequirements.NIGHTLIFE,
+      },
+      {
+        stateKey: "adventure",
+        original: community?.attributeRequirements.ADVENTURE,
+      },
+      {
+        stateKey: "culture",
+        original: community?.attributeRequirements.CULTURE,
+      },
+      {
+        stateKey: "fitness",
+        original: community?.attributeRequirements.FITNESS,
+      },
+      { stateKey: "description", original: community?.description },
+    ];
+
+    const updatedFields = fieldsToCheck.reduce((acc: any, field: any) => {
+      const stateValues: any = {
+        name,
+        city,
+        state,
+        minimumAge,
+        maximumAge,
+        genderRequirements,
+        social,
+        intelligence,
+        nightLife,
+        adventure,
+        culture,
+        fitness,
+        description,
+      };
+      const currentValue = stateValues[field.stateKey];
+
+      // Always include the attribute requirements with their original or updated values
+      if (
+        [
+          "social",
+          "intelligence",
+          "nightLife",
+          "adventure",
+          "culture",
+          "fitness",
+        ].includes(field.stateKey)
+      ) {
+        if (!acc.attributeRequirements) {
+          acc.attributeRequirements = {};
+        }
+        acc.attributeRequirements[field.stateKey.toUpperCase()] =
+          currentValue !== "" ? Number(currentValue) : field.original;
+      } else {
+        // For other fields, update only if there is a change
+        if (currentValue !== "" && currentValue !== field.original) {
+          acc[field.stateKey] = currentValue;
+        }
+      }
+      return acc;
+    }, {});
+
+    try {
+      const result = await CommunityService.editCommunity(
+        accessToken.token,
+        community?.id,
+        updatedFields,
+      );
+      if (result) {
+        fetchCommunityData();
+        resetFields();
         if (imageFiles.length > 0) {
           await CommunityService.updateCommunityPicture(
             accessToken.token,
-            result.id,
+            community?.id,
             imageFiles[0],
           );
         }
@@ -104,17 +174,19 @@ function CreateCommunity({
 
   return (
     <div>
-      <IContainer className="pt-8 pb-8">
-        <div className="flex">
-          <IBackButton onClick={handleBack} />
-          <ILabel text="Create Communities" className="ml-4"></ILabel>
+      <IContainer className="pb-8 pt-8">
+        <div className="xl:flex lg:flex items-center justify-between">
+          <div className="flex items-center">
+            <ILabel text="Edit Community" />
+          </div>
         </div>
       </IContainer>
+
       <IContainer className="pb-4">
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
-            label="Community Name"
-            placeholder="Name"
+            label="Name"
+            placeholder={community?.name}
             name="name"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -130,17 +202,19 @@ function CreateCommunity({
             inputs={[
               {
                 name: "city",
-                placeholder: "City",
+                placeholder: community?.city,
                 value: city,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value),
+                disabled: true,
               },
               {
                 name: "state",
-                placeholder: "State",
+                placeholder: community?.state,
                 value: state,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setState(e.target.value),
+                disabled: true,
               },
             ]}
           ></IInputGroup>
@@ -154,16 +228,16 @@ function CreateCommunity({
             inputs={[
               {
                 name: "min",
-                placeholder: "Min age",
-                value: minAge,
+                placeholder: community?.minimumAge,
+                value: minimumAge,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setMinAge(e.target.value),
                 numberOnly: true,
               },
               {
-                name: "Max Age",
-                placeholder: "Max age",
-                value: maxAge,
+                name: "max",
+                placeholder: community?.maximumAge,
+                value: maximumAge,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setMaxAge(e.target.value),
                 numberOnly: true,
@@ -182,7 +256,7 @@ function CreateCommunity({
               {
                 name: "Social",
                 placeholder: "Social",
-                displayLabel: "Social",
+                displayLabel: `Social- ${community?.attributeRequirements.SOCIAL}`,
                 value: social,
                 numberOnly: true,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -190,8 +264,8 @@ function CreateCommunity({
               },
               {
                 name: "Intelligence",
-                placeholder: "Intelligence",
-                displayLabel: "Intelligence",
+                placeholder: "",
+                displayLabel: `Intelligence - ${community?.attributeRequirements.INTELLIGENCE}`,
                 numberOnly: true,
                 value: intelligence,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -200,7 +274,7 @@ function CreateCommunity({
               {
                 name: "Night Life",
                 placeholder: "Night Life",
-                displayLabel: "Night Life",
+                displayLabel: `Night Life - ${community?.attributeRequirements.NIGHTLIFE}`,
                 numberOnly: true,
                 value: nightLife,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -219,7 +293,7 @@ function CreateCommunity({
               {
                 name: "Adventure",
                 placeholder: "Adventure",
-                displayLabel: "Adventure",
+                displayLabel: `Adventure - ${community?.attributeRequirements.ADVENTURE}`,
                 numberOnly: true,
                 value: adventure,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -228,7 +302,7 @@ function CreateCommunity({
               {
                 name: "Culture",
                 placeholder: "Culture",
-                displayLabel: "Culture",
+                displayLabel: `Culture - ${community?.attributeRequirements.CULTURE}`,
                 numberOnly: true,
                 value: culture,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -238,7 +312,7 @@ function CreateCommunity({
               {
                 name: "Fitness",
                 placeholder: "Fitness",
-                displayLabel: "Fitness",
+                displayLabel: `Fitness - ${community?.attributeRequirements.FITNESS}`,
                 numberOnly: true,
                 value: fitness,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -248,18 +322,21 @@ function CreateCommunity({
           ></IInputGroup>
         </div>
       </IContainer>
-
       <IContainer className="pb-4">
-        <div className="flex xl:w-1/2 lg:w-full">
+        <div className="flex xl:w-1/2 lg:w-1/2">
           <div className="mr-2 w-full">
             <IDropdown
-              onChange={setGenderRequirements}
               labelText="Gender Requirements"
+              placeholder={
+                community?.genderRequirements.toUpperCase()[0] +
+                community?.genderRequirements.toLowerCase().slice(1)
+              }
               options={[
                 { label: "Male", value: "MALE" },
                 { label: "Female", value: "FEMALE" },
                 { label: "Neutral", value: "NEUTRAL" },
               ]}
+              onChange={(newValue) => setGenderRequirements(newValue)}
               value={genderRequirements}
             ></IDropdown>
           </div>
@@ -270,7 +347,7 @@ function CreateCommunity({
         <div className="xl:w-1/2">
           <ITextArea
             name="description"
-            placeholder=""
+            placeholder={community?.description}
             value={description}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setDescription(e.target.value)
@@ -285,9 +362,9 @@ function CreateCommunity({
 
       <IContainer className="pb-4">
         <IButton
-          onClick={handleCreateCommunity}
+          onClick={handleEditCommunity}
           className="px-4 py-2"
-          text="Publish"
+          text="Edit"
           bgColor="bg-regal-blue"
           textColor="text-white"
         />
@@ -296,4 +373,4 @@ function CreateCommunity({
   );
 }
 
-export default CreateCommunity;
+export default CommunityDashboardEdit;
