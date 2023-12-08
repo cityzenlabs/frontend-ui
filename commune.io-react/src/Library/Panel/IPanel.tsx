@@ -20,18 +20,24 @@ function IPanel({
   height = "h-[244px]", // Default height
   marginTop = "mt-0", // Default top margin
   titleColor,
-}: any) {
+}: IPanelProps) {
   return (
     <div className={`w-full ${marginTop}`} onClick={onPanelClick}>
-      <div className={`${height} rounded-lg bg-white px-4 py-6`}>
-        <div className="flex justify-between items-center">
-          <div className="text-xl" style={{ color: titleColor }}>
+      <div className={`${height} rounded-lg bg-white px-7 py-2`}>
+        <div className="flex justify-between items-center mb-1">
+          <div
+            className={`font-light ${title ? "my-auto" : ""}`}
+            style={{ color: titleColor }}
+          >
             {title}
           </div>
           {buttonLabel && (
             <button
-              className="text-sm border rounded py-1 px-4"
-              onClick={onButtonClick}
+              className="text-xs border rounded px-4 py-1 my-auto"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent panel click event when button is clicked
+                onButtonClick && onButtonClick();
+              }}
             >
               {buttonLabel}
             </button>

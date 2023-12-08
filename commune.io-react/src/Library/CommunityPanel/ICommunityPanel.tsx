@@ -1,3 +1,4 @@
+import { UserGroupIcon } from "@heroicons/react/outline";
 import React from "react";
 
 interface ICommunityPanelProps {
@@ -5,35 +6,49 @@ interface ICommunityPanelProps {
   showAll: boolean;
   onCommunityClick?: (name: string, id: string) => void;
 }
-
 const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
   communities,
   showAll,
   onCommunityClick,
 }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 overflow-x-auto">
-      {communities?.slice(0, showAll ? undefined : 4).map((community) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5  pt-1 pb-4">
+      {(showAll ? communities : communities?.slice(0, 4)).map((community) => (
         <div
-          key={community.communityId} // Use communityId as key
-          className="rounded-lg shadow-md flex flex-col"
+          key={community.communityId}
+          className="rounded-lg shadow-md flex flex-col" // Preserving the rounded corners
           onClick={() =>
             onCommunityClick && onCommunityClick(community.name, community.id)
           }
         >
-          <img
-            src={community.picture}
-            alt={community.name}
-            className="rounded-t-lg w-full h-auto object-cover" // Removed fixed height, use auto to maintain aspect ratio
-          />
-          <div className="p-4 flex-grow">
-            <h3>{community.name}</h3>
-            <p className="text-sm">Reputation: {community.reputation}</p>
-            <p className="text-sm">Members: {community.memberCount}</p>
-            <p className="text-sm">Type: {community.attribute}</p>
-            <p className="text-xs text-gray-500 uppercase">
-              {community.premium ? "Premium Community" : "Regular Community"}
-            </p>
+          <div className="h-28 overflow-hidden rounded-t-lg">
+            <img
+              src={community.picture}
+              alt={community.name}
+              className="w-full h-full object-cover" // Image covers the container, maintaining its aspect ratio
+            />
+          </div>
+          <div className="px-2 pt-2  flex items-center justify-between">
+            <h3 className="text-sm font-medium truncate">{community.name}</h3>
+            <div className="flex">
+              <div className="text-xs font-medium truncate"></div>
+            </div>
+          </div>
+          <div className=" px-2  flex items-center justify-between">
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              Reputation {community.reputation}
+            </div>
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              Public
+            </div>
+          </div>
+          <div className=" px-2  pb-2 flex items-center justify-between">
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              {community.attribute}
+            </div>
+            <div className="text-xs text-[#7E858B] font-medium truncate flex">
+              {community.memberCount} Members
+            </div>
           </div>
         </div>
       ))}

@@ -9,7 +9,7 @@ interface ILabelProps {
 
 function ILabel({
   text,
-  size = "text-3xl", // Default size
+  size = "text-2xl", // Default size
   weight = "font-medium", // Default weight
   className = "",
 }: ILabelProps) {

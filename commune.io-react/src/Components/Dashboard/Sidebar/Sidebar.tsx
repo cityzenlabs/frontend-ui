@@ -83,16 +83,16 @@ function Sidebar({
 
       <aside
         ref={sidebarRef}
-        className={`fixed top-0 left-0 z-40 w-[320px] h-screen transition-transform -translate-x-full ${
+        className={`fixed top-0 left-0 z-40 w-[280px] h-screen transition-transform -translate-x-full ${
           sideBarVisibility ? "translate-x-0" : "-translate-x-full "
         } md:translate-x-0 `}
         onClick={handleSidebarClick}
       >
         {/* Sidebar content */}
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white pt-[110px] border border-r-gray ">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-white pt-[95px] border border-r-gray ">
           <ul className="space-y-2 ">
             {SIDE_BAR_ITEMS.map((item, index) => (
-              <li key={index}>
+              <li className="text-sm pb-1" key={index}>
                 <div
                   onClick={() => handleMenuItemClick(item.label)}
                   className={`flex items-center p-2 rounded-lg hover:bg-slate-50  font-light  ${
@@ -105,7 +105,7 @@ function Sidebar({
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className={`w-6 h-8  ${
+                    className={`w-6 h-5  ${
                       sideBarSelection === item.label ? "text-regal-blue" : ""
                     }`}
                   >

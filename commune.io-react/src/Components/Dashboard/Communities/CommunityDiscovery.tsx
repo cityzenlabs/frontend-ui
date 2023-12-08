@@ -67,49 +67,45 @@ function CommunityDiscovery() {
   return (
     <div>
       <div>
-        <IContainer className="pt-8 pb-8">
-          <div className="flex items-center justify-between flex-wrap">
-            <ILabel text="Communities" className="inline-block" />
+        <div>
+          <IContainer className="pb-4 pt-4">
+            <div className="flex justify-between">
+              <div className="flex">
+                <ILabel text="Discover Communities" className="ml-4"></ILabel>
+              </div>
 
-            {/* Hide on non-large screens */}
-            <div
-              className={`flex flex-wrap gap-4 mt-4 lg:mt-0 xl:mt-0 ${
-                !isLargeScreen ? "hidden" : ""
-              }`}
-            >
-              <IInput placeholder="Search Community" name="search" />
-              <IButton
-                text="Home"
-                onClick={() => navigate(`/communities/home`)}
-              />
-              <IButton
-                text="Create +"
-                onClick={() => navigate(`/communities/create`)}
-                bgColor="bg-regal-blue"
-                textColor="text-white"
-              />
+              <div className="flex">
+                <IButton
+                  text={"Home"}
+                  onClick={() => navigate("/communities/home")}
+                  className="px-6 mr-2"
+                />
+                <IButton
+                  text={"New +"}
+                  onClick={() => navigate("/communities/create")}
+                  bgColor="bg-regal-blue"
+                  textColor="text-white"
+                  className="px-6 mr-2"
+                />
+                <IMenuButton
+                  options={[
+                    {
+                      label: "Transfer",
+                      action: () => console.log("Transfer"),
+                    },
+                    {
+                      label: "Delete",
+                      action: () => console.log("Delete"),
+                    },
+                  ]}
+                />
+              </div>
             </div>
-
-            {/* Show IMenuButton on non-large screens */}
-            {!isLargeScreen && (
-              <IMenuButton
-                options={[
-                  {
-                    label: "Home",
-                    action: () => navigate(`/communities/home`),
-                  },
-                  {
-                    label: "Create",
-                    action: () => navigate(`/communities/create`),
-                  },
-                ]}
-              />
-            )}
-          </div>
-        </IContainer>
+          </IContainer>
+        </div>
 
         {!showAllUpcoming && !showAllRecommended && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <IPanel
               title="Trending"
               buttonLabel={showAllTrending ? "Show Less" : "Show All"}
@@ -130,7 +126,7 @@ function CommunityDiscovery() {
         )}
 
         {!showAllTrending && !showAllRecommended && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <IPanel
               title="New"
               buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
@@ -151,7 +147,7 @@ function CommunityDiscovery() {
         )}
 
         {!showAllTrending && !showAllUpcoming && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <IPanel
               title="Recommended"
               buttonLabel={showAllRecommended ? "Show Less" : "Show All"}

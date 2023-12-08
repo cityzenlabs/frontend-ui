@@ -11,6 +11,9 @@ module.exports = {
         700: "700px",
         440: "440px",
       },
+      fontFamily: {
+        sans: ["Satoshi", "sans-serif"], // Replace 'Open Sans' with your font name
+      },
     },
   },
   plugins: [
