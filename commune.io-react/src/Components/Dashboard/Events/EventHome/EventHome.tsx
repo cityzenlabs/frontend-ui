@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Visibility } from "../Reusable/Enums/EventEnums";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import * as EventService from "../../../../Services/EventService/EventService";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
+import { useAuth } from "../../../../AuthContext";
+import { useNavigate } from "react-router-dom";
 
-function EventHome({ setEventId, token, handleBack, handleForward }: any) {
+function EventHome() {
+  const accessToken = useAuth();
+  const navigate = useNavigate();
   const [eventHome, setEventHome] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const [joinedOrCreated, setJoinedOrCreated] = useState<any>("Joined");
+  const [joinedOrCreated, setJoinedOrCreated] = useState<any>("");
   const [pendingEvents, setPendingEvents] = useState<any>();
   const [ongoingEvents, setOngoingEvents] = useState<any>();
   const [completedEvents, setCompletedEvents] = useState<any>();
+  const [route, setRoute] = useState<any>();
 
   const fetchHome = async () => {
     try {
-      const data = await EventService.getEventHome(token);
+      const data = await EventService.getEventHome(accessToken.token);
       if (data) {
         setEventHome(data);
       }
@@ -28,7 +31,6 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchHome()]);
-      setJoinedOrCreated("Joined");
       setIsLoading(false);
     };
     fetchData();
@@ -40,10 +42,12 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
         setPendingEvents(eventHome.pendingJoinedEvents);
         setCompletedEvents(eventHome.completedJoinedEvents);
         setOngoingEvents(eventHome.ongoingJoinedEvents);
+        setRoute(`/dashboard/events`);
       } else if (joinedOrCreated === "Created") {
         setPendingEvents(eventHome.pendingCreatedEvents);
         setCompletedEvents(eventHome.completedCreatedEvents);
         setOngoingEvents(eventHome.ongoingCreatedEvents);
+        setRoute(`/dashboard/events/manage`);
       }
     }
   }, [joinedOrCreated, eventHome]);
@@ -58,8 +62,7 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
         <IContainer className="pb-8 pt-8">
           <div className="xl:flex lg:flex items-center justify-between">
             <div className="flex items-center">
-              <IBackButton onClick={handleBack} />
-              <ILabel className="ml-4" text="Event Home" />
+              <ILabel text="Event Home" />
             </div>
             <div className="w-[200px]">
               <IDropdown
@@ -106,14 +109,8 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
             <IPanel title="Ongoing" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={ongoingEvents}
-                onEventClick={(id) => {
-                  handleForward(
-                    Visibility.EventHome,
-                    joinedOrCreated === "Joined"
-                      ? Visibility.Event
-                      : Visibility.Dashboard,
-                  );
-                  setEventId(id);
+                onEventClick={(eventId) => {
+                  navigate(`${route}/${eventId}`);
                 }}
               />
             </IPanel>
@@ -125,14 +122,8 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
             <IPanel title="Pending" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={pendingEvents}
-                onEventClick={(id) => {
-                  handleForward(
-                    Visibility.EventHome,
-                    joinedOrCreated === "Joined"
-                      ? Visibility.Event
-                      : Visibility.Dashboard,
-                  );
-                  setEventId(id);
+                onEventClick={(eventId) => {
+                  navigate(`${route}/${eventId}`);
                 }}
               />
             </IPanel>
@@ -144,14 +135,8 @@ function EventHome({ setEventId, token, handleBack, handleForward }: any) {
             <IPanel title="Completed" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={completedEvents}
-                onEventClick={(id) => {
-                  handleForward(
-                    Visibility.EventHome,
-                    joinedOrCreated === "Joined"
-                      ? Visibility.Event
-                      : Visibility.Dashboard,
-                  );
-                  setEventId(id);
+                onEventClick={(eventId) => {
+                  navigate(`${route}/${eventId}`);
                 }}
               />
             </IPanel>

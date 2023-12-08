@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IContainer from "../../../../Library/Container/IContainer";
-import { attributeColors } from "../Reusable/Constants/CommunityConstants";
+import { attributeColors } from "../../Home/Constants/HomeConstats";
 import * as UserService from "../../../../Services/UserService/UserService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import ILabel from "../../../../Library/Label/ILabel";
 import { useNavigate } from "react-router-dom";
 
-function CommunityProfile() {
+function EventProfile() {
   const accessToken = useAuth();
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -126,4 +126,4 @@ function CommunityProfile() {
   );
 }
 
-export default CommunityProfile;
+export default EventProfile;

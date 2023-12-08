@@ -1,23 +1,45 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import IDatePicker from "../../../../Library/DatePicker/IDatePicker";
+import * as EventService from "../../../../Services/EventService/EventService";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
 
-function EventDashboardEdit({ setEditEvent, event }: any) {
+function EventDashboardEdit() {
+  const { eventId } = useParams();
+  const accessToken = useAuth();
+  const [event, setEvent] = useState<any>();
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+
+  const fetchEventData = async (callback = () => {}) => {
+    try {
+      const community = await EventService.getEvent(accessToken.token, eventId);
+      if (community) {
+        setEvent(community);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([fetchEventData()]);
+    };
+
+    fetchData();
+  }, [eventId, accessToken.token]);
 
   return (
     <div>
       <IContainer className="pb-8 pt-8">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
-            <IBackButton onClick={() => setEditEvent(false)} />
-            <ILabel className="ml-4" text="Edit Event" />
+            <ILabel text="Edit Event" />
           </div>
         </div>
       </IContainer>

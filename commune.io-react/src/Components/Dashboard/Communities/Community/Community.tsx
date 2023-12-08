@@ -7,7 +7,6 @@ import ILabel from "../../../../Library/Label/ILabel";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import CommunityEvent from "../CommunityEvent/CommunityEvent";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../../AuthContext";
@@ -19,6 +18,7 @@ function Community() {
   const accessToken = useAuth();
   const { user, triggerDataRefresh } = useDash();
   const navigate = useNavigate();
+
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
@@ -29,8 +29,6 @@ function Community() {
   const [hostedEvents, setHostedEvents] = useState<any>("");
   const [showAllSocialEvents, setShowAllSocialEvents] = useState(false);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
-  const [communityEventId, setCommunityEventId] = useState<any>();
-  const [showCommunityEvent, setShowCommunityEvent] = useState<boolean>(false);
 
   const fetchCommunityData = async (callback = () => {}) => {
     try {

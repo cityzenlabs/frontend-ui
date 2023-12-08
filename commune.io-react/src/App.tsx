@@ -28,6 +28,12 @@ import CommunityDashboard from "./Components/Dashboard/Communities/CommunityDash
 import CommunityCreate from "./Components/Dashboard/Communities/CommunityCreate/CommunityCreate";
 import CommunityEdit from "./Components/Dashboard/Communities/CommunityEdit/CommunityEdit";
 import CommunityEvent from "./Components/Dashboard/Communities/CommunityEvent/CommunityEvent";
+import Event from "./Components/Dashboard/Events/Event/Event";
+import EventHome from "./Components/Dashboard/Events/EventHome/EventHome";
+import EventDashboard from "./Components/Dashboard/Events/EventDashboard/EventDashboard";
+import EventEdit from "./Components/Dashboard/Events/EventEdit/EventEdit";
+import EventAttendeesList from "./Components/Dashboard/Events/EventAttendeesList/EventAttendeesList";
+import EventProfile from "./Components/Dashboard/Events/EventProfile/EventProfile";
 
 function App() {
   return (
@@ -135,7 +141,62 @@ function App() {
                   </DashboardProvider>
                 }
               />
+
               <Route path="events" element={<EventDiscovery />} />
+              <Route
+                path="events/:eventId"
+                element={
+                  <DashboardProvider>
+                    <Event />
+                  </DashboardProvider>
+                }
+              />
+
+              <Route
+                path="events/home"
+                element={
+                  <DashboardProvider>
+                    <EventHome />
+                  </DashboardProvider>
+                }
+              />
+
+              <Route
+                path="events/manage/:eventId"
+                element={
+                  <DashboardProvider>
+                    <EventDashboard />
+                  </DashboardProvider>
+                }
+              />
+
+              <Route
+                path="events/edit/:eventId"
+                element={
+                  <DashboardProvider>
+                    <EventEdit />
+                  </DashboardProvider>
+                }
+              />
+
+              <Route
+                path="events/attendees/:eventId"
+                element={
+                  <DashboardProvider>
+                    <EventAttendeesList />
+                  </DashboardProvider>
+                }
+              />
+
+              <Route
+                path="events/profile/:userId"
+                element={
+                  <DashboardProvider>
+                    <EventProfile />
+                  </DashboardProvider>
+                }
+              />
+
               <Route path="leader-board" element={<Leaderboard />} />
               <Route path="settings" element={<Settings />} />
               <Route path="notifications" element={<Notifications />} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import IPanel from "../../../../../Library/Panel/IPanel";
 import ILabel from "../../../../../Library/Label/ILabel";
 import {
@@ -10,7 +10,6 @@ import {
 
 import { attributeColors } from "../Constants/CommunityConstants";
 import { MapIcon } from "@heroicons/react/outline";
-
 import { useNavigate } from "react-router-dom";
 import {
   UsersIcon,
@@ -21,12 +20,7 @@ import {
   MoonIcon,
 } from "@heroicons/react/solid";
 
-const CommunityDetails = ({
-  community,
-  organizer,
-  handleForward,
-  communityId,
-}: any) => {
+const CommunityDetails = ({ community, organizer, communityId }: any) => {
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
       social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
@@ -111,6 +105,18 @@ const CommunityDetails = ({
           </div>
         </IPanel>
 
+        <IPanel
+          height="h-[55px]"
+          onPanelClick={() => {
+            navigate(`/dashboard/communities/members/${communityId}`);
+          }}
+        >
+          <div className="flex justify-between items-center h-full">
+            {community?.members?.length} Members
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          </div>
+        </IPanel>
+
         <IPanel height="h-[270px]">
           <div>
             <div className="font-bold text-md mb-4">REQUIREMENTS</div>
@@ -141,18 +147,6 @@ const CommunityDetails = ({
                   );
                 })}
             </div>
-          </div>
-        </IPanel>
-
-        <IPanel
-          height="h-[55px]"
-          onPanelClick={() => {
-            navigate(`/dashboard/communities/members/${communityId}`);
-          }}
-        >
-          <div className="flex justify-between items-center h-full">
-            {community?.members?.length} Members
-            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>
       </div>

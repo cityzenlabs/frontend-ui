@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Visibility } from "../Reusable/Enums/EventEnums";
 import IContainer from "../../../../Library/Container/IContainer";
 import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
@@ -94,7 +93,6 @@ function EventCreate({
       const result = await EventService.createEvent(event, token);
       if (result.id) {
         setEventId(result.id);
-        setEventsVisibility(Visibility.Dashboard);
         getUpdatedUser();
 
         if (imageFiles.length > 0) {

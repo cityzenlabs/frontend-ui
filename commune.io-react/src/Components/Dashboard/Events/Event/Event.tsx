@@ -10,16 +10,16 @@ import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import EventDetails from "../Reusable/EventDetails/EventDetails";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
-import EventAttendeesList from "../Reusable/EventAttendeesList/EventAttendeesList";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDash } from "../../../../Context/DashboardContext";
+import { useAuth } from "../../../../AuthContext";
 
-function Event({
-  handleBack,
-  eventId,
-  token,
-  user,
-  getUpdatedUser,
-  setEventId,
-}: any) {
+function Event() {
+  const { eventId } = useParams();
+  const accessToken = useAuth();
+  const { user, triggerDataRefresh } = useDash();
+  const navigate = useNavigate();
+
   const [event, setEvent] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
@@ -27,19 +27,20 @@ function Event({
   const [eventPicture, setEventPicture] = useState<any>();
   const [community, setCommunity] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [showAttendeesList, setShowAttendeesList] = useState<boolean>(false);
-  const [triggerFetch, setTriggerFetch] = useState(false);
 
   const fetchEvent = async (callback = () => {}) => {
     try {
-      const event = await EventService.getEvent(token, eventId);
+      const event = await EventService.getEvent(accessToken.token, eventId);
       if (event) {
         setEvent(event);
         const community = await CommunityService.getCommunity(
           event.host,
-          token,
+          accessToken.token,
         );
-        const organizer = await UserService.fetchUser(token, event.organizer);
+        const organizer = await UserService.fetchUser(
+          accessToken.token,
+          event.organizer,
+        );
         if (organizer) {
           setOrganizer(organizer);
           checkMembership(event);
@@ -54,7 +55,10 @@ function Event({
 
   const fetchRelatedEvents = async () => {
     try {
-      const data = await EventService.getRelatedEvents(token, eventId);
+      const data = await EventService.getRelatedEvents(
+        accessToken.token,
+        eventId,
+      );
       if (data) {
         setRelatedEvents(data);
       }
@@ -63,7 +67,10 @@ function Event({
 
   const fetchPicture = async () => {
     try {
-      const data = await EventService.getEventPicture(token, eventId);
+      const data = await EventService.getEventPicture(
+        accessToken.token,
+        eventId,
+      );
       if (data) {
         setEventPicture(data);
       }
@@ -83,16 +90,16 @@ function Event({
     };
 
     fetchData();
-  }, [eventId, token, triggerFetch]);
+  }, [eventId, accessToken.token]);
 
   const handleJoinOrLeaveEvent = async () => {
     try {
       const response = hasJoined
-        ? await EventService.leaveEvent(token, eventId)
-        : await EventService.joinEvent(token, eventId);
+        ? await EventService.leaveEvent(accessToken.token, eventId)
+        : await EventService.joinEvent(accessToken.token, eventId);
 
       if (response.ok) {
-        await getUpdatedUser();
+        await triggerDataRefresh();
         fetchEvent(() => setHasJoined(!hasJoined));
       }
     } catch (error) {}
@@ -104,66 +111,54 @@ function Event({
 
   return (
     <div>
-      {showAttendeesList && (
-        <EventAttendeesList
-          setShowAttendeesList={setShowAttendeesList}
-          token={token}
-          eventId={eventId}
-        />
-      )}
-
-      {!showAttendeesList && (
-        <div>
-          <IContainer className="pb-8 pt-8">
-            <div className="flex justify-between items-center">
-              <div className="flex">
-                <IBackButton onClick={handleBack} />
-                <ILabel className="ml-4" text={event?.name} />
-              </div>
-              <div>
-                <IButton
-                  text={hasJoined ? "Leave Event" : "Join Event"}
-                  onClick={handleJoinOrLeaveEvent}
-                  bgColor={
-                    user.id === organizer?.id ? "bg-white" : "bg-regal-blue"
-                  }
-                  textColor={
-                    user.id === organizer?.id ? "text-black" : "text-white"
-                  }
-                  className="px-6 py-2"
-                  disabled={user.id === organizer?.id}
-                />
-              </div>
+      <div>
+        <IContainer className="pb-8 pt-8">
+          <div className="flex justify-between items-center">
+            <div className="flex">
+              <ILabel text={event?.name} />
             </div>
-          </IContainer>
-          <IContainer className="pb-8">
-            <div className="w-full">
-              <ICarousel imageUrls={[eventPicture]} />
-            </div>
-          </IContainer>
-          <IContainer className="pb-8">
-            <EventDetails
-              event={event}
-              organizer={organizer}
-              user={user}
-              community={community}
-              setShowAttendeesList={setShowAttendeesList}
-            />
-          </IContainer>
-          <IContainer className="pb-8">
             <div>
-              <IPanel title="Related" buttonLabel={"Show All"} height="600px">
-                <IEventPanel
-                  events={relatedEvents}
-                  onEventClick={(id) => {
-                    setEventId(id);
-                  }}
-                />
-              </IPanel>
+              <IButton
+                text={hasJoined ? "Leave Event" : "Join Event"}
+                onClick={handleJoinOrLeaveEvent}
+                bgColor={
+                  user?.id === organizer?.id ? "bg-white" : "bg-regal-blue"
+                }
+                textColor={
+                  user?.id === organizer?.id ? "text-black" : "text-white"
+                }
+                className="px-6 py-2"
+                disabled={user?.id === organizer?.id}
+              />
             </div>
-          </IContainer>
-        </div>
-      )}
+          </div>
+        </IContainer>
+        <IContainer className="pb-8">
+          <div className="w-full">
+            <ICarousel imageUrls={[eventPicture]} />
+          </div>
+        </IContainer>
+        <IContainer className="pb-8">
+          <EventDetails
+            event={event}
+            organizer={organizer}
+            user={user}
+            community={community}
+          />
+        </IContainer>
+        <IContainer className="pb-8">
+          <div>
+            <IPanel title="Related" buttonLabel={"Show All"} height="600px">
+              <IEventPanel
+                events={relatedEvents}
+                onEventClick={(eventId) => {
+                  navigate(`/dashboard/events/${eventId}`);
+                }}
+              />
+            </IPanel>
+          </div>
+        </IContainer>
+      </div>
     </div>
   );
 }

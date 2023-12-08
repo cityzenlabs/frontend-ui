@@ -3,13 +3,10 @@ import IPanel from "../../../../../Library/Panel/IPanel";
 import ILabel from "../../../../../Library/Label/ILabel";
 import { CalendarIcon, MapIcon, SunIcon } from "@heroicons/react/outline";
 import { ArrowRightIcon } from "@heroicons/react/solid";
+import { useNavigate } from "react-router-dom";
 
-function EventDetails({
-  event,
-  organizer,
-  community,
-  setShowAttendeesList,
-}: any) {
+function EventDetails({ event, organizer, community }: any) {
+  let navigate = useNavigate();
   return (
     <div>
       <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
@@ -86,7 +83,9 @@ function EventDetails({
 
           <IPanel
             height="h-[55px]"
-            onPanelClick={() => setShowAttendeesList(true)}
+            onPanelClick={(eventId: any) => {
+              navigate(`/dashboard/events/attendees/${event.id}`);
+            }}
           >
             <div className="flex justify-between items-center h-full">
               {event?.attendees.length} Attendees

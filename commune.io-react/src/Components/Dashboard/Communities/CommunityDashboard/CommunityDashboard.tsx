@@ -17,8 +17,8 @@ import * as UserService from "../../../../Services/UserService/UserService";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 import { useAuth } from "../../../../AuthContext";
 import { useParams } from "react-router-dom";
-
 import { useNavigate } from "react-router-dom";
+
 function CommunityDashboard() {
   const accessToken = useAuth();
   const { communityId } = useParams();
