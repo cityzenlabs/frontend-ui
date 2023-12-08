@@ -199,8 +199,8 @@ function Community() {
                 <IEventPanel
                   events={hostedEvents}
                   showAll={showAllHostedEvents}
-                  onEventClick={(eventId) => {
-                    navigate(`/dashboard/communities/event/${eventId}`);
+                  onEventClick={(eventName, eventId) => {
+                    navigate(`/event/${eventName}/${eventId}`);
                   }}
                 ></IEventPanel>
               </IPanel>
@@ -220,8 +220,8 @@ function Community() {
                 <IEventPanel
                   events={socialEvents}
                   showAll={showAllSocialEvents}
-                  onEventClick={(eventId) => {
-                    navigate(`/dashboard/communities/event/${eventId}`);
+                  onEventClick={(eventName, eventId) => {
+                    navigate(`/event/${eventName}/${eventId}`);
                   }}
                 ></IEventPanel>
               </IPanel>

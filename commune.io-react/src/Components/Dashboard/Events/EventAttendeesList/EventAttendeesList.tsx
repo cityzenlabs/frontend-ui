@@ -48,7 +48,7 @@ function EventAttendeesList() {
         <IUserTable
           users={attendees}
           onRowClick={(userId) => {
-            navigate(`/dashboard/events/profile/${userId}`);
+            navigate(`/profile/${userId}`);
           }}
         />
       </IContainer>

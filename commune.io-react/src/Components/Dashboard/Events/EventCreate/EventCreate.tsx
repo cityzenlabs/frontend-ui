@@ -1,13 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
-import IToggleButtonGroup from "../../../../Library/ToggleButtonGroup/IToggleButtonGroup";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
@@ -15,15 +13,14 @@ import { days } from "./EventCreateConstants";
 import { months } from "./EventCreateConstants";
 import { years } from "./EventCreateConstants";
 import { times } from "./EventCreateConstants";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
+import { useDash } from "../../../../Context/DashboardContext";
 
-function EventCreate({
-  setEventsVisibility,
-  token,
-  setEventId,
-  user,
-  getUpdatedUser,
-  handleBack,
-}: any) {
+function EventCreate({}: any) {
+  let navigate = useNavigate();
+  const accessToken = useAuth();
+  const { user, triggerDataRefresh } = useDash();
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -44,7 +41,7 @@ function EventCreate({
     const fetchData = async () => {
       try {
         const data = await CommunityService.getJoinedCommunities(
-          token,
+          accessToken.token,
           user.id,
         );
 
@@ -87,17 +84,15 @@ function EventCreate({
       host: community,
     };
 
-    console.log(event);
-
     try {
-      const result = await EventService.createEvent(event, token);
+      const result = await EventService.createEvent(event, accessToken.token);
       if (result.id) {
-        setEventId(result.id);
-        getUpdatedUser();
+        triggerDataRefresh();
 
+        navigate(`/events/manage/${result.id}`);
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
-            token,
+            accessToken.token,
             result.id,
             imageFiles[0],
           );
@@ -110,8 +105,7 @@ function EventCreate({
     <div>
       <IContainer className="pt-8 pb-8">
         <div className="flex">
-          <IBackButton onClick={handleBack} />
-          <ILabel text="Create Event" className="ml-4"></ILabel>
+          <ILabel text="Create Event"></ILabel>
         </div>
       </IContainer>
 
@@ -119,7 +113,7 @@ function EventCreate({
         <div className="xl:w-1/2 lg:w-1/2">
           <IInput
             label="Event Name"
-            placeholder="Name"
+            placeholder=""
             name="name"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -147,7 +141,7 @@ function EventCreate({
             inputs={[
               {
                 name: "city",
-                placeholder: user.city,
+                placeholder: user?.city,
                 value: city,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setCity(e.target.value),
@@ -155,7 +149,7 @@ function EventCreate({
               },
               {
                 name: "state",
-                placeholder: user.state,
+                placeholder: user?.state,
                 value: state,
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                   setState(e.target.value),

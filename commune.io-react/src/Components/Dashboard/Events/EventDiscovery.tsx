@@ -78,12 +78,14 @@ function EventDiscovery() {
               <IButton
                 text="Home"
                 onClick={() => {
-                  navigate(`/dashboard/events/home`);
+                  navigate(`/events/home`);
                 }}
               />
               <IButton
                 text="Create"
-                onClick={() => console.log("")}
+                onClick={() => {
+                  navigate(`/events/create`);
+                }}
                 bgColor="bg-regal-blue"
                 textColor="text-white"
                 icon={<span>+</span>}
@@ -102,8 +104,8 @@ function EventDiscovery() {
               >
                 <IEventPanel
                   events={eventDiscovery?.trendingEvents}
-                  onEventClick={(eventId) => {
-                    navigate(`/dashboard/events/${eventId}`);
+                  onEventClick={(eventName, eventId) => {
+                    navigate(`/event/${eventName}/${eventId}`);
                   }}
                 />
               </IPanel>
@@ -122,8 +124,8 @@ function EventDiscovery() {
               >
                 <IEventPanel
                   events={eventDiscovery?.upcomingEvents}
-                  onEventClick={(eventId) => {
-                    navigate(`/dashboard/events/${eventId}`);
+                  onEventClick={(eventName, eventId) => {
+                    navigate(`/event/${eventName}/${eventId}`);
                   }}
                 />
               </IPanel>
@@ -142,8 +144,8 @@ function EventDiscovery() {
               >
                 <IEventPanel
                   events={eventDiscovery?.recommendedEvents}
-                  onEventClick={(eventId) => {
-                    navigate(`/dashboard/events/${eventId}`);
+                  onEventClick={(eventName, eventId) => {
+                    navigate(`/event/${eventName}/${eventId}`);
                   }}
                 />
               </IPanel>

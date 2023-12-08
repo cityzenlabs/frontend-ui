@@ -11,7 +11,7 @@ import {
   transformAverageTimeSpent,
   transformAverageUserLevel,
 } from "./EventDashboardGraphAnalytics";
-import EventDetails from "../Reusable/EventDetails/EventDetails";
+import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import { useAuth } from "../../../../AuthContext";
@@ -77,7 +77,7 @@ function EventDashboard() {
             <div className="flex">
               <IButton
                 text={"Edit"}
-                onClick={() => navigate(`/dashboard/events/edit/${eventId}`)}
+                onClick={() => navigate(`/event/edit/${eventId}`)}
                 bgColor="bg-regal-blue"
                 textColor="text-white"
                 className="px-6  mr-4"

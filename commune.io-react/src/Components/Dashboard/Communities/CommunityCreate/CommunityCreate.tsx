@@ -65,7 +65,7 @@ function CommunityCreate() {
         accessToken.token,
       );
       if (result.id) {
-        navigate(`/dashboard/communities/manage/${result.id}`);
+        navigate(`/communities/manage/${result.id}`);
         triggerDataRefresh();
         if (imageFiles.length > 0) {
           await CommunityService.updateCommunityPicture(

@@ -108,7 +108,7 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
         <IPanel
           height="h-[55px]"
           onPanelClick={() => {
-            navigate(`/dashboard/communities/members/${communityId}`);
+            navigate(`/community/${communityId}/members`);
           }}
         >
           <div className="flex justify-between items-center h-full">

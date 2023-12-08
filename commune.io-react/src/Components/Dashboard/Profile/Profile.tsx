@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import IAttributeBar from "../../../../Library/AttributeBar/IAttributeBar";
-import IPanel from "../../../../Library/Panel/IPanel";
-import IContainer from "../../../../Library/Container/IContainer";
-import { attributeColors } from "../Reusable/Constants/CommunityConstants";
-import * as UserService from "../../../../Services/UserService/UserService";
-import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
-import { useAuth } from "../../../../AuthContext";
-import { useParams } from "react-router-dom";
-import ILabel from "../../../../Library/Label/ILabel";
-import { useNavigate } from "react-router-dom";
+import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
+import IPanel from "../../../Library/Panel/IPanel";
+import IContainer from "../../../Library/Container/IContainer";
+import { attributeColors } from "../Home/Constants/HomeConstats";
+import * as UserService from "../../../Services/UserService/UserService";
+import * as CommunityService from "../../../Services/CommunityService/CommunityService";
+import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 
-function CommunityProfile() {
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../AuthContext";
+import ILabel from "../../../Library/Label/ILabel";
+
+function Profile() {
   const accessToken = useAuth();
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function CommunityProfile() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [user, setUser] = useState<any>();
   const [communities, setCommunities] = useState<any>();
+  const [showAllJoined, setShowAllJoined] = useState(false);
 
   const getUser = async () => {
     try {
@@ -48,6 +50,10 @@ function CommunityProfile() {
     };
     fetchData();
   }, []);
+
+  const toggleShowAllJoined = () => {
+    setShowAllJoined((prev) => !prev);
+  };
 
   if (isLoading) {
     return <div></div>;
@@ -107,16 +113,16 @@ function CommunityProfile() {
       <IContainer className="pb-8">
         <IPanel
           title="Joined Communities"
-          buttonLabel={"Show All"}
+          buttonLabel={showAllJoined ? "Show Less" : "Show All"}
           height="600px"
-          onButtonClick={() => console.log("")}
+          onButtonClick={toggleShowAllJoined}
         >
           {communities && (
             <ICommunityPanel
               communities={communities}
-              showAll={true}
-              onCommunityClick={(communityId) => {
-                navigate(`/dashboard/communities/${communityId}`);
+              showAll={showAllJoined}
+              onCommunityClick={(communityName, communityId) => {
+                navigate(`/community/${communityName}/${communityId}`);
               }}
             />
           )}
@@ -126,4 +132,4 @@ function CommunityProfile() {
   );
 }
 
-export default CommunityProfile;
+export default Profile;

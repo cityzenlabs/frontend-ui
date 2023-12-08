@@ -20,7 +20,6 @@ function Sidebar({
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    navigate("home");
     const handleClickOutside = (event: MouseEvent) => {
       if (
         sidebarRef.current &&

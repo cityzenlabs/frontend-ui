@@ -57,7 +57,7 @@ function CommunityMembersList() {
           <IUserTable
             users={members}
             onRowClick={(userId) => {
-              navigate(`/dashboard/communities/profile/${userId}`);
+              navigate(`/profile/${userId}`);
             }}
           />
         </IContainer>

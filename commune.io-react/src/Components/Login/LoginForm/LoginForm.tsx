@@ -30,7 +30,7 @@ function LoginForm() {
       const data = await response.json();
       if (response.ok) {
         setToken(data.accessToken);
-        navigate("/dashboard/home");
+        navigate("/home");
       } else {
         setError("Login failed. Please check your credentials.");
       }

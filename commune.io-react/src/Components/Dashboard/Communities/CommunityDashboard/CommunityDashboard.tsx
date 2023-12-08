@@ -100,9 +100,7 @@ function CommunityDashboard() {
                 <div className="flex">
                   <IButton
                     text={"Edit"}
-                    onClick={() =>
-                      navigate(`/dashboard/communities/edit/${communityId}`)
-                    }
+                    onClick={() => navigate(`/communities/edit/${communityId}`)}
                     bgColor="bg-regal-blue"
                     textColor="text-white"
                     className="px-6  mr-4"
@@ -193,7 +191,7 @@ function CommunityDashboard() {
                 <IEventPanel
                   events={communityDashboard?.upcomingHostedEvents ?? {}}
                   onEventClick={(eventId) => {
-                    navigate(`/dashboard/communities/event/${eventId}`);
+                    navigate(`/communities/event/${eventId}`);
                   }}
                 />
               </IPanel>
@@ -210,7 +208,7 @@ function CommunityDashboard() {
                 <IEventPanel
                   events={communityDashboard?.upcomingSocialEvents ?? {}}
                   onEventClick={(eventId) => {
-                    navigate(`/dashboard/communities/event/${eventId}`);
+                    navigate(`/communities/event/${eventId}`);
                   }}
                 />
               </IPanel>

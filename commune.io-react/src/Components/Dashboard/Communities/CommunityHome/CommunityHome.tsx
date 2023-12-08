@@ -99,8 +99,8 @@ function CommunityHome() {
               <ICommunityPanel
                 communities={communityHome.joinedCommunities}
                 showAll={showAllJoinedCommunities}
-                onCommunityClick={(communityId) => {
-                  navigate(`/dashboard/communities/${communityId}`);
+                onCommunityClick={(communityName, communityId) => {
+                  navigate(`/community/${communityName}/${communityId}`);
                 }}
               />
             )}
@@ -120,8 +120,8 @@ function CommunityHome() {
               <ICommunityPanel
                 communities={communityHome.createdCommunities}
                 showAll={showAllCreatedCommunities}
-                onCommunityClick={(communityId) => {
-                  navigate(`/dashboard/communities/manage/${communityId}`);
+                onCommunityClick={(communityName, communityId) => {
+                  navigate(`/community/manage/${communityId}`);
                 }}
               />
             )}

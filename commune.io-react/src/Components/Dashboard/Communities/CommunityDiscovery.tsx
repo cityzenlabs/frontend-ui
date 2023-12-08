@@ -9,10 +9,13 @@ import * as CommunityService from "../../../Services/CommunityService/CommunityS
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 
 import { useNavigate } from "react-router-dom";
+import IMenuButton from "../../../Library/MenuButton/IMenuButton";
+import { useScreenSize } from "../../../Context/ScreenContext";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
   const navigate = useNavigate();
+  const { isMobile, isLargeScreen } = useScreenSize();
 
   const [communityDiscovery, setCommunityDiscovery] = useState<any>();
   const [showAllTrending, setShowAllTrending] = useState(false);
@@ -66,30 +69,42 @@ function CommunityDiscovery() {
       <div>
         <IContainer className="pt-8 pb-8">
           <div className="flex items-center justify-between flex-wrap">
-            <div className="inline-block">
-              <ILabel text="Communities" />
-            </div>
+            <ILabel text="Communities" className="inline-block" />
 
-            <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
+            {/* Hide on non-large screens */}
+            <div
+              className={`flex flex-wrap gap-4 mt-4 lg:mt-0 xl:mt-0 ${
+                !isLargeScreen ? "hidden" : ""
+              }`}
+            >
               <IInput placeholder="Search Community" name="search" />
-
               <IButton
                 text="Home"
-                onClick={() => {
-                  navigate(`/dashboard/communities/home`);
-                }}
+                onClick={() => navigate(`/communities/home`)}
               />
-
               <IButton
-                text="Create"
-                onClick={() => {
-                  navigate(`/dashboard/communities/create`);
-                }}
+                text="Create +"
+                onClick={() => navigate(`/communities/create`)}
                 bgColor="bg-regal-blue"
                 textColor="text-white"
-                icon={<span>+</span>}
               />
             </div>
+
+            {/* Show IMenuButton on non-large screens */}
+            {!isLargeScreen && (
+              <IMenuButton
+                options={[
+                  {
+                    label: "Home",
+                    action: () => navigate(`/communities/home`),
+                  },
+                  {
+                    label: "Create",
+                    action: () => navigate(`/communities/create`),
+                  },
+                ]}
+              />
+            )}
           </div>
         </IContainer>
 
@@ -105,8 +120,8 @@ function CommunityDiscovery() {
                 <ICommunityPanel
                   communities={communityDiscovery.trendingCommunities}
                   showAll={showAllTrending}
-                  onCommunityClick={(communityId) => {
-                    navigate(`/dashboard/communities/${communityId}`);
+                  onCommunityClick={(communityName, communityId) => {
+                    navigate(`/community/${communityName}/${communityId}`);
                   }}
                 />
               )}
@@ -126,8 +141,8 @@ function CommunityDiscovery() {
                 <ICommunityPanel
                   communities={communityDiscovery.newCommunities}
                   showAll={showAllUpcoming}
-                  onCommunityClick={(communityId) => {
-                    navigate(`/dashboard/communities/${communityId}`);
+                  onCommunityClick={(communityName, communityId) => {
+                    navigate(`/community/${communityName}/${communityId}`);
                   }}
                 />
               )}
@@ -147,8 +162,8 @@ function CommunityDiscovery() {
                 <ICommunityPanel
                   communities={communityDiscovery.recommendedCommunities}
                   showAll={showAllRecommended}
-                  onCommunityClick={(communityId) => {
-                    navigate(`/dashboard/communities/${communityId}`);
+                  onCommunityClick={(communityName, communityId) => {
+                    navigate(`/community/${communityName}/${communityId}`);
                   }}
                 />
               )}

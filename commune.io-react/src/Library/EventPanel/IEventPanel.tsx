@@ -1,9 +1,10 @@
 import React from "react";
+import { CameraIcon } from "@heroicons/react/outline"; // Ensure to import CameraIcon
 
 interface IEventPanelProps {
   events: any[];
   showAll?: boolean;
-  onEventClick?: (id: string) => void;
+  onEventClick?: (name: string, id: string) => void;
 }
 
 const IEventPanel: React.FC<IEventPanelProps> = ({
@@ -18,13 +19,19 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
           key={index}
           className="rounded-lg shadow-md"
           style={{ height: "275px" }}
-          onClick={() => onEventClick && onEventClick(event?.id)}
+          onClick={() => onEventClick && onEventClick(event.name, event.id)}
         >
-          <img
-            src={event?.picture || "default-placeholder.jpg"}
-            alt={event?.name}
-            className="rounded-t-lg w-full h-32 object-cover"
-          />
+          {event?.picture ? (
+            <img
+              src={event.picture}
+              alt={event?.name}
+              className="rounded-t-lg w-full h-32 object-cover"
+            />
+          ) : (
+            <div className="border flex justify-center items-center w-full h-32 rounded-t-lg">
+              <CameraIcon className="w-20 h-20 text-gray-500" />
+            </div>
+          )}
           <div className="p-4">
             <div className="text-md">{event?.name}</div>
             {event?.category && (
@@ -33,7 +40,6 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
             <p className="text-xs text-gray-500 uppercase">
               {event?.type + " | " + event?.attribute}
             </p>
-
             {event?.attendees && (
               <p className="text-sm text-gray-500">
                 Attendees: {event?.attendees}

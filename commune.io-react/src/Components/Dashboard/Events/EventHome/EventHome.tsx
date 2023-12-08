@@ -42,12 +42,12 @@ function EventHome() {
         setPendingEvents(eventHome.pendingJoinedEvents);
         setCompletedEvents(eventHome.completedJoinedEvents);
         setOngoingEvents(eventHome.ongoingJoinedEvents);
-        setRoute(`/dashboard/events`);
+        setRoute(`/event`);
       } else if (joinedOrCreated === "Created") {
         setPendingEvents(eventHome.pendingCreatedEvents);
         setCompletedEvents(eventHome.completedCreatedEvents);
         setOngoingEvents(eventHome.ongoingCreatedEvents);
-        setRoute(`/dashboard/events/manage`);
+        setRoute(`/event/manage`);
       }
     }
   }, [joinedOrCreated, eventHome]);
@@ -122,7 +122,7 @@ function EventHome() {
             <IPanel title="Pending" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={pendingEvents}
-                onEventClick={(eventId) => {
+                onEventClick={(eventName, eventId) => {
                   navigate(`${route}/${eventId}`);
                 }}
               />
@@ -135,7 +135,7 @@ function EventHome() {
             <IPanel title="Completed" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={completedEvents}
-                onEventClick={(eventId) => {
+                onEventClick={(eventName, eventId) => {
                   navigate(`${route}/${eventId}`);
                 }}
               />

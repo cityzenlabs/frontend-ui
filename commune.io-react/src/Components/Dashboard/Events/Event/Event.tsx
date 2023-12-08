@@ -8,7 +8,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import EventDetails from "../Reusable/EventDetails/EventDetails";
+import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDash } from "../../../../Context/DashboardContext";
@@ -151,8 +151,8 @@ function Event() {
             <IPanel title="Related" buttonLabel={"Show All"} height="600px">
               <IEventPanel
                 events={relatedEvents}
-                onEventClick={(eventId) => {
-                  navigate(`/dashboard/events/${eventId}`);
+                onEventClick={(eventName, eventId) => {
+                  navigate(`/event/${eventName}/${eventId}`);
                 }}
               />
             </IPanel>

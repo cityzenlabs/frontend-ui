@@ -1,6 +1,6 @@
 import React from "react";
-import IPanel from "../../../../../Library/Panel/IPanel";
-import ILabel from "../../../../../Library/Label/ILabel";
+import IPanel from "../../../../../../Library/Panel/IPanel";
+import ILabel from "../../../../../../Library/Label/ILabel";
 import { CalendarIcon, MapIcon, SunIcon } from "@heroicons/react/outline";
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import { useNavigate } from "react-router-dom";
@@ -79,12 +79,10 @@ function EventDetails({ event, organizer, community }: any) {
             </div>
           </IPanel>
 
-          <IPanel height="h-[270px]"></IPanel>
-
           <IPanel
             height="h-[55px]"
-            onPanelClick={(eventId: any) => {
-              navigate(`/dashboard/events/attendees/${event.id}`);
+            onPanelClick={() => {
+              navigate(`/events/${event.id}/attendees`);
             }}
           >
             <div className="flex justify-between items-center h-full">
@@ -92,6 +90,8 @@ function EventDetails({ event, organizer, community }: any) {
               <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
             </div>
           </IPanel>
+
+          <IPanel height="h-[270px]"></IPanel>
         </div>
       </div>
     </div>
