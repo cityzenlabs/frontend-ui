@@ -364,7 +364,7 @@ function CommunityDashboardEdit() {
         <IButton
           onClick={handleEditCommunity}
           className="px-4 py-2"
-          text="Edit"
+          text="Save"
           bgColor="bg-regal-blue"
           textColor="text-white"
         />

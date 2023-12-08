@@ -61,7 +61,7 @@ function Home() {
               <IPanel
                 title="Level up with these events"
                 buttonLabel="See All"
-                height="h-[515px]"
+                height="h-[500px]"
                 marginTop="xl:mt-8"
               ></IPanel>
             </div>

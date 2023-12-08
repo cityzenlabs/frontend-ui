@@ -260,7 +260,7 @@ function CommunityCreate() {
         <IButton
           onClick={handleCreateCommunity}
           className="px-4 py-2"
-          text="Publish"
+          text="Create"
           bgColor="bg-regal-blue"
           textColor="text-white"
         />
