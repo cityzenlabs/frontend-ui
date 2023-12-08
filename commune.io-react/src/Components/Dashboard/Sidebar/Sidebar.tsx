@@ -59,6 +59,10 @@ function Sidebar({
     if (route === "Events") {
       navigate("events");
     }
+
+    if (route === "Settings") {
+      navigate("settings");
+    }
   };
 
   const handleViewProfile = () => {

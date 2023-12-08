@@ -70,36 +70,39 @@ function CommunityDiscovery() {
         <div>
           <IContainer className="pb-4 pt-4">
             <div className="flex justify-between">
-              <div className="flex">
-                <ILabel text="Discover Communities" className="ml-4"></ILabel>
-              </div>
+              <ILabel text="Discover Communities" />
 
-              <div className="flex">
+              {/* Buttons shown only on large screens */}
+              <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
                 <IButton
-                  text={"Home"}
+                  text="Home"
                   onClick={() => navigate("/communities/home")}
                   className="px-6 mr-2"
                 />
                 <IButton
-                  text={"New +"}
+                  text="New +"
                   onClick={() => navigate("/communities/create")}
                   bgColor="bg-regal-blue"
                   textColor="text-white"
-                  className="px-6 mr-2"
+                  className="px-6"
                 />
+              </div>
+
+              {/* Menu button shown on non-large screens */}
+              {!isLargeScreen && (
                 <IMenuButton
                   options={[
                     {
-                      label: "Transfer",
-                      action: () => console.log("Transfer"),
+                      label: "Home",
+                      action: () => navigate("/communities/home"),
                     },
                     {
-                      label: "Delete",
-                      action: () => console.log("Delete"),
+                      label: "Created",
+                      action: () => navigate("/communities/create"),
                     },
                   ]}
                 />
-              </div>
+              )}
             </div>
           </IContainer>
         </div>

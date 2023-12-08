@@ -8,11 +8,14 @@ import ILabel from "../../../Library/Label/ILabel";
 import IInput from "../../../Library/Input/IInput";
 import IButton from "../../../Library/Button/IButton";
 import { useNavigate } from "react-router-dom";
+import IMenuButton from "../../../Library/MenuButton/IMenuButton";
+import { useScreenSize } from "../../../Context/ScreenContext";
 
 function EventDiscovery() {
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = useAuth();
   const navigate = useNavigate();
+  const { isMobile, isLargeScreen } = useScreenSize();
 
   const [eventDiscovery, setEventDiscovery] = useState<any>();
 
@@ -66,35 +69,45 @@ function EventDiscovery() {
   return (
     <div>
       <div>
-        <IContainer className="pt-8 pb-8">
-          <div className="flex items-center justify-between flex-wrap">
-            <div className="inline-block">
-              <ILabel text="Events" />
-            </div>
+        <IContainer className="pb-4 pt-4">
+          <div className="flex justify-between">
+            <ILabel text="Discover Events" />
 
-            <div className="flex flex-wrap gap-4   mt-4 lg:mt-0 xl:mt-0">
-              <IInput placeholder="Search Community" name="search" />
-
+            {/* Buttons shown only on large screens */}
+            <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
               <IButton
                 text="Home"
-                onClick={() => {
-                  navigate(`/events/home`);
-                }}
+                onClick={() => navigate("/events/home")}
+                className="px-6 mr-2"
               />
               <IButton
-                text="Create"
-                onClick={() => {
-                  navigate(`/events/create`);
-                }}
+                text="New +"
+                onClick={() => navigate("/events/create")}
                 bgColor="bg-regal-blue"
                 textColor="text-white"
-                icon={<span>+</span>}
+                className="px-6"
               />
             </div>
+
+            {/* Menu button shown on non-large screens */}
+            {!isLargeScreen && (
+              <IMenuButton
+                options={[
+                  {
+                    label: "Home",
+                    action: () => navigate("/events/home"),
+                  },
+                  {
+                    label: "Created",
+                    action: () => navigate("/events/create"),
+                  },
+                ]}
+              />
+            )}
           </div>
         </IContainer>
         {!showAllUpcoming && !showAllRecommended && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Trending"
@@ -114,7 +127,7 @@ function EventDiscovery() {
         )}
 
         {!showAllTrending && !showAllRecommended && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Upcoming"
@@ -134,7 +147,7 @@ function EventDiscovery() {
         )}
 
         {!showAllTrending && !showAllUpcoming && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Recommended"

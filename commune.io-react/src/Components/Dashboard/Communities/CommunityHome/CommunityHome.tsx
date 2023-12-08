@@ -49,7 +49,7 @@ function CommunityHome() {
 
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
+      <IContainer className="pb-4 pt-4">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
             <ILabel className="ml-4" text="Community Home" />
@@ -57,7 +57,7 @@ function CommunityHome() {
         </div>
       </IContainer>
 
-      <IContainer className="pb-8">
+      <IContainer className="pb-4">
         <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full">
           <IPanel height="h-[112px]">
             <div className="text-3xl">
@@ -88,7 +88,7 @@ function CommunityHome() {
       </IContainer>
 
       {!showAllCreatedCommunities && (
-        <IContainer className="pb-8">
+        <IContainer className="pb-4">
           <IPanel
             title="Joined Communities"
             buttonLabel={showAllJoinedCommunities ? "Show Less" : "Show All"}

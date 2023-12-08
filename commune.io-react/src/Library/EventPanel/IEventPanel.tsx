@@ -1,5 +1,5 @@
 import React from "react";
-import { CameraIcon } from "@heroicons/react/outline"; // Ensure to import CameraIcon
+import { CameraIcon } from "@heroicons/react/outline";
 
 interface IEventPanelProps {
   events: any[];
@@ -13,45 +13,38 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
   onEventClick,
 }) => {
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 p-4 overflow-x-auto py-4 space-x-3">
-      {events?.slice(0, showAll ? undefined : 4).map((event, index) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1 pb-4">
+      {(showAll ? events : events?.slice(0, 4))?.map((event, index) => (
         <div
           key={index}
-          className="rounded-lg shadow-md"
-          style={{ height: "275px" }}
+          className="rounded-lg shadow-md flex flex-col"
           onClick={() => onEventClick && onEventClick(event.name, event.id)}
         >
-          {event?.picture ? (
-            <img
-              src={event.picture}
-              alt={event?.name}
-              className="rounded-t-lg w-full h-32 object-cover"
-            />
-          ) : (
-            <div className="border flex justify-center items-center w-full h-32 rounded-t-lg">
-              <CameraIcon className="w-20 h-20 text-gray-500" />
+          <div className="h-28 overflow-hidden rounded-t-lg">
+            {event.picture ? (
+              <img
+                src={event.picture}
+                alt={event.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex justify-center items-center w-full h-full bg-gray-100 rounded-t-lg">
+                <CameraIcon className="w-8 h-8 text-gray-500" />
+              </div>
+            )}
+          </div>
+          <div className="px-2 pt-2 flex items-center justify-between">
+            <h3 className="text-sm font-medium truncate">{event.name}</h3>
+            {/* Additional event info or icons can go here */}
+          </div>
+          <div className="px-2 flex items-center justify-between">
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              {/* Event details */}
             </div>
-          )}
-          <div className="p-4">
-            <div className="text-md">{event?.name}</div>
-            {event?.category && (
-              <p className="text-sm text-gray-500">{event?.category}</p>
-            )}
-            <p className="text-xs text-gray-500 uppercase">
-              {event?.type + " | " + event?.attribute}
-            </p>
-            {event?.attendees && (
-              <p className="text-sm text-gray-500">
-                Attendees: {event?.attendees}
-              </p>
-            )}
-            {event?.startTime && (
-              <p className="text-sm text-gray-500">
-                {event?.startTime
-                  ? new Date(event?.startTime).toLocaleDateString()
-                  : "Unknown start time"}
-              </p>
-            )}
+            {/* Other event details */}
+          </div>
+          <div className="px-2 pb-2 flex items-center justify-between">
+            {/* Additional event details */}
           </div>
         </div>
       ))}

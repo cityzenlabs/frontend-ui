@@ -56,6 +56,14 @@ function App() {
                 }
               >
                 <Route
+                  path="settings"
+                  element={
+                    <DashboardProvider>
+                      <Settings />
+                    </DashboardProvider>
+                  }
+                />
+                <Route
                   path="home"
                   element={
                     <DashboardProvider>
