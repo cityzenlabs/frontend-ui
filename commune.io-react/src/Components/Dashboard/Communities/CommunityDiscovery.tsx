@@ -71,8 +71,6 @@ function CommunityDiscovery() {
           <IContainer className="pb-4 pt-4">
             <div className="flex justify-between">
               <ILabel text="Discover Communities" />
-
-              {/* Buttons shown only on large screens */}
               <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
                 <IButton
                   text="Home"
@@ -108,66 +106,45 @@ function CommunityDiscovery() {
         </div>
 
         {!showAllUpcoming && !showAllRecommended && (
-          <IContainer className="pb-4">
-            <IPanel
-              title="Trending"
-              buttonLabel={showAllTrending ? "Show Less" : "Show All"}
-              height="600px"
-              onButtonClick={toggleShowAllTrending}
-            >
-              {communityDiscovery?.trendingCommunities && (
-                <ICommunityPanel
-                  communities={communityDiscovery.trendingCommunities}
-                  showAll={showAllTrending}
-                  onCommunityClick={(communityName, communityId) => {
-                    navigate(`/community/${communityName}/${communityId}`);
-                  }}
-                />
-              )}
-            </IPanel>
-          </IContainer>
+          <ICommunityPanel
+            title="Trending"
+            buttonLabel={showAllTrending ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllTrending}
+            communities={communityDiscovery?.trendingCommunities}
+            showAll={showAllTrending}
+            onCommunityClick={(communityName, communityId) => {
+              navigate(`/community/${communityName}/${communityId}`);
+            }}
+          />
         )}
 
         {!showAllTrending && !showAllRecommended && (
-          <IContainer className="pb-4">
-            <IPanel
-              title="New"
-              buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
-              height="600px"
-              onButtonClick={toggleShowAllUpcoming}
-            >
-              {communityDiscovery?.newCommunities && (
-                <ICommunityPanel
-                  communities={communityDiscovery.newCommunities}
-                  showAll={showAllUpcoming}
-                  onCommunityClick={(communityName, communityId) => {
-                    navigate(`/community/${communityName}/${communityId}`);
-                  }}
-                />
-              )}
-            </IPanel>
-          </IContainer>
+          <ICommunityPanel
+            title="New"
+            buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllUpcoming}
+            communities={communityDiscovery?.newCommunities}
+            showAll={showAllUpcoming}
+            onCommunityClick={(communityName, communityId) => {
+              navigate(`/community/${communityName}/${communityId}`);
+            }}
+          />
         )}
 
         {!showAllTrending && !showAllUpcoming && (
-          <IContainer className="pb-4">
-            <IPanel
-              title="Recommended"
-              buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-              height="600px"
-              onButtonClick={toggleShowAllRecommended}
-            >
-              {communityDiscovery?.recommendedCommunities && (
-                <ICommunityPanel
-                  communities={communityDiscovery.recommendedCommunities}
-                  showAll={showAllRecommended}
-                  onCommunityClick={(communityName, communityId) => {
-                    navigate(`/community/${communityName}/${communityId}`);
-                  }}
-                />
-              )}
-            </IPanel>
-          </IContainer>
+          <ICommunityPanel
+            title="Recommended"
+            buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllRecommended}
+            communities={communityDiscovery?.recommendedCommunities}
+            showAll={showAllRecommended}
+            onCommunityClick={(communityName, communityId) => {
+              navigate(`/community/${communityName}/${communityId}`);
+            }}
+          />
         )}
       </div>
     </div>

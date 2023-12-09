@@ -146,18 +146,17 @@ function Event() {
             community={community}
           />
         </IContainer>
-        <IContainer className="pb-8">
-          <div>
-            <IPanel title="Related" buttonLabel={"Show All"} height="600px">
-              <IEventPanel
-                events={relatedEvents}
-                onEventClick={(eventName, eventId) => {
-                  navigate(`/event/${eventName}/${eventId}`);
-                }}
-              />
-            </IPanel>
-          </div>
-        </IContainer>
+        <IEventPanel
+          title="Related"
+          buttonLabel="Show All"
+          height="600px"
+          events={relatedEvents}
+          onEventClick={(eventName, eventId) => {
+            navigate(`/event/${eventName}/${eventId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={8}
+        />
       </div>
     </div>
   );

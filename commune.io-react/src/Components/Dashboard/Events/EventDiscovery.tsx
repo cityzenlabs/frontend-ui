@@ -107,63 +107,48 @@ function EventDiscovery() {
           </div>
         </IContainer>
         {!showAllUpcoming && !showAllRecommended && (
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Trending"
-                buttonLabel={showAllTrending ? "Show Less" : "Show All"}
-                height="600px"
-                onButtonClick={toggleShowAllTrending}
-              >
-                <IEventPanel
-                  events={eventDiscovery?.trendingEvents}
-                  onEventClick={(eventName, eventId) => {
-                    navigate(`/event/${eventName}/${eventId}`);
-                  }}
-                />
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Trending"
+            buttonLabel={showAllTrending ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllTrending}
+            events={eventDiscovery?.trendingEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         )}
 
         {!showAllTrending && !showAllRecommended && (
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Upcoming"
-                buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
-                height="600px"
-                onButtonClick={toggleShowAllUpcoming}
-              >
-                <IEventPanel
-                  events={eventDiscovery?.upcomingEvents}
-                  onEventClick={(eventName, eventId) => {
-                    navigate(`/event/${eventName}/${eventId}`);
-                  }}
-                />
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Upcoming"
+            buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllUpcoming}
+            events={eventDiscovery?.upcomingEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         )}
 
         {!showAllTrending && !showAllUpcoming && (
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Recommended"
-                buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-                height="600px"
-                onButtonClick={toggleShowAllRecommended}
-              >
-                <IEventPanel
-                  events={eventDiscovery?.recommendedEvents}
-                  onEventClick={(eventName, eventId) => {
-                    navigate(`/event/${eventName}/${eventId}`);
-                  }}
-                />
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Recommended"
+            buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
+            height="600px"
+            onButtonClick={toggleShowAllRecommended}
+            events={eventDiscovery?.recommendedEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         )}
       </div>
     </div>

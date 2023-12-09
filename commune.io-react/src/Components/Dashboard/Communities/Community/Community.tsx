@@ -189,45 +189,35 @@ function Community() {
         </IContainer>
 
         {hasJoined && !showAllSocialEvents && (
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Upcoming Hosted Events"
-                height="600px"
-                buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
-                onButtonClick={toggleShowAllHostedEvents}
-              >
-                <IEventPanel
-                  events={hostedEvents}
-                  showAll={showAllHostedEvents}
-                  onEventClick={(eventName, eventId) => {
-                    navigate(`/event/${eventName}/${eventId}`);
-                  }}
-                ></IEventPanel>
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Upcoming Hosted Events"
+            height="600px"
+            buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
+            onButtonClick={toggleShowAllHostedEvents}
+            events={hostedEvents}
+            showAll={showAllHostedEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         )}
 
         {hasJoined && !showAllHostedEvents && (
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Upcoming Social Events"
-                height="600px"
-                buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
-                onButtonClick={toggleShowAllSocialEvents}
-              >
-                <IEventPanel
-                  events={socialEvents}
-                  showAll={showAllSocialEvents}
-                  onEventClick={(eventName, eventId) => {
-                    navigate(`/event/${eventName}/${eventId}`);
-                  }}
-                ></IEventPanel>
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Upcoming Social Events"
+            height="600px"
+            buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
+            onButtonClick={toggleShowAllSocialEvents}
+            events={socialEvents}
+            showAll={showAllSocialEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         )}
       </div>
     </div>

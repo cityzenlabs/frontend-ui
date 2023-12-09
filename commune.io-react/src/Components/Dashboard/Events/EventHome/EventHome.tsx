@@ -71,7 +71,7 @@ function EventHome() {
                     action: () => setJoinedOrCreated("Joined"),
                   },
                   {
-                    label: "Create",
+                    label: "Created",
                     action: () => setJoinedOrCreated("Created"),
                   },
                 ]}
@@ -106,50 +106,47 @@ function EventHome() {
           </div>
         </IContainer>
 
-        <IContainer className="pb-8">
-          <div>
-            <IPanel title="Ongoing" buttonLabel="Show All" height="600px">
-              <IEventPanel
-                events={ongoingEvents}
-                onEventClick={(eventName, eventId) => {
-                  joinedOrCreated === "Joined"
-                    ? navigate(`/event/${eventName}/${eventId}`)
-                    : navigate(`/event/manage/${eventId}`);
-                }}
-              />
-            </IPanel>
-          </div>
-        </IContainer>
+        <IEventPanel
+          title="Ongoing"
+          buttonLabel="Show All"
+          height="600px"
+          events={ongoingEvents}
+          onEventClick={(eventName, eventId) => {
+            joinedOrCreated === "Joined"
+              ? navigate(`/event/${eventName}/${eventId}`)
+              : navigate(`/event/manage/${eventId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={8}
+        />
 
-        <IContainer className="pb-8">
-          <div>
-            <IPanel title="Pending" buttonLabel="Show All" height="600px">
-              <IEventPanel
-                events={pendingEvents}
-                onEventClick={(eventName, eventId) => {
-                  joinedOrCreated === "Joined"
-                    ? navigate(`/event/${eventName}/${eventId}`)
-                    : navigate(`/event/manage/${eventId}`);
-                }}
-              />
-            </IPanel>
-          </div>
-        </IContainer>
+        <IEventPanel
+          title="Pending"
+          buttonLabel="Show All"
+          height="600px"
+          events={pendingEvents}
+          onEventClick={(eventName, eventId) => {
+            joinedOrCreated === "Joined"
+              ? navigate(`/event/${eventName}/${eventId}`)
+              : navigate(`/event/manage/${eventId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={8}
+        />
 
-        <IContainer className="pb-8">
-          <div>
-            <IPanel title="Completed" buttonLabel="Show All" height="600px">
-              <IEventPanel
-                events={completedEvents}
-                onEventClick={(eventName, eventId) => {
-                  joinedOrCreated === "Joined"
-                    ? navigate(`/event/${eventName}/${eventId}`)
-                    : navigate(`/event/manage/${eventId}`);
-                }}
-              />
-            </IPanel>
-          </div>
-        </IContainer>
+        <IEventPanel
+          title="Completed"
+          buttonLabel="Show All"
+          height="600px"
+          events={completedEvents}
+          onEventClick={(eventName, eventId) => {
+            joinedOrCreated === "Joined"
+              ? navigate(`/event/${eventName}/${eventId}`)
+              : navigate(`/event/manage/${eventId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={8}
+        />
       </div>
     </div>
   );

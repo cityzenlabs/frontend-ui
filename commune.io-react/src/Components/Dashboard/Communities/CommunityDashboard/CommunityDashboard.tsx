@@ -192,39 +192,29 @@ function CommunityDashboard() {
             />
           </IContainer>
 
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Upcoming Hosted Events"
-                height="600px"
-                buttonLabel="See All"
-              >
-                <IEventPanel
-                  events={communityDashboard?.upcomingHostedEvents ?? {}}
-                  onEventClick={(eventId) => {
-                    navigate(`/communities/event/${eventId}`);
-                  }}
-                />
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Upcoming Hosted Events"
+            height="600px"
+            buttonLabel="See All"
+            events={communityDashboard?.upcomingHostedEvents ?? []}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/communities/event/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
 
-          <IContainer className="pb-4">
-            <div>
-              <IPanel
-                title="Upcoming Social Events"
-                buttonLabel="See All"
-                height="600px"
-              >
-                <IEventPanel
-                  events={communityDashboard?.upcomingSocialEvents ?? {}}
-                  onEventClick={(eventId) => {
-                    navigate(`/communities/event/${eventId}`);
-                  }}
-                />
-              </IPanel>
-            </div>
-          </IContainer>
+          <IEventPanel
+            title="Upcoming Social Events"
+            buttonLabel="See All"
+            height="600px"
+            events={communityDashboard?.upcomingSocialEvents ?? []}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/communities/event/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
         </div>
       )}
     </div>

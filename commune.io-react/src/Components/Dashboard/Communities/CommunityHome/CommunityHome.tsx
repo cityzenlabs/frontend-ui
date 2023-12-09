@@ -88,45 +88,35 @@ function CommunityHome() {
       </IContainer>
 
       {!showAllCreatedCommunities && (
-        <IContainer className="pb-4">
-          <IPanel
-            title="Joined Communities"
-            buttonLabel={showAllJoinedCommunities ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={toggleShowAllJoinedCommunities}
-          >
-            {communityHome?.joinedCommunities && (
-              <ICommunityPanel
-                communities={communityHome.joinedCommunities}
-                showAll={showAllJoinedCommunities}
-                onCommunityClick={(communityName, communityId) => {
-                  navigate(`/community/${communityName}/${communityId}`);
-                }}
-              />
-            )}
-          </IPanel>
-        </IContainer>
+        <ICommunityPanel
+          title="Joined Communities"
+          buttonLabel={showAllJoinedCommunities ? "Show Less" : "Show All"}
+          height="600px"
+          onButtonClick={toggleShowAllJoinedCommunities}
+          communities={communityHome?.joinedCommunities}
+          showAll={showAllJoinedCommunities}
+          onCommunityClick={(communityName, communityId) => {
+            navigate(`/community/${communityName}/${communityId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={4}
+        />
       )}
 
       {!showAllJoinedCommunities && (
-        <IContainer className="pb-8">
-          <IPanel
-            title="Created Communities"
-            buttonLabel={showAllCreatedCommunities ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={toggleShowAllCreatedCommunities}
-          >
-            {communityHome?.createdCommunities && (
-              <ICommunityPanel
-                communities={communityHome.createdCommunities}
-                showAll={showAllCreatedCommunities}
-                onCommunityClick={(communityName, communityId) => {
-                  navigate(`/community/manage/${communityId}`);
-                }}
-              />
-            )}
-          </IPanel>
-        </IContainer>
+        <ICommunityPanel
+          title="Created Communities"
+          buttonLabel={showAllCreatedCommunities ? "Show Less" : "Show All"}
+          height="600px"
+          onButtonClick={toggleShowAllCreatedCommunities}
+          communities={communityHome?.createdCommunities}
+          showAll={showAllCreatedCommunities}
+          onCommunityClick={(communityName, communityId) => {
+            navigate(`/community/manage/${communityId}`);
+          }}
+          marginTop="mt-0"
+          paddingB={8}
+        />
       )}
     </div>
   );
