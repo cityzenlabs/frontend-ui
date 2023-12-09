@@ -52,7 +52,7 @@ function CommunityHome() {
       <IContainer className="pb-4 pt-4">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
-            <ILabel className="ml-4" text="Community Home" />
+            <ILabel text="Community Home" />
           </div>
         </div>
       </IContainer>

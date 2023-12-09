@@ -20,7 +20,12 @@ import {
   MoonIcon,
 } from "@heroicons/react/solid";
 
-const CommunityDetails = ({ community, organizer, communityId }: any) => {
+const CommunityDetails = ({
+  community,
+  organizer,
+  communityId,
+  communityPicture,
+}: any) => {
   const getIconForAttribute = (attribute: any) => {
     const icons: any = {
       social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
@@ -47,7 +52,7 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
   };
 
   return (
-    <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
+    <div className="grid grid-cols-3 xl:grid-cols-3 gap-5">
       <div className="col-span-3 xl:col-span-2">
         <IPanel height="h-[550px]">
           <div className="h-full flex flex-col">
@@ -82,10 +87,12 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
             </div>
             <div className="mt-5 flex">
               <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-              <div>{community?.city + ", " + community?.state}</div>
+              <div className="text-[#7E858B]">
+                {community?.city + ", " + community?.state}
+              </div>
             </div>
 
-            <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
+            <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
               {community?.description}
             </div>
           </div>
@@ -93,34 +100,46 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
       </div>
 
       {/* Organizer and Requirements Panel */}
-      <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
-        <IPanel height="h-[177px]">
-          <div>
-            <div className="font-bold text-md">
+      <div className="col-span-3 xl:col-span-1 flex flex-col gap-5">
+        <IPanel height="177px">
+          <div className="flex items-center ">
+            <div>
+              <img
+                src={"default-avatar.png"}
+                alt={``}
+                style={{ borderRadius: "15px", objectFit: "cover" }}
+                className="w-[30px] h-[30px] mr-2 mb-1"
+              />
+            </div>
+            <div className="text-md">
               {organizer?.firstName + " " + organizer?.lastName}
             </div>
-            <div>Reputation Score - {organizer?.reputation}</div>
-            <div className="font-bold text-md mt-4">Community</div>
-            <div>Reputation Score - {community?.reputation}</div>
           </div>
-        </IPanel>
+          <div className="text-[#7E858B] text-sm mb-6">
+            Reputation Score - {organizer?.reputation}
+          </div>
 
-        <IPanel
-          height="h-[55px]"
-          onPanelClick={() => {
-            navigate(`/community/${communityId}/members`);
-          }}
-        >
-          <div className="flex justify-between items-center h-full">
-            {community?.members?.length} Members
-            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          <div className="flex items-center ">
+            <div>
+              <img
+                src={communityPicture}
+                alt={``}
+                style={{ borderRadius: "15px", objectFit: "cover" }}
+                className="w-[30px] h-[30px] mr-2 mb-1"
+              />
+            </div>
+            <div className="text-md">Community</div>
+          </div>
+
+          <div className="text-[#7E858B] text-sm mb-6">
+            Reputation Score - {community?.reputation}
           </div>
         </IPanel>
 
         <IPanel height="h-[270px]">
           <div>
-            <div className="font-bold text-md mb-4">REQUIREMENTS</div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="font-md text-xs mb-1">REQUIREMENTS</div>
+            <div className="grid grid-cols-2 gap-5">
               {community?.attributeRequirements &&
                 Object.entries(
                   community.attributeRequirements as [string, number][],
@@ -138,7 +157,9 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
                         >
                           {attribute.toLowerCase()}
                         </div>
-                        <div className="text-xs">Level {level}</div>
+                        <div className="text-xs text-[#7E858B]">
+                          Level {level}
+                        </div>
                       </div>
                       <div style={{ color }}>
                         {getIconForAttribute(attribute)}
@@ -147,6 +168,17 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
                   );
                 })}
             </div>
+          </div>
+        </IPanel>
+        <IPanel
+          height="h-[55px]"
+          onPanelClick={() => {
+            navigate(`/community/${communityId}/members`);
+          }}
+        >
+          <div className="flex justify-between items-center h-full">
+            {community?.members?.length} Members
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>
       </div>

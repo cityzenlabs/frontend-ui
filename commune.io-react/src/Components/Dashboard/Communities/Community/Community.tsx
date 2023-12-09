@@ -150,10 +150,10 @@ function Community() {
   return (
     <div>
       <div>
-        <IContainer className="pt-8 pb-8">
+        <IContainer className="pt-4 pb-4">
           <div className="flex justify-between items-center">
             <div className="flex">
-              <ILabel className="ml-4" text={community?.name} />
+              <ILabel text={community?.name} />
             </div>
             <div className="flex">
               <IButton
@@ -165,30 +165,31 @@ function Community() {
                 textColor={
                   user?.id === organizer.id ? "text-black" : "text-white"
                 }
-                className="px-6 py-2 "
+                className="px-6"
                 disabled={user?.id === organizer.id}
               />
             </div>
           </div>
         </IContainer>
 
-        <IContainer className="pb-8">
+        <IContainer className="pb-4">
           <div className="w-full">
             {hasJoined && <ICarousel imageUrls={gallery} />}
             {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
           </div>
         </IContainer>
 
-        <IContainer className="pb-8">
+        <IContainer className="pb-4">
           <CommunityDetails
             community={community}
             organizer={organizer}
             communityId={communityId}
+            communityPicture={communityPicture}
           />
         </IContainer>
 
         {hasJoined && !showAllSocialEvents && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Upcoming Hosted Events"
@@ -209,7 +210,7 @@ function Community() {
         )}
 
         {hasJoined && !showAllHostedEvents && (
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Upcoming Social Events"

@@ -35,16 +35,22 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
           </div>
           <div className="px-2 pt-2 flex items-center justify-between">
             <h3 className="text-sm font-medium truncate">{event.name}</h3>
-            {/* Additional event info or icons can go here */}
           </div>
           <div className="px-2 flex items-center justify-between">
             <div className="text-xs font-medium truncate text-[#7E858B]">
-              {/* Event details */}
+              {event.address}
             </div>
-            {/* Other event details */}
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              {event.type}
+            </div>
           </div>
           <div className="px-2 pb-2 flex items-center justify-between">
-            {/* Additional event details */}
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              {event.category}
+            </div>
+            <div className="text-xs font-medium truncate text-[#7E858B]">
+              {event.attendees + " " + "Attendees"}
+            </div>
           </div>
         </div>
       ))}

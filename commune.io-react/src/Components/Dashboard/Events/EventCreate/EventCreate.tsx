@@ -35,27 +35,30 @@ function EventCreate({}: any) {
   const [year, setYear] = useState<any>();
   const [community, setCommunity] = useState<any>("");
 
-  const [joinedCommunities, setJoinedCommunities] = useState<any>();
+  const [joinedCommunities, setJoinedCommunities] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await CommunityService.getJoinedCommunities(
           accessToken.token,
-          user.id,
+          user?.id,
         );
-
         const transformedData = data.map((community: any) => ({
           label: community.name,
           value: community.id,
         }));
 
         setJoinedCommunities(transformedData);
-      } catch (error) {}
+      } catch (error) {
+        // Handle errors if needed
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchData();
-  }, []);
+  }, [accessToken.token, user?.id]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -65,6 +68,7 @@ function EventCreate({}: any) {
   };
 
   const handleCreateEvent = async () => {
+    // Your code to handle creating an event
     const formatDateTime = (day: any, month: any, year: any, time: any) => {
       const formattedMonth = month.toString().padStart(2, "0");
       const formattedDay = day.toString().padStart(2, "0");
@@ -89,7 +93,7 @@ function EventCreate({}: any) {
       if (result.id) {
         triggerDataRefresh();
 
-        navigate(`/events/manage/${result.id}`);
+        navigate(`/event/manage/${result.id}`);
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
             accessToken.token,
@@ -98,173 +102,180 @@ function EventCreate({}: any) {
           );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      // Handle errors if needed
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // You can replace this with your loading indicator
+  }
 
   return (
     <div>
-      <IContainer className="pt-8 pb-8">
-        <div className="flex">
-          <ILabel text="Create Event"></ILabel>
-        </div>
-      </IContainer>
+      <div>
+        <IContainer className="pt-4 pb-4">
+          <div className="flex">
+            <ILabel text="Create Event"></ILabel>
+          </div>
+        </IContainer>
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2 lg:w-1/2">
+            <IInput
+              label="Event Name"
+              placeholder=""
+              name="name"
+              value={name}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
+            ></IInput>
+          </div>
+        </IContainer>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInput
-            label="Event Name"
-            placeholder=""
-            name="name"
-            value={name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)
-            }
-          ></IInput>
-        </div>
-      </IContainer>
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2 lg:w-1/2">
+            <IDropdown
+              labelText="Community"
+              options={joinedCommunities}
+              onChange={(newValue) => setCommunity(newValue)}
+              value={community}
+            ></IDropdown>
+          </div>
+        </IContainer>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IDropdown
-            labelText="Community"
-            options={joinedCommunities}
-            onChange={(newValue) => setCommunity(newValue)}
-            value={community}
-          ></IDropdown>
-        </div>
-      </IContainer>
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2 lg:w-1/2">
+            <IInputGroup
+              label="Location"
+              inputs={[
+                {
+                  name: "city",
+                  placeholder: user?.city,
+                  value: city,
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    setCity(e.target.value),
+                  disabled: true,
+                },
+                {
+                  name: "state",
+                  placeholder: user?.state,
+                  value: state,
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    setState(e.target.value),
+                  disabled: true,
+                },
+              ]}
+            ></IInputGroup>
+          </div>
+        </IContainer>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInputGroup
-            label="Location"
-            inputs={[
-              {
-                name: "city",
-                placeholder: user?.city,
-                value: city,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCity(e.target.value),
-                disabled: true,
-              },
-              {
-                name: "state",
-                placeholder: user?.state,
-                value: state,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setState(e.target.value),
-                disabled: true,
-              },
-            ]}
-          ></IInputGroup>
-        </div>
-      </IContainer>
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2 lg:w-1/2">
+            <IInput
+              label="Address"
+              placeholder=""
+              name="name"
+              value={address}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setAddress(e.target.value)
+              }
+            ></IInput>
+          </div>
+        </IContainer>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInput
-            label="Address"
-            placeholder=""
-            name="name"
-            value={address}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setAddress(e.target.value)
-            }
-          ></IInput>
-        </div>
-      </IContainer>
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2 lg:w-1/2">
+            <IDropdown
+              labelText="Type"
+              options={[
+                { value: "SOCIAL", label: "Social" },
+                { value: "HOSTED", label: "Hosted" },
+              ]}
+              value={type}
+              onChange={setType}
+            />
+          </div>
+        </IContainer>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IDropdown
-            labelText="Type"
-            options={[
-              { value: "SOCIAL", label: "Social" },
-              { value: "HOSTED", label: "Hosted" },
-            ]}
-            value={type}
-            onChange={setType}
+        <IContainer className="pb-4">
+          <div className="flex xl:w-1/2 lg:w-1/2">
+            <div className="mr-2 w-1/3">
+              <IDropdown
+                labelText="Month"
+                options={months}
+                onChange={(newValue) => setMonth(newValue)}
+                value={month}
+              ></IDropdown>
+            </div>
+
+            <div className="mr-2 w-1/3">
+              <IDropdown
+                labelText="Day"
+                options={days}
+                onChange={(newValue) => setDay(newValue)}
+                value={day}
+              ></IDropdown>
+            </div>
+            <div className="w-1/3">
+              <IDropdown
+                labelText="Year"
+                options={years}
+                onChange={(newValue) => setYear(newValue)}
+                value={year}
+              ></IDropdown>
+            </div>
+          </div>
+        </IContainer>
+
+        <IContainer className="pb-4">
+          <div className="flex xl:w-1/2 lg:w-1/2">
+            <div className="w-1/2 mr-2">
+              <IDropdown
+                labelText="Start Time"
+                options={times}
+                onChange={(newValue) => setStartTime(newValue)}
+                value={startTime}
+              ></IDropdown>
+            </div>
+            <div className="w-1/2 ">
+              <IDropdown
+                labelText="End Time"
+                options={times}
+                onChange={(newValue) => setEndTime(newValue)}
+                value={endTime}
+              ></IDropdown>
+            </div>
+          </div>
+        </IContainer>
+
+        <IContainer className="pb-4">
+          <div className="xl:w-1/2">
+            <ITextArea
+              name="description"
+              placeholder="Enter description here..."
+              value={description}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setDescription(e.target.value)
+              }
+            />
+          </div>
+        </IContainer>
+
+        <IContainer className="pb-4">
+          <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
+        </IContainer>
+
+        <IContainer className="pb-4">
+          <IButton
+            onClick={handleCreateEvent}
+            className="px-4 py-2"
+            text="Publish"
+            bgColor="bg-regal-blue"
+            textColor="text-white"
           />
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <div className="flex xl:w-1/2 lg:w-1/2">
-          <div className="mr-2 w-1/3">
-            <IDropdown
-              labelText="Month"
-              options={months}
-              onChange={(newValue) => setMonth(newValue)}
-              value={month}
-            ></IDropdown>
-          </div>
-
-          <div className="mr-2 w-1/3">
-            <IDropdown
-              labelText="Day"
-              options={days}
-              onChange={(newValue) => setDay(newValue)}
-              value={day}
-            ></IDropdown>
-          </div>
-          <div className="w-1/3">
-            <IDropdown
-              labelText="Year"
-              options={years}
-              onChange={(newValue) => setYear(newValue)}
-              value={year}
-            ></IDropdown>
-          </div>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <div className="flex xl:w-1/2 lg:w-1/2">
-          <div className="w-1/2 mr-2">
-            <IDropdown
-              labelText="Start Time"
-              options={times}
-              onChange={(newValue) => setStartTime(newValue)}
-              value={startTime}
-            ></IDropdown>
-          </div>
-          <div className="w-1/2 ">
-            <IDropdown
-              labelText="End Time"
-              options={times}
-              onChange={(newValue) => setEndTime(newValue)}
-              value={endTime}
-            ></IDropdown>
-          </div>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2">
-          <ITextArea
-            name="description"
-            placeholder="Enter description here..."
-            value={description}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setDescription(e.target.value)
-            }
-          />
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <IButton
-          onClick={handleCreateEvent}
-          className="px-4 py-2"
-          text="Publish"
-          bgColor="bg-regal-blue"
-          textColor="text-white"
-        />
-      </IContainer>
+        </IContainer>
+      </div>
     </div>
   );
 }

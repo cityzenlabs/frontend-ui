@@ -174,7 +174,7 @@ function CommunityDashboardEdit() {
 
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
+      <IContainer className="pb-4 pt-4">
         <div className="xl:flex lg:flex items-center justify-between">
           <div className="flex items-center">
             <ILabel text="Edit Community" />

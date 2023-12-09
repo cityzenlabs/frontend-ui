@@ -28,6 +28,7 @@ function CommunityDashboard() {
   const [showDashboardEvents, setShowDashboardEvents] = useState("");
   const [organizer, setOrganizer] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
+  const [communityPicture, setCommunityPicture] = useState<any>("");
 
   const getCommunityDashboard = async (callback = () => {}) => {
     try {
@@ -49,9 +50,21 @@ function CommunityDashboard() {
     } catch (error) {}
   };
 
+  const fetchPicture = async () => {
+    try {
+      const picture = await CommunityService.getCommunityPicture(
+        communityId,
+        accessToken.token,
+      );
+      if (picture) {
+        setCommunityPicture(picture);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([getCommunityDashboard()]);
+      await Promise.all([getCommunityDashboard(), fetchPicture()]);
       setIsLoading(false);
     };
 
@@ -86,14 +99,11 @@ function CommunityDashboard() {
       {!showDashboardEvents && (
         <div>
           <div>
-            <IContainer className="pb-8 pt-8">
+            <IContainer className="pb-4 pt-4">
               <div className="flex justify-between">
                 <div className="flex">
                   {communityDashboard && (
-                    <ILabel
-                      text={communityDashboard.community.name}
-                      className="ml-4"
-                    ></ILabel>
+                    <ILabel text={communityDashboard.community.name}></ILabel>
                   )}
                 </div>
 
@@ -122,31 +132,31 @@ function CommunityDashboard() {
             </IContainer>
           </div>
 
-          <IContainer className="pb-8">
-            <div className="grid xl:grid-cols-3 gap-6 xl:w-4/5 lg:w-full">
+          <IContainer className="pb-4">
+            <div className="grid xl:grid-cols-3 gap-5 xl:w-4/5 lg:w-full">
               <IPanel
-                height="h-[70px]"
+                height="h-[60px]"
                 onPanelClick={() => setShowDashboardEvents("Ongoing Events")}
               >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between h-full items-center">
                   {communityDashboard?.ongoingEvents + " Ongoing Events "}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
               </IPanel>
               <IPanel
-                height="h-[70px]"
+                height="h-[60px]"
                 onPanelClick={() => setShowDashboardEvents("Pending Events")}
               >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between h-full items-center">
                   {communityDashboard?.pendingEvents + " Pending Events"}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
               </IPanel>
               <IPanel
-                height="h-[70px]"
+                height="h-[60px]"
                 onPanelClick={() => setShowDashboardEvents("Completed Events")}
               >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between h-full items-center">
                   {communityDashboard?.completedEvents + " Completed Events"}{" "}
                   <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
                 </div>
@@ -154,8 +164,8 @@ function CommunityDashboard() {
             </div>
           </IContainer>
 
-          <IContainer className="pb-8">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
+          <IContainer className="pb-4">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full ">
               {membersChartData && (
                 <IGraph
                   data={membersChartData.series}
@@ -173,15 +183,16 @@ function CommunityDashboard() {
             </div>
           </IContainer>
 
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <CommunityDetails
               community={communityDashboard.community}
               organizer={organizer}
               communityId={communityId}
+              communityPicture={communityPicture}
             />
           </IContainer>
 
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Upcoming Hosted Events"
@@ -198,7 +209,7 @@ function CommunityDashboard() {
             </div>
           </IContainer>
 
-          <IContainer className="pb-8">
+          <IContainer className="pb-4">
             <div>
               <IPanel
                 title="Upcoming Social Events"

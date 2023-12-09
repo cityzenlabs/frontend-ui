@@ -80,7 +80,7 @@ function CommunityCreate() {
 
   return (
     <div>
-      <IContainer className="pt-8 pb-8">
+      <IContainer className="pt-4 pb-4">
         <ILabel text="Create Communities"></ILabel>
       </IContainer>
       <IContainer className="pb-4">

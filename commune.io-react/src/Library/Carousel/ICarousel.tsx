@@ -28,7 +28,7 @@ const ICarousel = ({ imageUrls }: any) => {
       className="relative w-full"
       data-carousel="static"
     >
-      <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+      <div className="relative  overflow-hidden rounded-lg h-[50vh] ">
         {hasImages ? (
           imageUrls.map((imageUrl, index) => (
             <div

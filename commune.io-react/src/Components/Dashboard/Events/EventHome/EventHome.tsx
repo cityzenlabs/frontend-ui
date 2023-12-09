@@ -7,6 +7,7 @@ import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { useAuth } from "../../../../AuthContext";
 import { useNavigate } from "react-router-dom";
+import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 
 function EventHome() {
   const accessToken = useAuth();
@@ -42,12 +43,10 @@ function EventHome() {
         setPendingEvents(eventHome.pendingJoinedEvents);
         setCompletedEvents(eventHome.completedJoinedEvents);
         setOngoingEvents(eventHome.ongoingJoinedEvents);
-        setRoute(`/event`);
       } else if (joinedOrCreated === "Created") {
         setPendingEvents(eventHome.pendingCreatedEvents);
         setCompletedEvents(eventHome.completedCreatedEvents);
         setOngoingEvents(eventHome.ongoingCreatedEvents);
-        setRoute(`/event/manage`);
       }
     }
   }, [joinedOrCreated, eventHome]);
@@ -64,15 +63,18 @@ function EventHome() {
             <div className="flex items-center">
               <ILabel text="Event Home" />
             </div>
-            <div className="w-[200px]">
-              <IDropdown
-                labelText=""
-                value={joinedOrCreated}
+            <div>
+              <IMenuButton
                 options={[
-                  { value: "Joined", label: "Joined" },
-                  { value: "Created", label: "Created" },
+                  {
+                    label: "Joined",
+                    action: () => setJoinedOrCreated("Joined"),
+                  },
+                  {
+                    label: "Create",
+                    action: () => setJoinedOrCreated("Created"),
+                  },
                 ]}
-                onChange={(newValue) => setJoinedOrCreated(newValue)}
               />
             </div>
           </div>
@@ -109,8 +111,10 @@ function EventHome() {
             <IPanel title="Ongoing" buttonLabel="Show All" height="600px">
               <IEventPanel
                 events={ongoingEvents}
-                onEventClick={(eventId) => {
-                  navigate(`${route}/${eventId}`);
+                onEventClick={(eventName, eventId) => {
+                  joinedOrCreated === "Joined"
+                    ? navigate(`/event/${eventName}/${eventId}`)
+                    : navigate(`/event/manage/${eventId}`);
                 }}
               />
             </IPanel>
@@ -123,7 +127,9 @@ function EventHome() {
               <IEventPanel
                 events={pendingEvents}
                 onEventClick={(eventName, eventId) => {
-                  navigate(`${route}/${eventId}`);
+                  joinedOrCreated === "Joined"
+                    ? navigate(`/event/${eventName}/${eventId}`)
+                    : navigate(`/event/manage/${eventId}`);
                 }}
               />
             </IPanel>
@@ -136,7 +142,9 @@ function EventHome() {
               <IEventPanel
                 events={completedEvents}
                 onEventClick={(eventName, eventId) => {
-                  navigate(`${route}/${eventId}`);
+                  joinedOrCreated === "Joined"
+                    ? navigate(`/event/${eventName}/${eventId}`)
+                    : navigate(`/event/manage/${eventId}`);
                 }}
               />
             </IPanel>
