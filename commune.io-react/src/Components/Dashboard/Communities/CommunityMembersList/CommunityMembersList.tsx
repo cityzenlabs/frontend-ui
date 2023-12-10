@@ -47,20 +47,16 @@ function CommunityMembersList() {
   return (
     <div>
       <div>
-        <IContainer className="pb-8 pt-8">
-          <div className="flex">
-            <ILabel className="ml-4" text="Members" />
-          </div>
-        </IContainer>
+        <div className="flex pt-4 pb-4">
+          <ILabel text="Members" />
+        </div>
 
-        <IContainer className="pb-8">
-          <IUserTable
-            users={members}
-            onRowClick={(userId) => {
-              navigate(`/profile/${userId}`);
-            }}
-          />
-        </IContainer>
+        <IUserTable
+          users={members}
+          onRowClick={(userId) => {
+            navigate(`/profile/${userId}`);
+          }}
+        />
       </div>
     </div>
   );

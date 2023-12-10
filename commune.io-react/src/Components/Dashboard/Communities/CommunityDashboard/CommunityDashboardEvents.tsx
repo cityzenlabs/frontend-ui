@@ -58,22 +58,13 @@ function CommunityDashboardEvents({
 
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
-        <div className="flex">
-          <IBackButton onClick={() => setDashboardEvents("")} />
-          {dashboardEvents && (
-            <ILabel text={dashboardEvents} className="ml-4"></ILabel>
-          )}
-        </div>
-      </IContainer>
+      <div className="pb-4 pt-4">
+        {dashboardEvents && <ILabel text={dashboardEvents}></ILabel>}
+      </div>
 
-      <IContainer className="pb-8">
-        <div>
-          <IPanel height="600px">
-            <IEventPanel events={events ?? {}} />
-          </IPanel>
-        </div>
-      </IContainer>
+      <div className="pb-4">
+        <IEventPanel events={events ?? {}} />
+      </div>
     </div>
   );
 }

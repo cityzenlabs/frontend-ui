@@ -57,97 +57,91 @@ function EventHome() {
 
   return (
     <div>
-      <div>
-        <IContainer className="pb-8 pt-8">
-          <div className="xl:flex lg:flex items-center justify-between">
-            <div className="flex items-center">
-              <ILabel text="Event Home" />
-            </div>
-            <div>
-              <IMenuButton
-                options={[
-                  {
-                    label: "Joined",
-                    action: () => setJoinedOrCreated("Joined"),
-                  },
-                  {
-                    label: "Created",
-                    action: () => setJoinedOrCreated("Created"),
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-8">
-          <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full">
-            <IPanel height="h-[112px]">
-              <div className="text-3xl">{eventHome?.joinedEvents.length}</div>
-              <div className="text-xs pr-8">
-                JOINED <br /> EVENTS
-              </div>
-            </IPanel>
-
-            <IPanel height="h-[112px]">
-              <div className="text-3xl">{eventHome?.createdEvents.length}</div>
-              <div className="text-xs pr-8">
-                CREATED <br /> EVENTS
-              </div>
-            </IPanel>
-
-            <IPanel height="h-[112px]">
-              <div className="text-3xl">0</div>
-              <div className="text-xs pr-8">
-                PENDING <br />
-                REQUESTS
-              </div>
-            </IPanel>
-          </div>
-        </IContainer>
-
-        <IEventPanel
-          title="Ongoing"
-          buttonLabel="Show All"
-          height="600px"
-          events={ongoingEvents}
-          onEventClick={(eventName, eventId) => {
-            joinedOrCreated === "Joined"
-              ? navigate(`/event/${eventName}/${eventId}`)
-              : navigate(`/event/manage/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={8}
-        />
-
-        <IEventPanel
-          title="Pending"
-          buttonLabel="Show All"
-          height="600px"
-          events={pendingEvents}
-          onEventClick={(eventName, eventId) => {
-            joinedOrCreated === "Joined"
-              ? navigate(`/event/${eventName}/${eventId}`)
-              : navigate(`/event/manage/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={8}
-        />
-
-        <IEventPanel
-          title="Completed"
-          buttonLabel="Show All"
-          height="600px"
-          events={completedEvents}
-          onEventClick={(eventName, eventId) => {
-            joinedOrCreated === "Joined"
-              ? navigate(`/event/${eventName}/${eventId}`)
-              : navigate(`/event/manage/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={8}
-        />
+      <div className="xl:flex lg:flex items-center justify-between pb-4 pt-4">
+        <div className="flex items-center">
+          <ILabel text="Event Home" />
+        </div>
+        <div>
+          <IMenuButton
+            options={[
+              {
+                label: "Joined",
+                action: () => setJoinedOrCreated("Joined"),
+              },
+              {
+                label: "Created",
+                action: () => setJoinedOrCreated("Created"),
+              },
+            ]}
+          />
+        </div>
       </div>
+
+      <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full pb-4">
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">{eventHome?.joinedEvents.length}</div>
+          <div className="text-xs pr-8">
+            JOINED <br /> EVENTS
+          </div>
+        </IPanel>
+
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">{eventHome?.createdEvents.length}</div>
+          <div className="text-xs pr-8">
+            CREATED <br /> EVENTS
+          </div>
+        </IPanel>
+
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">0</div>
+          <div className="text-xs pr-8">
+            PENDING <br />
+            REQUESTS
+          </div>
+        </IPanel>
+      </div>
+
+      <IEventPanel
+        title="Ongoing"
+        buttonLabel="Show All"
+        height="600px"
+        events={ongoingEvents}
+        onEventClick={(eventName, eventId) => {
+          joinedOrCreated === "Joined"
+            ? navigate(`/event/${eventName}/${eventId}`)
+            : navigate(`/event/manage/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={8}
+      />
+
+      <IEventPanel
+        title="Pending"
+        buttonLabel="Show All"
+        height="600px"
+        events={pendingEvents}
+        onEventClick={(eventName, eventId) => {
+          joinedOrCreated === "Joined"
+            ? navigate(`/event/${eventName}/${eventId}`)
+            : navigate(`/event/manage/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={8}
+      />
+
+      <IEventPanel
+        title="Completed"
+        buttonLabel="Show All"
+        height="600px"
+        events={completedEvents}
+        onEventClick={(eventName, eventId) => {
+          joinedOrCreated === "Joined"
+            ? navigate(`/event/${eventName}/${eventId}`)
+            : navigate(`/event/manage/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={8}
+      />
     </div>
   );
 }

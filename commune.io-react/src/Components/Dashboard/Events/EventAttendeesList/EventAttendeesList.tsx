@@ -38,20 +38,18 @@ function EventAttendeesList() {
 
   return (
     <div>
-      <IContainer className="pb-8 pt-8">
-        <div className="flex">
-          <ILabel text="Attendees" />
-        </div>
-      </IContainer>
+      <div className="pt-4 pb-4">
+        <ILabel text="Attendees" />
+      </div>
 
-      <IContainer className="pb-8">
+      <div className="pb-4">
         <IUserTable
           users={attendees}
           onRowClick={(userId) => {
             navigate(`/profile/${userId}`);
           }}
         />
-      </IContainer>
+      </div>
     </div>
   );
 }

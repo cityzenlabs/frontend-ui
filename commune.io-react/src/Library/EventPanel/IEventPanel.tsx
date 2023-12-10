@@ -11,6 +11,7 @@ interface IEventPanelProps {
   height?: string;
   marginTop?: string;
   titleColor?: string;
+
   paddingB?: number;
 }
 
@@ -27,11 +28,8 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
   paddingB = 4,
 }) => {
   const paddingBClass = `pb-${paddingB}`;
-
   return (
-    <div
-      className={`xl:ml-[330px] md:ml-[330px] xl:mr-[50px] md:mr-[50px] mr-[50px] ml-[50px] ${paddingBClass} ${marginTop}`}
-    >
+    <div className={`${marginTop} ${paddingBClass}`}>
       <div className={`${height} rounded-lg bg-white px-7 py-2`}>
         <div className="flex justify-between items-center mb-1">
           <div
@@ -55,7 +53,7 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1 pb-4">
           {Array.isArray(events) &&
-            (showAll ? events : events.slice(0, 4)).map((event, index) => (
+            (showAll ? events : events?.slice(0, 4)).map((event, index) => (
               <div
                 key={index}
                 className="rounded-lg shadow-md flex flex-col"
@@ -81,15 +79,15 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
                 </div>
                 <div className="px-2 flex items-center justify-between">
                   <div className="text-xs font-medium truncate text-[#7E858B]">
-                    {event.address}
+                    {event.category}
                   </div>
                   <div className="text-xs font-medium truncate text-[#7E858B]">
-                    {event.type}
+                    Public
                   </div>
                 </div>
                 <div className="px-2 pb-2 flex items-center justify-between">
                   <div className="text-xs font-medium truncate text-[#7E858B]">
-                    {event.category}
+                    {event.address}
                   </div>
                   <div className="text-xs font-medium truncate text-[#7E858B]">
                     {event.attendees + " Attendees"}

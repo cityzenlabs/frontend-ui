@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-function IDatePicker({ placeholder, label }: any) {
+function IDatePicker({ placeholder, label, onChange }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -39,6 +39,7 @@ function IDatePicker({ placeholder, label }: any) {
     if (day >= today) {
       setSelectedDate(day);
       setIsOpen(false);
+      onChange(day);
     }
   };
 
@@ -67,7 +68,7 @@ function IDatePicker({ placeholder, label }: any) {
     : "";
 
   return (
-    <div className="relative max-w-sm" ref={wrapperRef}>
+    <div className="relative w-full" ref={wrapperRef}>
       <label className=" text-sm font-thin ">{label}</label>
       <div
         onClick={() => setIsOpen(!isOpen)}

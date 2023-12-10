@@ -2,97 +2,121 @@ import React from "react";
 import IPanel from "../../../../../../Library/Panel/IPanel";
 import ILabel from "../../../../../../Library/Label/ILabel";
 import { CalendarIcon, MapIcon, SunIcon } from "@heroicons/react/outline";
-import { ArrowRightIcon } from "@heroicons/react/solid";
+import { ArrowRightIcon, BadgeCheckIcon } from "@heroicons/react/solid";
 import { useNavigate } from "react-router-dom";
 
-function EventDetails({ event, organizer, community }: any) {
+function EventDetails({ event, organizer, community, communityPicture }: any) {
   let navigate = useNavigate();
+
+  const getColorByEventProperty = () => {
+    // Example logic, update according to your needs
+    return "#68BEF1";
+  };
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <div>
-      <div className="grid grid-cols-3 xl:grid-cols-3 gap-6">
-        <div className="col-span-3 xl:col-span-2">
-          <IPanel height="h-[550px]">
-            <div className=" h-full flex flex-col">
-              {event && (
-                <div>
-                  <div className="flex justify-between">
-                    <div className="flex">
-                      <ILabel text={event.name}></ILabel>
-                    </div>
+    <div className="grid grid-cols-3 xl:grid-cols-3 gap-5">
+      <div className="col-span-3 xl:col-span-2">
+        <IPanel height="h-[550px]">
+          <div className="h-full flex flex-col">
+            {event && (
+              <div className="flex justify-between">
+                <div className="flex">
+                  <ILabel text={event.name} className="mr-2"></ILabel>
+                  <BadgeCheckIcon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                    style={{ color: "#40B87E" }}
+                  />
+                </div>
 
-                    <div className="flex">
-                      <div className="mr-2">{event.points}</div>
-                      <SunIcon
-                        className="h-6 w-6"
-                        aria-hidden="true"
-                        style={{ color: "#68BEF1" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="mt-5 flex">
-                <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-                <div>{event?.city + ", " + event?.state}</div>
-              </div>
-              <div className="mt-5 flex">
-                <CalendarIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-                <div>
-                  {event &&
-                    `${new Date(
-                      event.startTime,
-                    ).toLocaleDateString()} ${new Date(
-                      event.startTime,
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })} - ${new Date(
-                      event.endTime,
-                    ).toLocaleDateString()} ${new Date(
-                      event.endTime,
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}`}
+                <div className="flex">
+                  <div className="mr-2">{event.points}</div>
+                  <SunIcon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                    style={{ color: getColorByEventProperty() }}
+                  />
                 </div>
               </div>
-              <div className="mt-5 flex">
-                <div>
-                  {event?.type} | {event?.attribute} | {event?.category}
-                </div>
-              </div>
-              <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow">
-                {event?.description}
+            )}
+            <div className="mt-5 flex">
+              <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
+              <div className="text-[#7E858B]">
+                {event?.city + ", " + event?.state}
               </div>
             </div>
-          </IPanel>
-        </div>
-        <div className="col-span-3 xl:col-span-1 flex flex-col gap-6">
-          <IPanel height="h-[177px]">
+            <div className="mt-5 flex">
+              <CalendarIcon className="h-6 w-6 mr-2" aria-hidden="true" />
+              <div>
+                {formatDate(event?.startTime)} - {formatDate(event?.endTime)}
+              </div>
+            </div>
+            <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
+              {event?.description}
+            </div>
+          </div>
+        </IPanel>
+      </div>
+
+      <div className="col-span-3 xl:col-span-1 flex flex-col gap-5">
+        <IPanel height="177px">
+          <div className="flex items-center">
             <div>
-              <div className="font-bold text-md">
-                {organizer?.firstName + " " + organizer?.lastName}
-              </div>
-              <div>Reputation Score - {organizer?.reputation}</div>
-              <div className="font-bold text-md mt-4">Community</div>
-              <div>Reputation Score - {community?.reputation}</div>
+              <img
+                src={organizer?.profilePicture || "default-avatar.png"}
+                alt={`${organizer?.firstName} ${organizer?.lastName}`}
+                style={{ borderRadius: "15px", objectFit: "cover" }}
+                className="w-[30px] h-[30px] mr-2 mb-1"
+              />
             </div>
-          </IPanel>
-
-          <IPanel
-            height="h-[55px]"
-            onPanelClick={() => {
-              navigate(`/events/${event.id}/attendees`);
-            }}
-          >
-            <div className="flex justify-between items-center h-full">
-              {event?.attendees.length} Attendees
-              <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+            <div className="text-md">
+              {organizer?.firstName + " " + organizer?.lastName}
             </div>
-          </IPanel>
+          </div>
+          <div className="text-[#7E858B] text-sm mb-6">
+            Reputation Score - {organizer?.reputation}
+          </div>
 
-          <IPanel height="h-[270px]"></IPanel>
-        </div>
+          <div className="flex items-center">
+            <div>
+              <img
+                src={communityPicture || "default-event-image.png"}
+                alt={event?.name}
+                style={{ borderRadius: "15px", objectFit: "cover" }}
+                className="w-[30px] h-[30px] mr-2 mb-1"
+              />
+            </div>
+            <div className="text-md">Community</div>
+          </div>
+          <div className="text-[#7E858B] text-sm mb-6">
+            Reputation Score - {community?.reputation}
+          </div>
+        </IPanel>
+
+        <IPanel
+          height="h-[55px]"
+          onPanelClick={() => {
+            navigate(`/events/${event.id}/attendees`);
+          }}
+        >
+          <div className="flex justify-between items-center h-full">
+            {event?.attendees.length} Attendees
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          </div>
+        </IPanel>
+
+        {/* Additional Panel (if needed) */}
+        <IPanel height="h-[270px]">{/* Additional content */}</IPanel>
       </div>
     </div>
   );

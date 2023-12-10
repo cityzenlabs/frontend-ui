@@ -150,43 +150,37 @@ function Community() {
   return (
     <div>
       <div>
-        <IContainer className="pt-4 pb-4">
-          <div className="flex justify-between items-center">
-            <div className="flex">
-              <ILabel text={community?.name} />
-            </div>
-            <div className="flex">
-              <IButton
-                text={hasJoined ? "Leave Community" : "Join Community"}
-                onClick={handleJoinOrLeaveCommunity}
-                bgColor={
-                  user?.id === organizer.id ? "bg-white" : "bg-regal-blue"
-                }
-                textColor={
-                  user?.id === organizer.id ? "text-black" : "text-white"
-                }
-                className="px-6"
-                disabled={user?.id === organizer.id}
-              />
-            </div>
+        <div className="flex justify-between items-center pt-4 pb-4">
+          <div className="flex">
+            <ILabel text={community?.name} />
           </div>
-        </IContainer>
-
-        <IContainer className="pb-4">
-          <div className="w-full">
-            {hasJoined && <ICarousel imageUrls={gallery} />}
-            {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
+          <div className="flex">
+            <IButton
+              text={hasJoined ? "Leave Community" : "Join Community"}
+              onClick={handleJoinOrLeaveCommunity}
+              bgColor={user?.id === organizer.id ? "bg-white" : "bg-regal-blue"}
+              textColor={
+                user?.id === organizer.id ? "text-black" : "text-white"
+              }
+              className="px-6"
+              disabled={user?.id === organizer.id}
+            />
           </div>
-        </IContainer>
+        </div>
 
-        <IContainer className="pb-4">
+        <div className="w-full pb-4">
+          {hasJoined && <ICarousel imageUrls={gallery} />}
+          {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
+        </div>
+
+        <div className="pb-4">
           <CommunityDetails
             community={community}
             organizer={organizer}
             communityId={communityId}
             communityPicture={communityPicture}
           />
-        </IContainer>
+        </div>
 
         {hasJoined && !showAllSocialEvents && (
           <IEventPanel

@@ -1,23 +1,14 @@
 import React from "react";
 
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  picture: string;
-  age: number;
-  level: number;
-  points: number;
-  topAttribute: string;
+interface ICommunityLeaderBoard {
+  communities: any;
+  onRowClick: (communityId: string) => void;
 }
 
-interface IUserTableProps {
-  users: User[];
-  onRowClick: (userId: string) => void;
-}
-
-const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
+const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
+  communities,
+  onRowClick,
+}) => {
   const tableStyle = {
     width: "100%",
     borderCollapse: "collapse" as "collapse",
@@ -49,56 +40,64 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
     gap: "10px", // Add some space between the image and the text
   };
 
+  const truncateStyle = {
+    maxWidth: "150px", // Adjust this value based on your requirements
+    whiteSpace: "nowrap" as "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
   return (
     <div className="rounded" style={{ width: "100%", overflowX: "auto" }}>
       <table style={tableStyle}>
         <thead>
           <tr>
             <th className="text-xs" style={thStyle}>
+              No.
+            </th>
+            <th className="text-xs" style={thStyle}>
               Name
             </th>
             <th className="text-xs" style={thStyle}>
-              Highest Attribute
+              Attribute
             </th>
             <th className="text-xs" style={thStyle}>
-              Points
+              Reputation
             </th>
             <th className="text-xs" style={thStyle}>
-              Level
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Age
+              Members
             </th>
           </tr>
         </thead>
         <tbody style={{ backgroundColor: "white" }}>
-          {users?.map((user) => (
+          {communities?.map((community: any) => (
             <tr
-              key={user.id}
+              key={community.id}
               style={{ border: "1px solid #DADEE5" }}
-              onClick={() => onRowClick(user.id)}
+              onClick={() => onRowClick(community.id)}
             >
+              <td></td>
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
                   <img
-                    src={user.picture || "default-avatar.png"}
-                    alt={`${user.firstName} ${user.lastName}`}
+                    src={community?.picture || "default-avatar.png"}
+                    alt={``}
                     style={imgStyle}
                   />
-                  <span className="text-xs">{`${user.firstName} ${user.lastName}`}</span>
+                  <span
+                    className="text-xs"
+                    style={truncateStyle}
+                  >{`${community?.name}`}</span>
                 </div>
               </td>
               <td className="text-xs" style={tdStyle}>
-                {user.topAttribute}
+                {community.attribute}
               </td>
               <td className="text-xs" style={tdStyle}>
-                {user.points}
+                {community?.reputation}
               </td>
               <td className="text-xs" style={tdStyle}>
-                {user.level}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {user.age}
+                {community?.memberCount}
               </td>
             </tr>
           ))}
@@ -108,4 +107,4 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
   );
 };
 
-export default IUserTable;
+export default ICommunityLeaderBoard;

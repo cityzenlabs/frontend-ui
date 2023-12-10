@@ -3,6 +3,7 @@ import { SIDE_BAR_ITEMS, HAMBURGER_ICON } from "../../../constants";
 import { SideBarProps } from "./types/SidebarProps";
 
 import { useNavigate } from "react-router-dom";
+import IButton from "../../../Library/Button/IButton";
 
 function Sidebar({
   sideBarSelection,
@@ -62,6 +63,10 @@ function Sidebar({
 
     if (route === "Settings") {
       navigate("settings");
+    }
+
+    if (route === "Leaderboard") {
+      navigate("leaderboard");
     }
   };
 
@@ -129,12 +134,11 @@ function Sidebar({
               </li>
             ))}
           </ul>
-          <button
+          <IButton
+            text="Phillip"
             onClick={handleViewProfile}
             className="fixed rounded-lg bottom-0 inset-x-3 p-4 border mb-10 text-black"
-          >
-            Phillip
-          </button>
+          ></IButton>
         </div>
       </aside>
     </div>

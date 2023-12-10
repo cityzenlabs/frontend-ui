@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
+import IContainer from "../../Library/Container/IContainer";
 
 function Dashboard() {
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
@@ -29,7 +30,9 @@ function Dashboard() {
         setSideBarSelection={setSideBarSelection}
         setSideBarVisibility={setSidebarVisibility}
       />
-      <Outlet />
+      <IContainer>
+        <Outlet />
+      </IContainer>
     </div>
   );
 }

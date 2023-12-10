@@ -136,6 +136,14 @@ function App() {
 
                 <Route path="events" element={<EventDiscovery />} />
                 <Route
+                  path="leaderboard"
+                  element={
+                    <DashboardProvider>
+                      <Leaderboard />
+                    </DashboardProvider>
+                  }
+                />
+                <Route
                   path="event/:eventName/:eventId"
                   element={
                     <DashboardProvider>

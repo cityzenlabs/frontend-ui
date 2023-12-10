@@ -30,6 +30,7 @@ function LoginForm() {
       const data = await response.json();
       if (response.ok) {
         setToken(data.accessToken);
+        sessionStorage.removeItem("sidebarSelection");
         navigate("/home");
       } else {
         setError("Login failed. Please check your credentials.");

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import IInput from "../../../Library/Input/IInput";
-import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
-import IPanel from "../../../Library/Panel/IPanel";
 import IButton from "../../../Library/Button/IButton";
 import { useAuth } from "../../../AuthContext";
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";
@@ -67,42 +64,38 @@ function CommunityDiscovery() {
   return (
     <div>
       <div>
-        <div>
-          <IContainer className="pb-4 pt-4">
-            <div className="flex justify-between">
-              <ILabel text="Discover Communities" />
-              <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
-                <IButton
-                  text="Home"
-                  onClick={() => navigate("/communities/home")}
-                  className="px-6 mr-2"
-                />
-                <IButton
-                  text="New +"
-                  onClick={() => navigate("/communities/create")}
-                  bgColor="bg-regal-blue"
-                  textColor="text-white"
-                  className="px-6"
-                />
-              </div>
+        <div className="flex justify-between pt-4 pb-4">
+          <ILabel text="Discover Communities" />
+          <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
+            <IButton
+              text="Home"
+              onClick={() => navigate("/communities/home")}
+              className="px-6 mr-2"
+            />
+            <IButton
+              text="New +"
+              onClick={() => navigate("/communities/create")}
+              bgColor="bg-regal-blue"
+              textColor="text-white"
+              className="px-6"
+            />
+          </div>
 
-              {/* Menu button shown on non-large screens */}
-              {!isLargeScreen && (
-                <IMenuButton
-                  options={[
-                    {
-                      label: "Home",
-                      action: () => navigate("/communities/home"),
-                    },
-                    {
-                      label: "Created",
-                      action: () => navigate("/communities/create"),
-                    },
-                  ]}
-                />
-              )}
-            </div>
-          </IContainer>
+          {/* Menu button shown on non-large screens */}
+          {!isLargeScreen && (
+            <IMenuButton
+              options={[
+                {
+                  label: "Home",
+                  action: () => navigate("/communities/home"),
+                },
+                {
+                  label: "New +",
+                  action: () => navigate("/communities/create"),
+                },
+              ]}
+            />
+          )}
         </div>
 
         {!showAllUpcoming && !showAllRecommended && (

@@ -12,12 +12,17 @@ interface User {
   topAttribute: string;
 }
 
-interface IUserTableProps {
+interface IUserLeaderBoard {
   users: User[];
   onRowClick: (userId: string) => void;
+  picture: string;
 }
 
-const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
+const IUserLeaderBoard: React.FC<IUserLeaderBoard> = ({
+  users,
+  onRowClick,
+  picture,
+}) => {
   const tableStyle = {
     width: "100%",
     borderCollapse: "collapse" as "collapse",
@@ -55,19 +60,20 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
         <thead>
           <tr>
             <th className="text-xs" style={thStyle}>
+              No.
+            </th>
+            <th className="text-xs" style={thStyle}>
               Name
             </th>
             <th className="text-xs" style={thStyle}>
               Highest Attribute
             </th>
             <th className="text-xs" style={thStyle}>
-              Points
-            </th>
-            <th className="text-xs" style={thStyle}>
               Level
             </th>
+
             <th className="text-xs" style={thStyle}>
-              Age
+              Points
             </th>
           </tr>
         </thead>
@@ -78,10 +84,11 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
               style={{ border: "1px solid #DADEE5" }}
               onClick={() => onRowClick(user.id)}
             >
+              <td></td>
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
                   <img
-                    src={user.picture || "default-avatar.png"}
+                    src={picture}
                     alt={`${user.firstName} ${user.lastName}`}
                     style={imgStyle}
                   />
@@ -89,16 +96,13 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
                 </div>
               </td>
               <td className="text-xs" style={tdStyle}>
-                {user.topAttribute}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {user.points}
+                {user?.topAttribute}
               </td>
               <td className="text-xs" style={tdStyle}>
                 {user.level}
               </td>
               <td className="text-xs" style={tdStyle}>
-                {user.age}
+                {user.points}
               </td>
             </tr>
           ))}
@@ -108,4 +112,4 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
   );
 };
 
-export default IUserTable;
+export default IUserLeaderBoard;

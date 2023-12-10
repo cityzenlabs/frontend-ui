@@ -174,193 +174,175 @@ function CommunityDashboardEdit() {
 
   return (
     <div>
-      <IContainer className="pb-4 pt-4">
-        <div className="xl:flex lg:flex items-center justify-between">
-          <div className="flex items-center">
-            <ILabel text="Edit Community" />
-          </div>
+      <div className="xl:flex lg:flex items-center justify-between pt-4 pb-4">
+        <div className="flex items-center">
+          <ILabel text="Edit Community" />
         </div>
-      </IContainer>
+      </div>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInput
-            label="Name"
-            placeholder={community?.name}
-            name="name"
-            value={name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInput
+          label="Name"
+          placeholder={community?.name}
+          name="name"
+          value={name}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+        ></IInput>
+      </div>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInputGroup
+          label="Location"
+          inputs={[
+            {
+              name: "city",
+              placeholder: community?.city,
+              value: city,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setCity(e.target.value),
+              disabled: true,
+            },
+            {
+              name: "state",
+              placeholder: community?.state,
+              value: state,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setState(e.target.value),
+              disabled: true,
+            },
+          ]}
+        ></IInputGroup>
+      </div>
+
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInputGroup
+          label="Age"
+          inputs={[
+            {
+              name: "min",
+              placeholder: community?.minimumAge,
+              value: minimumAge,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setMinAge(e.target.value),
+              numberOnly: true,
+            },
+            {
+              name: "max",
+              placeholder: community?.maximumAge,
+              value: maximumAge,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setMaxAge(e.target.value),
+              numberOnly: true,
+            },
+          ]}
+        ></IInputGroup>
+      </div>
+
+      <div className="xl:w-1/2 lg:w-full pb-4">
+        <IInputGroup
+          label="Attributes"
+          floatingLabel={true}
+          inputs={[
+            {
+              name: "Social",
+              placeholder: "Social",
+              displayLabel: `Social- ${community?.attributeRequirements.SOCIAL}`,
+              value: social,
+              numberOnly: true,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setSocial(e.target.value),
+            },
+            {
+              name: "Intelligence",
+              placeholder: "",
+              displayLabel: `Intelligence - ${community?.attributeRequirements.INTELLIGENCE}`,
+              numberOnly: true,
+              value: intelligence,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setIntelligence(e.target.value),
+            },
+            {
+              name: "Night Life",
+              placeholder: "Night Life",
+              displayLabel: `Night Life - ${community?.attributeRequirements.NIGHTLIFE}`,
+              numberOnly: true,
+              value: nightLife,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setNightLife(e.target.value),
+            },
+          ]}
+        ></IInputGroup>
+      </div>
+      <div className="xl:w-1/2 pb-4">
+        <IInputGroup
+          label=""
+          floatingLabel={true}
+          inputs={[
+            {
+              name: "Adventure",
+              placeholder: "Adventure",
+              displayLabel: `Adventure - ${community?.attributeRequirements.ADVENTURE}`,
+              numberOnly: true,
+              value: adventure,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setAdventure(e.target.value),
+            },
+            {
+              name: "Culture",
+              placeholder: "Culture",
+              displayLabel: `Culture - ${community?.attributeRequirements.CULTURE}`,
+              numberOnly: true,
+              value: culture,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setCulture(e.target.value),
+            },
+
+            {
+              name: "Fitness",
+              placeholder: "Fitness",
+              displayLabel: `Fitness - ${community?.attributeRequirements.FITNESS}`,
+              numberOnly: true,
+              value: fitness,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setFitness(e.target.value),
+            },
+          ]}
+        ></IInputGroup>
+      </div>
+      <div className="flex xl:w-1/2 lg:w-1/2 pb-4">
+        <div className="mr-2 w-full">
+          <IDropdown
+            labelText="Gender Requirements"
+            placeholder={
+              community?.genderRequirements.toUpperCase()[0] +
+              community?.genderRequirements.toLowerCase().slice(1)
             }
-          ></IInput>
-        </div>
-      </IContainer>
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInputGroup
-            label="Location"
-            inputs={[
-              {
-                name: "city",
-                placeholder: community?.city,
-                value: city,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCity(e.target.value),
-                disabled: true,
-              },
-              {
-                name: "state",
-                placeholder: community?.state,
-                value: state,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setState(e.target.value),
-                disabled: true,
-              },
+            options={[
+              { label: "Male", value: "MALE" },
+              { label: "Female", value: "FEMALE" },
+              { label: "Neutral", value: "NEUTRAL" },
             ]}
-          ></IInputGroup>
+            onChange={(newValue) => setGenderRequirements(newValue)}
+            value={genderRequirements}
+          ></IDropdown>
         </div>
-      </IContainer>
+      </div>
 
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-1/2">
-          <IInputGroup
-            label="Age"
-            inputs={[
-              {
-                name: "min",
-                placeholder: community?.minimumAge,
-                value: minimumAge,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setMinAge(e.target.value),
-                numberOnly: true,
-              },
-              {
-                name: "max",
-                placeholder: community?.maximumAge,
-                value: maximumAge,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setMaxAge(e.target.value),
-                numberOnly: true,
-              },
-            ]}
-          ></IInputGroup>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2 lg:w-full">
-          <IInputGroup
-            label="Attributes"
-            floatingLabel={true}
-            inputs={[
-              {
-                name: "Social",
-                placeholder: "Social",
-                displayLabel: `Social- ${community?.attributeRequirements.SOCIAL}`,
-                value: social,
-                numberOnly: true,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSocial(e.target.value),
-              },
-              {
-                name: "Intelligence",
-                placeholder: "",
-                displayLabel: `Intelligence - ${community?.attributeRequirements.INTELLIGENCE}`,
-                numberOnly: true,
-                value: intelligence,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setIntelligence(e.target.value),
-              },
-              {
-                name: "Night Life",
-                placeholder: "Night Life",
-                displayLabel: `Night Life - ${community?.attributeRequirements.NIGHTLIFE}`,
-                numberOnly: true,
-                value: nightLife,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setNightLife(e.target.value),
-              },
-            ]}
-          ></IInputGroup>
-        </div>
-      </IContainer>
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2">
-          <IInputGroup
-            label=""
-            floatingLabel={true}
-            inputs={[
-              {
-                name: "Adventure",
-                placeholder: "Adventure",
-                displayLabel: `Adventure - ${community?.attributeRequirements.ADVENTURE}`,
-                numberOnly: true,
-                value: adventure,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setAdventure(e.target.value),
-              },
-              {
-                name: "Culture",
-                placeholder: "Culture",
-                displayLabel: `Culture - ${community?.attributeRequirements.CULTURE}`,
-                numberOnly: true,
-                value: culture,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCulture(e.target.value),
-              },
-
-              {
-                name: "Fitness",
-                placeholder: "Fitness",
-                displayLabel: `Fitness - ${community?.attributeRequirements.FITNESS}`,
-                numberOnly: true,
-                value: fitness,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFitness(e.target.value),
-              },
-            ]}
-          ></IInputGroup>
-        </div>
-      </IContainer>
-      <IContainer className="pb-4">
-        <div className="flex xl:w-1/2 lg:w-1/2">
-          <div className="mr-2 w-full">
-            <IDropdown
-              labelText="Gender Requirements"
-              placeholder={
-                community?.genderRequirements.toUpperCase()[0] +
-                community?.genderRequirements.toLowerCase().slice(1)
-              }
-              options={[
-                { label: "Male", value: "MALE" },
-                { label: "Female", value: "FEMALE" },
-                { label: "Neutral", value: "NEUTRAL" },
-              ]}
-              onChange={(newValue) => setGenderRequirements(newValue)}
-              value={genderRequirements}
-            ></IDropdown>
-          </div>
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
-        <div className="xl:w-1/2">
-          <ITextArea
-            name="description"
-            placeholder={community?.description}
-            value={description}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setDescription(e.target.value)
-            }
-          />
-        </div>
-      </IContainer>
-
-      <IContainer className="pb-4">
+      <div className="xl:w-1/2 pb-4">
+        <ITextArea
+          name="description"
+          placeholder={community?.description}
+          value={description}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setDescription(e.target.value)
+          }
+        />
+      </div>
+      <div className="pb-4">
         <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-      </IContainer>
-
-      <IContainer className="pb-4">
+      </div>
+      <div className="pb-4">
         <IButton
           onClick={handleEditCommunity}
           className="px-4 py-2"
@@ -368,7 +350,7 @@ function CommunityDashboardEdit() {
           bgColor="bg-regal-blue"
           textColor="text-white"
         />
-      </IContainer>
+      </div>
     </div>
   );
 }

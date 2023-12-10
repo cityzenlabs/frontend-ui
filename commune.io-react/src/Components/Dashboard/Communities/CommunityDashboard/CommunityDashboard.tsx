@@ -99,98 +99,92 @@ function CommunityDashboard() {
       {!showDashboardEvents && (
         <div>
           <div>
-            <IContainer className="pb-4 pt-4">
-              <div className="flex justify-between">
-                <div className="flex">
-                  {communityDashboard && (
-                    <ILabel text={communityDashboard.community.name}></ILabel>
-                  )}
-                </div>
-
-                <div className="flex">
-                  <IButton
-                    text={"Edit"}
-                    onClick={() => navigate(`/communities/edit/${communityId}`)}
-                    bgColor="bg-regal-blue"
-                    textColor="text-white"
-                    className="px-6  mr-4"
-                  />
-                  <IMenuButton
-                    options={[
-                      {
-                        label: "Transfer",
-                        action: () => console.log("Transfer"),
-                      },
-                      {
-                        label: "Delete",
-                        action: () => console.log("Delete"),
-                      },
-                    ]}
-                  />
-                </div>
+            <div className="flex justify-between pt-4 pb-4">
+              <div className="flex">
+                {communityDashboard && (
+                  <ILabel text={communityDashboard.community.name}></ILabel>
+                )}
               </div>
-            </IContainer>
+
+              <div className="flex">
+                <IButton
+                  text={"Edit"}
+                  onClick={() => navigate(`/communities/edit/${communityId}`)}
+                  bgColor="bg-regal-blue"
+                  textColor="text-white"
+                  className="px-6  mr-4"
+                />
+                <IMenuButton
+                  options={[
+                    {
+                      label: "Transfer",
+                      action: () => console.log("Transfer"),
+                    },
+                    {
+                      label: "Delete",
+                      action: () => console.log("Delete"),
+                    },
+                  ]}
+                />
+              </div>
+            </div>
           </div>
 
-          <IContainer className="pb-4">
-            <div className="grid xl:grid-cols-3 gap-5 xl:w-4/5 lg:w-full">
-              <IPanel
-                height="h-[60px]"
-                onPanelClick={() => setShowDashboardEvents("Ongoing Events")}
-              >
-                <div className="flex justify-between h-full items-center">
-                  {communityDashboard?.ongoingEvents + " Ongoing Events "}
-                  <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
-                </div>
-              </IPanel>
-              <IPanel
-                height="h-[60px]"
-                onPanelClick={() => setShowDashboardEvents("Pending Events")}
-              >
-                <div className="flex justify-between h-full items-center">
-                  {communityDashboard?.pendingEvents + " Pending Events"}
-                  <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
-                </div>
-              </IPanel>
-              <IPanel
-                height="h-[60px]"
-                onPanelClick={() => setShowDashboardEvents("Completed Events")}
-              >
-                <div className="flex justify-between h-full items-center">
-                  {communityDashboard?.completedEvents + " Completed Events"}{" "}
-                  <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
-                </div>
-              </IPanel>
-            </div>
-          </IContainer>
+          <div className="grid xl:grid-cols-3 gap-5 xl:w-4/5 lg:w-full pb-4">
+            <IPanel
+              height="h-[60px]"
+              onPanelClick={() => setShowDashboardEvents("Ongoing Events")}
+            >
+              <div className="flex justify-between h-full items-center">
+                {communityDashboard?.ongoingEvents + " Ongoing Events "}
+                <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+              </div>
+            </IPanel>
+            <IPanel
+              height="h-[60px]"
+              onPanelClick={() => setShowDashboardEvents("Pending Events")}
+            >
+              <div className="flex justify-between h-full items-center">
+                {communityDashboard?.pendingEvents + " Pending Events"}
+                <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+              </div>
+            </IPanel>
+            <IPanel
+              height="h-[60px]"
+              onPanelClick={() => setShowDashboardEvents("Completed Events")}
+            >
+              <div className="flex justify-between h-full items-center">
+                {communityDashboard?.completedEvents + " Completed Events"}{" "}
+                <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+              </div>
+            </IPanel>
+          </div>
 
-          <IContainer className="pb-4">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full ">
-              {membersChartData && (
-                <IGraph
-                  data={membersChartData.series}
-                  categories={membersChartData.categories}
-                  title="Members"
-                />
-              )}
-              {membersAttendingEventsChartData && (
-                <IGraph
-                  title="Members Attending Events"
-                  data={membersAttendingEventsChartData.series}
-                  categories={membersAttendingEventsChartData.categories}
-                />
-              )}
-            </div>
-          </IContainer>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full pb-4 ">
+            {membersChartData && (
+              <IGraph
+                data={membersChartData.series}
+                categories={membersChartData.categories}
+                title="Members"
+              />
+            )}
+            {membersAttendingEventsChartData && (
+              <IGraph
+                title="Members Attending Events"
+                data={membersAttendingEventsChartData.series}
+                categories={membersAttendingEventsChartData.categories}
+              />
+            )}
+          </div>
 
-          <IContainer className="pb-4">
+          <div className="pb-4">
             <CommunityDetails
               community={communityDashboard.community}
               organizer={organizer}
               communityId={communityId}
               communityPicture={communityPicture}
             />
-          </IContainer>
+          </div>
 
           <IEventPanel
             title="Upcoming Hosted Events"

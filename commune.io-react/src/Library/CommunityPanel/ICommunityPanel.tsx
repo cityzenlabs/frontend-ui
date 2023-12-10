@@ -28,9 +28,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
   const paddingBClass = `pb-${paddingB}`;
 
   return (
-    <div
-      className={`xl:ml-[330px] md:ml-[330px] xl:mr-[50px] md:mr-[50px] mr-[50px] ml-[50px] ${paddingBClass} ${marginTop}`}
-    >
+    <div className={`${marginTop} ${paddingBClass}`}>
       <div className={`${height} rounded-lg bg-white px-7 py-2`}>
         <div className="flex justify-between items-center mb-1">
           <div

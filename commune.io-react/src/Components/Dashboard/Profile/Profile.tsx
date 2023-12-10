@@ -61,9 +61,11 @@ function Profile() {
 
   return (
     <div>
-      <IContainer className="pt-8 pb-8">
+      <div className="pb-4 pt-4">
         <ILabel text="Profile" />
-        <IPanel height="h-full" marginTop="mt-8">
+      </div>
+      <div className="pb-4">
+        <IPanel height="600px ">
           <div className="px-12 py-6 ">
             <div className="flex">
               <div className="w-[136px] h-[136px] rounded-full overflow-hidden">
@@ -108,26 +110,23 @@ function Profile() {
             </div>
           </div>
         </IPanel>
-      </IContainer>
+      </div>
 
-      <IContainer className="pb-8">
-        <IPanel
-          title="Joined Communities"
-          buttonLabel={showAllJoined ? "Show Less" : "Show All"}
-          height="600px"
-          onButtonClick={toggleShowAllJoined}
-        >
-          {communities && (
-            <ICommunityPanel
-              communities={communities}
-              showAll={showAllJoined}
-              onCommunityClick={(communityName, communityId) => {
-                navigate(`/community/${communityName}/${communityId}`);
-              }}
-            />
-          )}
-        </IPanel>
-      </IContainer>
+      <div>
+        {communities && (
+          <ICommunityPanel
+            onButtonClick={toggleShowAllJoined}
+            height="600px"
+            title="Joined Communities"
+            buttonLabel={showAllJoined ? "Show Less" : "Show All"}
+            communities={communities}
+            showAll={showAllJoined}
+            onCommunityClick={(communityName, communityId) => {
+              navigate(`/community/${communityName}/${communityId}`);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

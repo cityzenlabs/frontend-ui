@@ -21,6 +21,7 @@ function Event() {
   const navigate = useNavigate();
 
   const [event, setEvent] = useState<any>();
+  const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [hasJoined, setHasJoined] = useState<boolean>();
   const [relatedEvents, setRelatedEvents] = useState<any>();
@@ -48,7 +49,20 @@ function Event() {
         }
         if (community) {
           setCommunity(community);
+          fetchCommunityPicture(community.id);
         }
+      }
+    } catch (error) {}
+  };
+
+  const fetchCommunityPicture = async (communityId: any) => {
+    try {
+      const picture = await CommunityService.getCommunityPicture(
+        communityId,
+        accessToken.token,
+      );
+      if (picture) {
+        setCommunityPicture(picture);
       }
     } catch (error) {}
   };
@@ -111,53 +125,45 @@ function Event() {
 
   return (
     <div>
-      <div>
-        <IContainer className="pb-8 pt-8">
-          <div className="flex justify-between items-center">
-            <div className="flex">
-              <ILabel text={event?.name} />
-            </div>
-            <div>
-              <IButton
-                text={hasJoined ? "Leave Event" : "Join Event"}
-                onClick={handleJoinOrLeaveEvent}
-                bgColor={
-                  user?.id === organizer?.id ? "bg-white" : "bg-regal-blue"
-                }
-                textColor={
-                  user?.id === organizer?.id ? "text-black" : "text-white"
-                }
-                className="px-6 py-2"
-                disabled={user?.id === organizer?.id}
-              />
-            </div>
-          </div>
-        </IContainer>
-        <IContainer className="pb-8">
-          <div className="w-full">
-            <ICarousel imageUrls={[eventPicture]} />
-          </div>
-        </IContainer>
-        <IContainer className="pb-8">
-          <EventDetails
-            event={event}
-            organizer={organizer}
-            user={user}
-            community={community}
+      <div className="flex justify-between items-center pb-4 pt-4">
+        <div className="flex">
+          <ILabel text={event?.name} />
+        </div>
+        <div>
+          <IButton
+            text={hasJoined ? "Leave Event" : "Join Event"}
+            onClick={handleJoinOrLeaveEvent}
+            bgColor={user?.id === organizer?.id ? "bg-white" : "bg-regal-blue"}
+            textColor={user?.id === organizer?.id ? "text-black" : "text-white"}
+            className="px-6 py-2"
+            disabled={user?.id === organizer?.id}
           />
-        </IContainer>
-        <IEventPanel
-          title="Related"
-          buttonLabel="Show All"
-          height="600px"
-          events={relatedEvents}
-          onEventClick={(eventName, eventId) => {
-            navigate(`/event/${eventName}/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={8}
+        </div>
+      </div>
+      <div className="pb-4">
+        <ICarousel imageUrls={[eventPicture]} />
+      </div>
+
+      <div className="pb-4">
+        <EventDetails
+          event={event}
+          organizer={organizer}
+          user={user}
+          community={community}
+          communityPicture={communityPicture}
         />
       </div>
+      <IEventPanel
+        title="Related"
+        buttonLabel="Show All"
+        height="600px"
+        events={relatedEvents}
+        onEventClick={(eventName, eventId) => {
+          navigate(`/event/${eventName}/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={8}
+      />
     </div>
   );
 }

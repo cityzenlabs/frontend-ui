@@ -65,65 +65,59 @@ function EventDashboard() {
 
   return (
     <div>
-      <div>
-        <IContainer className="pb-8 pt-8">
-          <div className="flex justify-between">
-            <div className="flex">
-              {eventDashboard && (
-                <ILabel text={eventDashboard?.event.name}></ILabel>
-              )}
-            </div>
+      <div className="flex justify-between pt-4 pb-4">
+        <div className="flex">
+          {eventDashboard && (
+            <ILabel text={eventDashboard?.event.name}></ILabel>
+          )}
+        </div>
 
-            <div className="flex">
-              <IButton
-                text={"Edit"}
-                onClick={() => navigate(`/event/edit/${eventId}`)}
-                bgColor="bg-regal-blue"
-                textColor="text-white"
-                className="px-6  mr-4"
-              />
-              <IMenuButton
-                options={[
-                  {
-                    label: "Transfer",
-                    action: () => console.log("Transfer"),
-                  },
-                  {
-                    label: "Delete",
-                    action: () => console.log("Delete"),
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-8">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full ">
-            {averageTimeSpent && (
-              <IGraph
-                data={averageTimeSpent.series}
-                categories={averageTimeSpent.categories}
-                title="Average Time Spent"
-              />
-            )}
-            {averageUserLevel && (
-              <IGraph
-                title="Average User Level"
-                data={averageUserLevel.series}
-                categories={averageUserLevel.categories}
-              />
-            )}
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-8">
-          <EventDetails
-            event={eventDashboard?.event}
-            organizer={organizer}
-            community={community}
+        <div className="flex">
+          <IButton
+            text={"Edit"}
+            onClick={() => navigate(`/event/edit/${eventId}`)}
+            bgColor="bg-regal-blue"
+            textColor="text-white"
+            className="px-6  mr-4"
           />
-        </IContainer>
+          <IMenuButton
+            options={[
+              {
+                label: "Transfer",
+                action: () => console.log("Transfer"),
+              },
+              {
+                label: "Delete",
+                action: () => console.log("Delete"),
+              },
+            ]}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full pb-4 ">
+        {averageTimeSpent && (
+          <IGraph
+            data={averageTimeSpent.series}
+            categories={averageTimeSpent.categories}
+            title="Average Time Spent"
+          />
+        )}
+        {averageUserLevel && (
+          <IGraph
+            title="Average User Level"
+            data={averageUserLevel.series}
+            categories={averageUserLevel.categories}
+          />
+        )}
+      </div>
+
+      <div className="pb-4">
+        <EventDetails
+          event={eventDashboard?.event}
+          organizer={organizer}
+          community={community}
+        />
       </div>
     </div>
   );

@@ -49,43 +49,39 @@ function CommunityHome() {
 
   return (
     <div>
-      <IContainer className="pb-4 pt-4">
-        <div className="xl:flex lg:flex items-center justify-between">
-          <div className="flex items-center">
-            <ILabel text="Community Home" />
-          </div>
+      <div className="xl:flex lg:flex items-center justify-between pt-4 pb-4">
+        <div className="flex items-center">
+          <ILabel text="Community Home" />
         </div>
-      </IContainer>
+      </div>
 
-      <IContainer className="pb-4">
-        <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full">
-          <IPanel height="h-[112px]">
-            <div className="text-3xl">
-              {communityHome?.joinedCommunities.length}
-            </div>
-            <div className="text-xs pr-8">
-              JOINED <br />
-              COMMUNITIES
-            </div>
-          </IPanel>
-          <IPanel height="h-[112px]">
-            <div className="text-3xl">
-              {" "}
-              {communityHome?.createdCommunities.length}
-            </div>
-            <div className="text-xs">
-              CREATED <br /> COMMUNITIES
-            </div>
-          </IPanel>
-          <IPanel height="h-[112px]">
-            <div className="text-3xl">0</div>
-            <div className="text-xs">
-              PENDING <br />
-              REQUESTS
-            </div>
-          </IPanel>
-        </div>
-      </IContainer>
+      <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full pb-4">
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">
+            {communityHome?.joinedCommunities.length}
+          </div>
+          <div className="text-xs pr-8">
+            JOINED <br />
+            COMMUNITIES
+          </div>
+        </IPanel>
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">
+            {" "}
+            {communityHome?.createdCommunities.length}
+          </div>
+          <div className="text-xs">
+            CREATED <br /> COMMUNITIES
+          </div>
+        </IPanel>
+        <IPanel height="h-[112px]">
+          <div className="text-3xl">0</div>
+          <div className="text-xs">
+            PENDING <br />
+            REQUESTS
+          </div>
+        </IPanel>
+      </div>
 
       {!showAllCreatedCommunities && (
         <ICommunityPanel

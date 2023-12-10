@@ -16,6 +16,8 @@ import { times } from "./EventCreateConstants";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
+import { CategoryKey, EventCreateMapping } from "./EventCreateMapping";
+import IDatePicker from "../../../../Library/DatePicker/IDatePicker";
 
 function EventCreate({}: any) {
   let navigate = useNavigate();
@@ -30,13 +32,27 @@ function EventCreate({}: any) {
   const [description, setDescription] = useState<string>("");
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [type, setType] = useState<any>();
-  const [month, setMonth] = useState<any>();
-  const [day, setDay] = useState<any>();
+  const [startDate, setStartDate] = useState<any>();
+  const [endDate, setEndDate] = useState<any>();
   const [year, setYear] = useState<any>();
   const [community, setCommunity] = useState<any>("");
+  const [category, setCategory] = useState<any>();
+  const [attribute, setAttribute] = useState<any>();
 
   const [joinedCommunities, setJoinedCommunities] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const categoryOptions = Object.entries(EventCreateMapping).map(
+    ([key, value]) => ({
+      label: key.replace(/_/g, " "), // Format the label for display
+      value: key,
+    }),
+  );
+
+  const handleCategoryChange = (selectedCategory: CategoryKey) => {
+    setCategory(selectedCategory);
+    setAttribute(EventCreateMapping[selectedCategory]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,23 +84,25 @@ function EventCreate({}: any) {
   };
 
   const handleCreateEvent = async () => {
-    // Your code to handle creating an event
-    const formatDateTime = (day: any, month: any, year: any, time: any) => {
-      const formattedMonth = month.toString().padStart(2, "0");
-      const formattedDay = day.toString().padStart(2, "0");
-      return `${year}-${formattedMonth}-${formattedDay}T${time}:00`;
+    const combineDateTime = (date: Date, time: string) => {
+      const [hours, minutes] = time.split(":").map(Number);
+      date.setHours(hours, minutes, 0, 0);
+      return date.toISOString().replace(".000", ""); // Formats to: "2023-11-28T15:00:00"
     };
+
+    const formattedStartTime = combineDateTime(new Date(startDate), startTime);
+    const formattedEndTime = combineDateTime(new Date(endDate), endTime);
     const event = {
       name: name,
       description: description,
       city: user.city,
       state: user.state,
       address: address,
-      startTime: formatDateTime(day, month, year, startTime),
-      endTime: formatDateTime(day, month, year, endTime),
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
       type: type,
-      category: "NETWORKING",
-      attribute: "SOCIAL",
+      category: category,
+      attribute: attribute,
       host: community,
     };
 
@@ -113,168 +131,148 @@ function EventCreate({}: any) {
 
   return (
     <div>
-      <div>
-        <IContainer className="pt-4 pb-4">
-          <div className="flex">
-            <ILabel text="Create Event"></ILabel>
-          </div>
-        </IContainer>
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2 lg:w-1/2">
-            <IInput
-              label="Event Name"
-              placeholder=""
-              name="name"
-              value={name}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
-            ></IInput>
-          </div>
-        </IContainer>
+      <div className="pt-4 pb-4">
+        <ILabel text="Create Event"></ILabel>
+      </div>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInput
+          label="Event Name"
+          placeholder=""
+          name="name"
+          value={name}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+        ></IInput>
+      </div>
 
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2 lg:w-1/2">
-            <IDropdown
-              labelText="Community"
-              options={joinedCommunities}
-              onChange={(newValue) => setCommunity(newValue)}
-              value={community}
-            ></IDropdown>
-          </div>
-        </IContainer>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IDropdown
+          labelText="Community"
+          options={joinedCommunities}
+          onChange={(newValue) => setCommunity(newValue)}
+          value={community}
+        ></IDropdown>
+      </div>
 
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2 lg:w-1/2">
-            <IInputGroup
-              label="Location"
-              inputs={[
-                {
-                  name: "city",
-                  placeholder: user?.city,
-                  value: city,
-                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                    setCity(e.target.value),
-                  disabled: true,
-                },
-                {
-                  name: "state",
-                  placeholder: user?.state,
-                  value: state,
-                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                    setState(e.target.value),
-                  disabled: true,
-                },
-              ]}
-            ></IInputGroup>
-          </div>
-        </IContainer>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInputGroup
+          label="Location"
+          inputs={[
+            {
+              name: "city",
+              placeholder: user?.city,
+              value: city,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setCity(e.target.value),
+              disabled: true,
+            },
+            {
+              name: "state",
+              placeholder: user?.state,
+              value: state,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setState(e.target.value),
+              disabled: true,
+            },
+          ]}
+        ></IInputGroup>
+      </div>
 
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2 lg:w-1/2">
-            <IInput
-              label="Address"
-              placeholder=""
-              name="name"
-              value={address}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setAddress(e.target.value)
-              }
-            ></IInput>
-          </div>
-        </IContainer>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IInput
+          label="Address"
+          placeholder=""
+          name="name"
+          value={address}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setAddress(e.target.value)
+          }
+        ></IInput>
+      </div>
 
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2 lg:w-1/2">
-            <IDropdown
-              labelText="Type"
-              options={[
-                { value: "SOCIAL", label: "Social" },
-                { value: "HOSTED", label: "Hosted" },
-              ]}
-              value={type}
-              onChange={setType}
-            />
-          </div>
-        </IContainer>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IDropdown
+          labelText="Type"
+          options={[
+            { value: "SOCIAL", label: "Social" },
+            { value: "HOSTED", label: "Hosted" },
+          ]}
+          value={type}
+          onChange={setType}
+        />
+      </div>
 
-        <IContainer className="pb-4">
-          <div className="flex xl:w-1/2 lg:w-1/2">
-            <div className="mr-2 w-1/3">
-              <IDropdown
-                labelText="Month"
-                options={months}
-                onChange={(newValue) => setMonth(newValue)}
-                value={month}
-              ></IDropdown>
-            </div>
+      <div className="xl:w-1/2 lg:w-1/2 pb-4">
+        <IDropdown
+          labelText="Category"
+          options={categoryOptions}
+          onChange={(newValue) => handleCategoryChange(newValue as CategoryKey)}
+          value={category}
+        ></IDropdown>
+      </div>
 
-            <div className="mr-2 w-1/3">
-              <IDropdown
-                labelText="Day"
-                options={days}
-                onChange={(newValue) => setDay(newValue)}
-                value={day}
-              ></IDropdown>
-            </div>
-            <div className="w-1/3">
-              <IDropdown
-                labelText="Year"
-                options={years}
-                onChange={(newValue) => setYear(newValue)}
-                value={year}
-              ></IDropdown>
-            </div>
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-4">
-          <div className="flex xl:w-1/2 lg:w-1/2">
-            <div className="w-1/2 mr-2">
-              <IDropdown
-                labelText="Start Time"
-                options={times}
-                onChange={(newValue) => setStartTime(newValue)}
-                value={startTime}
-              ></IDropdown>
-            </div>
-            <div className="w-1/2 ">
-              <IDropdown
-                labelText="End Time"
-                options={times}
-                onChange={(newValue) => setEndTime(newValue)}
-                value={endTime}
-              ></IDropdown>
-            </div>
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-4">
-          <div className="xl:w-1/2">
-            <ITextArea
-              name="description"
-              placeholder="Enter description here..."
-              value={description}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setDescription(e.target.value)
-              }
-            />
-          </div>
-        </IContainer>
-
-        <IContainer className="pb-4">
-          <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-        </IContainer>
-
-        <IContainer className="pb-4">
-          <IButton
-            onClick={handleCreateEvent}
-            className="px-4 py-2"
-            text="Publish"
-            bgColor="bg-regal-blue"
-            textColor="text-white"
+      <div className="xl:flex xl:gap-2 xl:w-1/2 lg:w-1/2 ">
+        <div className="w-full pb-4">
+          <IDatePicker
+            label="Start Date"
+            onChange={(newValue: any) => setStartDate(newValue)}
+            value={startDate}
           />
-        </IContainer>
+        </div>
+        <div className="w-full pb-4">
+          <IDatePicker
+            label="End Date"
+            onChange={(newValue: any) => setEndDate(newValue)}
+            value={endDate}
+          />
+        </div>
+      </div>
+
+      <div className="flex xl:w-1/2 lg:w-1/2 pb-4">
+        <div className="w-1/2 mr-2">
+          <IDropdown
+            labelText="Start Time"
+            options={times}
+            onChange={(newValue) => setStartTime(newValue)}
+            value={startTime}
+          ></IDropdown>
+        </div>
+        <div className="w-1/2 ">
+          <IDropdown
+            labelText="End Time"
+            options={times}
+            onChange={(newValue) => setEndTime(newValue)}
+            value={endTime}
+          ></IDropdown>
+        </div>
+      </div>
+
+      <div className="pb-4">
+        <div className="xl:w-1/2">
+          <ITextArea
+            name="description"
+            placeholder="Enter description here..."
+            value={description}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+              setDescription(e.target.value)
+            }
+          />
+        </div>
+      </div>
+
+      <div className="pb-4">
+        <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
+      </div>
+
+      <div className="pb-4">
+        <IButton
+          onClick={handleCreateEvent}
+          className="px-4 py-2"
+          text="Publish"
+          bgColor="bg-regal-blue"
+          textColor="text-white"
+        />
       </div>
     </div>
   );
