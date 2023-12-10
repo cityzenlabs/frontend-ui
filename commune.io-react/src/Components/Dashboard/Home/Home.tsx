@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../Library/Container/IContainer";
 import IPanel from "../../../Library/Panel/IPanel";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
 import { attributeColors } from "./Constants/HomeConstats";
 import { useDash } from "../../../Context/DashboardContext";
 import { useNavigate } from "react-router-dom";
+import IEventPanel from "../../../Library/EventPanel/IEventPanel";
+import ISpinner from "../../../Library/Spinner/ISpinner";
+import { formatDate, getIconForAttribute } from "../Constants/Constants";
+import ILabel from "../../../Library/Label/ILabel";
 
 function Home() {
   const [showAllRecommended, setShowAllRecommended] = useState(false);
@@ -14,83 +17,168 @@ function Home() {
   const { userHome, user, isLoading } = useDash();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <ISpinner />;
   }
 
   return (
     <div>
-      <div>
-        <IContainer className="pt-8 pb-8">
-          <div className="grid xl:grid-cols-2 gap-8">
-            <div>
-              <IPanel
-                title={"Welcome, " + user?.firstName}
-                height="80"
-                marginTop="mt-8"
-                buttonLabel="See Profile"
-                onButtonClick={() => navigate(`/profile/${user.id}`)}
-              ></IPanel>
-
-              <IPanel
-                title="Your Top 4 Attributes"
-                height="h-[403px]"
-                marginTop="mt-8"
-              >
-                <div className="xl:flex mt-3">
-                  <div className="w-full xl:w-full">
-                    <div className="xl:flex xl:flex-wrap">
-                      {Object.entries(userHome?.topFourAttributes || {}).map(
-                        ([attributeKey, attributeValue], index) => (
-                          <IAttributeBar
-                            key={attributeKey}
-                            attributeKey={attributeKey}
-                            attributeValue={attributeValue as any} // Cast to 'any' since we don't have a type here
-                            color={
-                              attributeColors[index % attributeColors.length]
-                            } // Use modulo for cycling colors if more attributes than colors
-                          />
-                        ),
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </IPanel>
-            </div>
+      <div className="pt-4">
+        <ILabel text="Dashboard" />
+      </div>
+      <div className="xl:flex  gap-5 pt-4 ">
+        <div className="xl:w-2/5  w-full">
+          <div className="pb-4 ">
             <IPanel
-              title="Level up with these events"
-              buttonLabel="See All"
-              height="h-[500px]"
-              marginTop="xl:mt-8"
+              title={"Welcome, " + user?.firstName}
+              height="100"
+              buttonLabel="See Profile"
+              onButtonClick={() => navigate(`/profile/${user.id}`)}
             ></IPanel>
           </div>
-        </IContainer>
 
-        <IContainer className="pb-8">
+          <div className="pb-4">
+            <IPanel title="Your Top 4 Attributes" height="h-[403px]">
+              {" "}
+              <div className="xl:flex lg:flex flex-wrap">
+                {Object.entries(userHome?.topFourAttributes || {}).map(
+                  ([attributeKey, attributeValue], index) => (
+                    <div
+                      key={attributeKey}
+                      className="flex w-full items-center mb-6 mt-2"
+                    >
+                      <IAttributeBar
+                        attributeKey={attributeKey}
+                        attributeValue={attributeValue as any}
+                        color={attributeColors[index % attributeColors.length]}
+                      />
+                      <div
+                        className="ml-auto border py-3 px-3 rounded"
+                        style={{
+                          color:
+                            attributeColors[index % attributeColors.length],
+                          borderColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                          backgroundColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                        }}
+                      >
+                        {getIconForAttribute(attributeKey)}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            </IPanel>
+          </div>
+        </div>
+        <div className="xl:w-3/5 w-full pb-4">
           <IPanel
-            title="Recommended Communities"
-            height="600px"
-            buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-            onButtonClick={() => setShowAllRecommended(!setShowAllRecommended)}
+            title="Level up with these events"
+            buttonLabel="See All"
+            height="h-[471px]"
           >
-            {userHome?.recommendedCommunities && (
-              <ICommunityPanel
-                communities={userHome?.recommendedCommunities}
-                showAll={showAllRecommended}
-              />
-            )}
+            <div className="pt-2">
+              {userHome?.levelUpEvents
+                .slice(0, 4)
+                .map((event: any, index: any) => (
+                  <div
+                    onClick={() => {
+                      navigate(`/event/${event?.name}/${event?.id}`);
+                    }}
+                    key={index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "16px",
+                      background: "#f9f9f9",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      className="py-3 px-3 rounded"
+                      style={{
+                        width: "100px",
+                        height: "90px",
+                      }}
+                    >
+                      <img
+                        src={event.picture}
+                        alt={event.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "8px 8px 8px 8px",
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        padding: "8px 16px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          margin: "0",
+                        }}
+                        className="text-sm"
+                      >
+                        {event.name}
+                      </div>
+                      <div
+                        style={{
+                          margin: "0",
+                          color: "#666",
+                        }}
+                        className="text-xs"
+                      >
+                        {formatDate(event.startTime) + " • "}
+                        {formatDate(event.endTime)}
+                      </div>
+                      <div
+                        className="text-xs"
+                        style={{
+                          color: "#666",
+                        }}
+                      >
+                        {event.address}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </IPanel>
-        </IContainer>
-        <IContainer className="pb-8">
-          <IPanel title="Upcoming Events" height="600px" buttonLabel="Show All">
-            {userHome?.recommendedCommunities && (
-              <ICommunityPanel
-                communities={user?.upcomingEvents}
-                showAll={true}
-              />
-            )}
-          </IPanel>
-        </IContainer>
+        </div>
       </div>
+
+      {userHome?.recommendedCommunities && (
+        <ICommunityPanel
+          communities={userHome?.recommendedCommunities}
+          showAll={showAllRecommended}
+          title="Recommended Communities"
+          height="600px"
+          buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
+          onButtonClick={() => setShowAllRecommended(!setShowAllRecommended)}
+          onCommunityClick={(communityName, communityId) => {
+            navigate(`/community/${communityName}/${communityId}`);
+          }}
+        />
+      )}
+
+      {userHome?.recommendedCommunities && (
+        <IEventPanel
+          events={user?.upcomingEvents}
+          showAll={true}
+          title="Upcoming Events"
+          height="600px"
+          buttonLabel="Show All"
+          onEventClick={(eventName, eventId) => {
+            navigate(`/event/${eventName}/${eventId}`);
+          }}
+        />
+      )}
     </div>
   );
 }

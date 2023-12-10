@@ -32,7 +32,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
       <div className={`${height} rounded-lg bg-white px-7 py-2`}>
         <div className="flex justify-between items-center mb-1">
           <div
-            className={`font-light ${title ? "my-auto" : ""}`}
+            className={`font-medium ${title ? "my-auto" : ""}`}
             style={{ color: titleColor }}
           >
             {title}

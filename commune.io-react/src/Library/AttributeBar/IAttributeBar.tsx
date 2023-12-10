@@ -22,22 +22,19 @@ function IAttributeBar({
   const widthClass = isHalfWidth ? "xl:w-1/2" : "w-full";
 
   return (
-    <div
-      className={`${widthClass} h-[52px]`}
-      style={{ marginTop: "8px", marginBottom: "8px" }}
-    >
+    <div className={`${widthClass} `}>
       <div style={{ color: color }}>
         {" "}
         {/* Use inline style for color */}
         {attributeKey}
       </div>
-      <div className="text-[11px]">
+      <div className="text-xs text-[#7E858B]">
         {`LEVEL ${attributeValue.level} - ${attributeValue.points}/100 POINTS`}
       </div>
       <div
         style={{
           position: "relative",
-          width: "75%",
+          width: "90%",
           height: "4px",
         }}
       >

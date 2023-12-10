@@ -13,6 +13,7 @@ import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDash } from "../../../../Context/DashboardContext";
 import { useAuth } from "../../../../AuthContext";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function Event() {
   const { eventId } = useParams();
@@ -99,7 +100,9 @@ function Event() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchEvent(), fetchRelatedEvents(), fetchPicture()]);
+      try {
+        await Promise.all([fetchEvent(), fetchRelatedEvents(), fetchPicture()]);
+      } catch (error) {}
       setIsLoading(false);
     };
 
@@ -120,7 +123,7 @@ function Event() {
   };
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

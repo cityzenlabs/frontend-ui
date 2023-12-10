@@ -7,10 +7,12 @@ import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel"
 import { useAuth } from "../../../../AuthContext";
 
 import { useNavigate } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 function CommunityHome() {
   const accessToken = useAuth();
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [communityHome, setCommunityHome] = useState<any>();
   const [showAllCreatedCommunities, setShowAllCreatedCommunities] =
     useState(false);
@@ -42,10 +44,17 @@ function CommunityHome() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchHome()]);
+      try {
+        await Promise.all([fetchHome()]);
+      } catch (error) {}
+      setIsLoading(false);
     };
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return <ISpinner />;
+  }
 
   return (
     <div>

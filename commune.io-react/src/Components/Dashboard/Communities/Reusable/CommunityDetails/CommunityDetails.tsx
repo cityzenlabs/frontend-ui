@@ -11,14 +11,7 @@ import {
 import { attributeColors } from "../Constants/CommunityConstants";
 import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
-import {
-  UsersIcon,
-  FireIcon,
-  GlobeIcon,
-  AcademicCapIcon,
-  StarIcon,
-  MoonIcon,
-} from "@heroicons/react/solid";
+import { getIconForAttribute } from "../../../Constants/Constants";
 
 const CommunityDetails = ({
   community,
@@ -26,18 +19,8 @@ const CommunityDetails = ({
   communityId,
   communityPicture,
 }: any) => {
-  const getIconForAttribute = (attribute: any) => {
-    const icons: any = {
-      social: <UsersIcon className="h-6 w-6" aria-hidden="true" />,
-      fitness: <FireIcon className="h-6 w-6" aria-hidden="true" />,
-      nightlife: <MoonIcon className="h-6 w-6 " aria-hidden="true" />,
-      intelligence: <AcademicCapIcon className="h-6 w-6 " ria-hidden="true" />,
-      culture: <StarIcon className="h-6 w-6" aria-hidden="true" />,
-      adventure: <GlobeIcon className="h-6 w-6 " aria-hidden="true" />,
-    };
-    return icons[attribute.toLowerCase()];
-  };
   let navigate = useNavigate();
+
   const getColorByGenderRequirements = () => {
     switch (community?.genderRequirements) {
       case "MALE":
@@ -138,8 +121,8 @@ const CommunityDetails = ({
 
         <IPanel height="h-[270px]">
           <div>
-            <div className="font-md text-xs mb-1">REQUIREMENTS</div>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="font-md text-xs pt-2">REQUIREMENTS</div>
+            <div className="grid grid-cols-2 gap-5 py-6">
               {community?.attributeRequirements &&
                 Object.entries(
                   community.attributeRequirements as [string, number][],
@@ -148,7 +131,7 @@ const CommunityDetails = ({
                   return (
                     <div
                       key={attribute}
-                      className="flex justify-between items-center p-1"
+                      className="flex justify-between items-center "
                     >
                       <div className="flex-1">
                         <div
@@ -161,7 +144,19 @@ const CommunityDetails = ({
                           Level {level}
                         </div>
                       </div>
-                      <div style={{ color }}>
+                      <div
+                        style={{
+                          color:
+                            attributeColors[index % attributeColors.length],
+                          borderColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                          backgroundColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                        }}
+                        className="border px-2 py-2 rounded"
+                      >
                         {getIconForAttribute(attribute)}
                       </div>
                     </div>
@@ -176,7 +171,7 @@ const CommunityDetails = ({
             navigate(`/community/${communityId}/members`);
           }}
         >
-          <div className="flex justify-between items-center h-full">
+          <div className="flex justify-between items-center ">
             {community?.members?.length} Members
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>

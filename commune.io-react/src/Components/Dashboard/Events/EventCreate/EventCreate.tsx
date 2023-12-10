@@ -9,9 +9,7 @@ import IButton from "../../../../Library/Button/IButton";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
-import { days } from "./EventCreateConstants";
-import { months } from "./EventCreateConstants";
-import { years } from "./EventCreateConstants";
+
 import { times } from "./EventCreateConstants";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../AuthContext";
@@ -87,7 +85,19 @@ function EventCreate({}: any) {
     const combineDateTime = (date: Date, time: string) => {
       const [hours, minutes] = time.split(":").map(Number);
       date.setHours(hours, minutes, 0, 0);
-      return date.toISOString().replace(".000", ""); // Formats to: "2023-11-28T15:00:00"
+      return (
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getDate()).padStart(2, "0") +
+        "T" +
+        String(date.getHours()).padStart(2, "0") +
+        ":" +
+        String(date.getMinutes()).padStart(2, "0") +
+        ":" +
+        String(date.getSeconds()).padStart(2, "0")
+      );
     };
 
     const formattedStartTime = combineDateTime(new Date(startDate), startTime);

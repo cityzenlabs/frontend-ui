@@ -10,6 +10,7 @@ import IButton from "../../../Library/Button/IButton";
 import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
+import ISpinner from "../../../Library/Spinner/ISpinner";
 
 function EventDiscovery() {
   const [isLoading, setIsLoading] = useState(true);
@@ -56,14 +57,16 @@ function EventDiscovery() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchEventHome()]);
+      try {
+        await Promise.all([fetchEventHome()]);
+      } catch (error) {}
       setIsLoading(false);
     };
     fetchData();
   }, []);
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

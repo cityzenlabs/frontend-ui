@@ -8,12 +8,13 @@ import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
+import ISpinner from "../../../Library/Spinner/ISpinner";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
   const navigate = useNavigate();
   const { isMobile, isLargeScreen } = useScreenSize();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [communityDiscovery, setCommunityDiscovery] = useState<any>();
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllUpcoming, setShowAllUpcoming] = useState(false);
@@ -56,11 +57,17 @@ function CommunityDiscovery() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchCommunityDiscovery()]);
+      try {
+        await Promise.all([fetchCommunityDiscovery()]);
+      } catch (error) {}
+      setIsLoading(false);
     };
     fetchData();
   }, []);
 
+  if (isLoading) {
+    return <ISpinner />;
+  }
   return (
     <div>
       <div>

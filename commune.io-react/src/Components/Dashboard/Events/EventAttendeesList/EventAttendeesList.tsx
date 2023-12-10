@@ -6,6 +6,7 @@ import * as EventService from "../../../../Services/EventService/EventService";
 import IUserTable from "../../../../Library/IUserTable/IUserTable";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../../AuthContext";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventAttendeesList() {
   const navigate = useNavigate();
@@ -29,11 +30,14 @@ function EventAttendeesList() {
   };
 
   useEffect(() => {
-    fetchMembers();
+    try {
+      fetchMembers();
+    } catch (error) {}
+    setIsLoading(false);
   }, [eventId, accessToken.token]);
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

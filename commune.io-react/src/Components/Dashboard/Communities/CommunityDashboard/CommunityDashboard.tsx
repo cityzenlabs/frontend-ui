@@ -18,6 +18,7 @@ import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 import { useAuth } from "../../../../AuthContext";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function CommunityDashboard() {
   const accessToken = useAuth();
@@ -64,7 +65,9 @@ function CommunityDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([getCommunityDashboard(), fetchPicture()]);
+      try {
+        await Promise.all([getCommunityDashboard(), fetchPicture()]);
+      } catch (error) {}
       setIsLoading(false);
     };
 
@@ -82,7 +85,7 @@ function CommunityDashboard() {
     : null;
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (
@@ -135,7 +138,7 @@ function CommunityDashboard() {
               height="h-[60px]"
               onPanelClick={() => setShowDashboardEvents("Ongoing Events")}
             >
-              <div className="flex justify-between h-full items-center">
+              <div className="flex justify-between items-center">
                 {communityDashboard?.ongoingEvents + " Ongoing Events "}
                 <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
               </div>
@@ -144,7 +147,7 @@ function CommunityDashboard() {
               height="h-[60px]"
               onPanelClick={() => setShowDashboardEvents("Pending Events")}
             >
-              <div className="flex justify-between h-full items-center">
+              <div className="flex justify-between items-center">
                 {communityDashboard?.pendingEvents + " Pending Events"}
                 <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
               </div>
@@ -153,7 +156,7 @@ function CommunityDashboard() {
               height="h-[60px]"
               onPanelClick={() => setShowDashboardEvents("Completed Events")}
             >
-              <div className="flex justify-between h-full items-center">
+              <div className="flex justify-between items-center">
                 {communityDashboard?.completedEvents + " Completed Events"}{" "}
                 <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
               </div>

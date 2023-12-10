@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import ILabel from "../../../Library/Label/ILabel";
+import { getIconForAttribute } from "../Constants/Constants";
 
 function Profile() {
   const accessToken = useAuth();
@@ -66,7 +67,7 @@ function Profile() {
       </div>
       <div className="pb-4">
         <IPanel height="600px ">
-          <div className="px-12 py-6 ">
+          <div className=" py-6 ">
             <div className="flex">
               <div className="w-[136px] h-[136px] rounded-full overflow-hidden">
                 <img
@@ -79,10 +80,10 @@ function Profile() {
                 <div className="text-2xl">
                   {user?.firstName} {user?.lastName}
                 </div>
-                <div className="text-sm">
+                <div className="text-sm text-[#7E858B]">
                   Reputation Score - {user?.reputation}
                 </div>
-                <div className="text-sm">
+                <div className="text-sm text-[#7E858B]">
                   {user?.city}, {user.state}{" "}
                   <div className="text-sm">
                     {user?.dateOfBirth} - {user?.gender}
@@ -90,23 +91,36 @@ function Profile() {
                 </div>
               </div>
             </div>
-            <div className="text-lg mt-12">Profile Points</div>
-            <div className="xl:flex mt-3">
-              <div className="w-full xl:w-full">
-                <div className="xl:flex xl:flex-wrap">
-                  {Object.entries(user.attributes || {}).map(
-                    ([attributeKey, attributeValue], index) => (
-                      <IAttributeBar
-                        key={attributeKey}
-                        attributeKey={attributeKey}
-                        attributeValue={attributeValue as any} // Cast to 'any' since we don't have a type here
-                        color={attributeColors[index % attributeColors.length]}
-                        isHalfWidth={true} // Use modulo for cycling colors if more attributes than colors
-                      />
-                    ),
-                  )}
-                </div>
-              </div>
+            <div className="text-lg mt-8">Profile Points</div>
+            <div className="grid lg:grid-cols-2 gap-8  lg:gap-4">
+              {Object.entries(user?.attributes || {}).map(
+                ([attributeKey, attributeValue], index) => (
+                  <div
+                    key={attributeKey}
+                    className="flex items-center xl:w-[90%] " // Flex container for each grid item
+                  >
+                    <IAttributeBar
+                      attributeKey={attributeKey}
+                      attributeValue={attributeValue as any}
+                      color={attributeColors[index % attributeColors.length]}
+                    />
+                    <div
+                      className="ml-auto border py-3 px-3 rounded" // Positioned to the right
+                      style={{
+                        color: attributeColors[index % attributeColors.length],
+                        borderColor: `${
+                          attributeColors[index % attributeColors.length]
+                        }20`,
+                        backgroundColor: `${
+                          attributeColors[index % attributeColors.length]
+                        }20`,
+                      }}
+                    >
+                      {getIconForAttribute(attributeKey)}
+                    </div>
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </IPanel>

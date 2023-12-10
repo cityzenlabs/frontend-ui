@@ -9,6 +9,7 @@ import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { times } from "../EventCreate/EventCreateConstants";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventDashboardEdit() {
   const { eventId } = useParams();
@@ -18,6 +19,7 @@ function EventDashboardEdit() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [address, setAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const [type, setType] = useState<string>("");
   const [description, setDescription] = useState("");
@@ -42,11 +44,18 @@ function EventDashboardEdit() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchEventData()]);
+      try {
+        await Promise.all([fetchEventData()]);
+      } catch (error) {}
+      setIsLoading(false);
     };
 
     fetchData();
   }, [eventId, accessToken.token]);
+
+  if (isLoading) {
+    return <ISpinner />;
+  }
 
   return (
     <div>

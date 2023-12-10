@@ -5,6 +5,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function CommunityDashboardEvents({
   dashboardEvents,
@@ -45,6 +46,7 @@ function CommunityDashboardEvents({
           );
           setEvents(fetchedEvents);
         } catch (error) {}
+        setIsLoading(false);
       }
     };
 
@@ -53,7 +55,7 @@ function CommunityDashboardEvents({
   }, [dashboardEvents, communityId, token]);
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

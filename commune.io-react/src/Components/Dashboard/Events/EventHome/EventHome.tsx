@@ -8,6 +8,7 @@ import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { useAuth } from "../../../../AuthContext";
 import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventHome() {
   const accessToken = useAuth();
@@ -31,7 +32,9 @@ function EventHome() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchHome()]);
+      try {
+        await Promise.all([fetchHome()]);
+      } catch (error) {}
       setIsLoading(false);
     };
     fetchData();
@@ -52,7 +55,7 @@ function EventHome() {
   }, [joinedOrCreated, eventHome]);
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

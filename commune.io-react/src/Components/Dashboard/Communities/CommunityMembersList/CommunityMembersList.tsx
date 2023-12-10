@@ -7,6 +7,7 @@ import { useAuth } from "../../../../AuthContext";
 import { useParams } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function CommunityMembersList() {
   const navigate = useNavigate();
@@ -17,31 +18,24 @@ function CommunityMembersList() {
   const [members, setMembers] = useState<any>();
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchMembers = async () => {
       try {
         const data = await CommunityService.getCommunityMembers(
           communityId,
           accessToken.token,
         );
-
-        if (isMounted) {
+        if (data) {
           setMembers(data);
-          setIsLoading(false);
         }
       } catch (error) {}
+      setIsLoading(false);
     };
 
     fetchMembers();
-
-    return () => {
-      isMounted = false;
-    };
   }, [communityId, accessToken.token]);
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

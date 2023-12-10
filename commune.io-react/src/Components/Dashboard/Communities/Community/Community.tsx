@@ -13,6 +13,7 @@ import { useAuth } from "../../../../AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 
 import { useNavigate } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 function Community() {
   const { communityId } = useParams();
   const accessToken = useAuth();
@@ -104,12 +105,14 @@ function Community() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([
-        fetchCommunityData(),
-        fetchCommunityEvents(),
-        fetchPicture(),
-        fetchGallery(),
-      ]);
+      try {
+        await Promise.all([
+          fetchCommunityData(),
+          fetchCommunityEvents(),
+          fetchPicture(),
+          fetchGallery(),
+        ]);
+      } catch (error) {}
       setIsLoading(false);
     };
 
@@ -144,7 +147,7 @@ function Community() {
   };
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

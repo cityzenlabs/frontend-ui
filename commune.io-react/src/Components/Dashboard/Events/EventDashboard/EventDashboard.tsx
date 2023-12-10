@@ -16,6 +16,7 @@ import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import { useAuth } from "../../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventDashboard() {
   const accessToken = useAuth();
@@ -24,6 +25,7 @@ function EventDashboard() {
   const [eventDashboard, setEventDashboard] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
   const [community, setCommunity] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +53,7 @@ function EventDashboard() {
           }
         }
       } catch (error) {}
+      setIsLoading(false);
     };
 
     fetchData();
@@ -62,6 +65,10 @@ function EventDashboard() {
   const averageUserLevel = eventDashboard?.event.eventAnalytics
     ? transformAverageUserLevel(eventDashboard?.event.eventAnalytics)
     : transformAverageUserLevel(fakeAverageUserLevel);
+
+  if (isLoading) {
+    return <ISpinner />;
+  }
 
   return (
     <div>
