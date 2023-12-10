@@ -49,6 +49,7 @@ function CommunityDiscovery() {
       const data = await CommunityService.getCommunityDiscovery(
         accessToken.token,
       );
+      console.log(data);
       if (data) {
         setCommunityDiscovery(data);
       }

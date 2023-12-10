@@ -35,6 +35,7 @@ import EventAttendeesList from "./Components/Dashboard/Events/EventAttendeesList
 import Profile from "./Components/Dashboard/Profile/Profile";
 import EventCreate from "./Components/Dashboard/Events/EventCreate/EventCreate";
 import { ScreenSizeProvider } from "./Context/ScreenContext";
+import Communities from "./Components/Dashboard/Communities/AllCommunities/Communities";
 
 function App() {
   return (
@@ -72,6 +73,14 @@ function App() {
                   }
                 />
 
+                <Route
+                  path="communities/:kind"
+                  element={
+                    <DashboardProvider>
+                      <Communities />
+                    </DashboardProvider>
+                  }
+                />
                 <Route
                   path="communities"
                   element={

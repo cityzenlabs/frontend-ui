@@ -156,11 +156,15 @@ function Home() {
       {userHome?.recommendedCommunities && (
         <ICommunityPanel
           communities={userHome?.recommendedCommunities}
-          showAll={showAllRecommended}
           title="Recommended Communities"
           height="600px"
-          buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-          onButtonClick={() => setShowAllRecommended(!setShowAllRecommended)}
+          buttonLabel={"Show All"}
+          onButtonClick={() =>
+            navigate(
+              `/communities/${encodeURIComponent("Recommended Communities")}`,
+              { state: { communities: userHome?.recommendedCommunities } },
+            )
+          }
           onCommunityClick={(communityName, communityId) => {
             navigate(`/community/${communityName}/${communityId}`);
           }}
