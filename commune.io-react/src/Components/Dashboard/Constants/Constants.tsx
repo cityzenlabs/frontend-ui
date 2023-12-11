@@ -22,7 +22,6 @@ export const getIconForAttribute = (attribute: any) => {
 
 export const formatDate = (dateString: string) => {
   const options: any = {
-    year: "numeric",
     month: "short",
     day: "numeric",
     hour: "numeric",

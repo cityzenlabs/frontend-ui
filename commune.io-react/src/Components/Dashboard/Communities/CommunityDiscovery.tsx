@@ -49,7 +49,6 @@ function CommunityDiscovery() {
       const data = await CommunityService.getCommunityDiscovery(
         accessToken.token,
       );
-      console.log(data);
       if (data) {
         setCommunityDiscovery(data);
       }
@@ -70,53 +69,53 @@ function CommunityDiscovery() {
     return <ISpinner />;
   }
   return (
-    <div>
-      <div>
-        <div className="flex justify-between pt-4 pb-4">
-          <ILabel text="Discover Communities" />
-          <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
-            <IButton
-              text="Home"
-              onClick={() => navigate("/communities/home")}
-              className="px-6 mr-2"
-            />
-            <IButton
-              text="New +"
-              onClick={() => navigate("/communities/create")}
-              bgColor="bg-regal-blue"
-              textColor="text-white"
-              className="px-6"
-            />
-          </div>
-
-          {/* Menu button shown on non-large screens */}
-          {!isLargeScreen && (
-            <IMenuButton
-              options={[
-                {
-                  label: "Home",
-                  action: () => navigate("/communities/home"),
-                },
-                {
-                  label: "New +",
-                  action: () => navigate("/communities/create"),
-                },
-              ]}
-            />
-          )}
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      <div className="flex justify-between pt-4 pb-4">
+        <ILabel text="Discover Communities" />
+        <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
+          <IButton
+            text="Home"
+            onClick={() => navigate("/communities/home")}
+            className="px-6 mr-2"
+          />
+          <IButton
+            text="New +"
+            onClick={() => navigate("/communities/create")}
+            bgColor="bg-regal-blue"
+            textColor="text-white"
+            className="px-6"
+          />
         </div>
 
+        {/* Menu button shown on non-large screens */}
+        {!isLargeScreen && (
+          <IMenuButton
+            options={[
+              { label: "Home", action: () => navigate("/communities/home") },
+              { label: "New +", action: () => navigate("/communities/create") },
+            ]}
+          />
+        )}
+      </div>
+
+      <div style={{ flexGrow: 1, overflowY: "auto" }}>
         {!showAllUpcoming && !showAllRecommended && (
           <ICommunityPanel
             title="Trending"
             buttonLabel={showAllTrending ? "Show Less" : "Show All"}
-            height="600px"
             onButtonClick={toggleShowAllTrending}
             communities={communityDiscovery?.trendingCommunities}
             showAll={showAllTrending}
-            onCommunityClick={(communityName, communityId) => {
-              navigate(`/community/${communityName}/${communityId}`);
-            }}
+            onCommunityClick={(communityName, communityId) =>
+              navigate(`/community/${communityName}/${communityId}`)
+            }
           />
         )}
 
@@ -124,13 +123,17 @@ function CommunityDiscovery() {
           <ICommunityPanel
             title="New"
             buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={toggleShowAllUpcoming}
+            onButtonClick={() =>
+              navigate(
+                `/communities/${encodeURIComponent("New Communities")}`,
+                { state: { communities: communityDiscovery?.newCommunities } },
+              )
+            }
             communities={communityDiscovery?.newCommunities}
             showAll={showAllUpcoming}
-            onCommunityClick={(communityName, communityId) => {
-              navigate(`/community/${communityName}/${communityId}`);
-            }}
+            onCommunityClick={(communityName, communityId) =>
+              navigate(`/community/${communityName}/${communityId}`)
+            }
           />
         )}
 
@@ -138,13 +141,21 @@ function CommunityDiscovery() {
           <ICommunityPanel
             title="Recommended"
             buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={toggleShowAllRecommended}
+            onButtonClick={() =>
+              navigate(
+                `/communities/${encodeURIComponent("Recommended Communities")}`,
+                {
+                  state: {
+                    communities: communityDiscovery?.recommendedCommunities,
+                  },
+                },
+              )
+            }
             communities={communityDiscovery?.recommendedCommunities}
             showAll={showAllRecommended}
-            onCommunityClick={(communityName, communityId) => {
-              navigate(`/community/${communityName}/${communityId}`);
-            }}
+            onCommunityClick={(communityName, communityId) =>
+              navigate(`/community/${communityName}/${communityId}`)
+            }
           />
         )}
       </div>

@@ -20,7 +20,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
   title,
   buttonLabel,
   onButtonClick,
-  height = "h-[244px]",
+  // height = "h-[244px]",
   marginTop = "mt-0",
   titleColor,
   paddingB = 4,
@@ -29,7 +29,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
 
   return (
     <div className={`${marginTop} ${paddingBClass}`}>
-      <div className={`${height} rounded-lg bg-white px-7 py-2`}>
+      <div className={` rounded-lg bg-white px-7 py-2`}>
         <div className="flex justify-between items-center mb-1">
           <div
             className={`font-medium ${title ? "my-auto" : ""}`}

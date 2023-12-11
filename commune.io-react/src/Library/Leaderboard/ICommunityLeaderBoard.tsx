@@ -59,10 +59,13 @@ const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
               Name
             </th>
             <th className="text-xs" style={thStyle}>
+              Organizer
+            </th>
+            <th className="text-xs" style={thStyle}>
               Attribute
             </th>
             <th className="text-xs" style={thStyle}>
-              Reputation
+              Points
             </th>
             <th className="text-xs" style={thStyle}>
               Members
@@ -91,13 +94,18 @@ const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
                 </div>
               </td>
               <td className="text-xs" style={tdStyle}>
+                {community.organizerFirstName +
+                  " " +
+                  community.organizerLastName}
+              </td>
+              <td className="text-xs" style={tdStyle}>
                 {community.attribute}
               </td>
               <td className="text-xs" style={tdStyle}>
-                {community?.reputation}
+                {community?.points}
               </td>
               <td className="text-xs" style={tdStyle}>
-                {community?.memberCount}
+                {community?.members}
               </td>
             </tr>
           ))}
