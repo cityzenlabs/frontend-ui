@@ -25,9 +25,9 @@ function Home() {
       <div className="pt-4">
         <ILabel text="Dashboard" />
       </div>
-      <div className="xl:flex  gap-5 pt-4 ">
-        <div className="xl:w-2/5  w-full">
-          <div className="pb-4 ">
+      <div className="xl:flex gap-5 pt-4">
+        <div className="xl:w-2/5 w-full">
+          <div className="pb-4">
             <IPanel
               title={"Welcome, " + user?.firstName}
               height="100"
@@ -38,7 +38,6 @@ function Home() {
 
           <div className="pb-4">
             <IPanel title="Your Top 4 Attributes" height="h-[403px]">
-              {" "}
               <div className="xl:flex lg:flex flex-wrap">
                 {Object.entries(userHome?.topFourAttributes || {}).map(
                   ([attributeKey, attributeValue], index) => (
@@ -80,13 +79,13 @@ function Home() {
             height="h-[471px]"
           >
             <div className="pt-2">
-              {userHome?.levelUpEvents
+              {(userHome?.levelUpEvents || [])
                 .slice(0, 4)
                 .map((event: any, index: any) => (
                   <div
-                    onClick={() => {
-                      navigate(`/event/${event?.name}/${event?.id}`);
-                    }}
+                    onClick={() =>
+                      navigate(`/event/${event?.name}/${event?.id}`)
+                    }
                     key={index}
                     style={{
                       display: "flex",
@@ -98,10 +97,7 @@ function Home() {
                   >
                     <div
                       className="py-3 px-3 rounded"
-                      style={{
-                        width: "100px",
-                        height: "90px",
-                      }}
+                      style={{ width: "100px", height: "90px" }}
                     >
                       <img
                         src={event.picture}
@@ -114,35 +110,18 @@ function Home() {
                         }}
                       />
                     </div>
-                    <div
-                      style={{
-                        padding: "8px 16px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          margin: "0",
-                        }}
-                        className="text-sm"
-                      >
+                    <div style={{ padding: "8px 16px" }}>
+                      <div style={{ margin: "0" }} className="text-sm">
                         {event.name}
                       </div>
                       <div
-                        style={{
-                          margin: "0",
-                          color: "#666",
-                        }}
+                        style={{ margin: "0", color: "#666" }}
                         className="text-xs"
                       >
                         {formatDate(event.startTime) + " • "}
                         {formatDate(event.endTime)}
                       </div>
-                      <div
-                        className="text-xs"
-                        style={{
-                          color: "#666",
-                        }}
-                      >
+                      <div className="text-xs" style={{ color: "#666" }}>
                         {event.address}
                       </div>
                     </div>
@@ -171,10 +150,9 @@ function Home() {
         />
       )}
 
-      {userHome?.recommendedCommunities && (
+      {userHome?.upcomingEvents && (
         <IEventPanel
-          events={user?.upcomingEvents}
-          showAll={true}
+          events={userHome?.upcomingEvents}
           title="Upcoming Events"
           height="600px"
           buttonLabel="Show All"

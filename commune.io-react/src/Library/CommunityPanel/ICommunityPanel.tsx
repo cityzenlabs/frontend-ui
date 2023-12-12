@@ -15,12 +15,10 @@ interface ICommunityPanelProps {
 
 const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
   communities,
-  showAll,
   onCommunityClick,
   title,
   buttonLabel,
   onButtonClick,
-  // height = "h-[244px]",
   marginTop = "mt-0",
   titleColor,
   paddingB = 4,

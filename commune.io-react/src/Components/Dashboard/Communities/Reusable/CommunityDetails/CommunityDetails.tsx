@@ -75,7 +75,7 @@ const CommunityDetails = ({
               </div>
             </div>
 
-            <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
+            <div className="mt-5 mb-2 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
               {community?.description}
             </div>
           </div>

@@ -3,11 +3,13 @@ import React from "react";
 interface ICommunityLeaderBoard {
   communities: any;
   onRowClick: (communityId: string) => void;
+  page: number;
 }
 
 const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
   communities,
   onRowClick,
+  page,
 }) => {
   const tableStyle = {
     width: "100%",
@@ -73,20 +75,19 @@ const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
           </tr>
         </thead>
         <tbody style={{ backgroundColor: "white" }}>
-          {communities?.map((community: any) => (
+          {communities?.map((community: any, index: any) => (
             <tr
               key={community.id}
               style={{ border: "1px solid #DADEE5" }}
               onClick={() => onRowClick(community.id)}
             >
-              <td></td>
+              <td className="text-xs" style={tdStyle}>
+                {" "}
+                {4 + (page - 1) * 7 + index}
+              </td>
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
-                  <img
-                    src={community?.picture || "default-avatar.png"}
-                    alt={``}
-                    style={imgStyle}
-                  />
+                  <img src={community?.picture} alt={``} style={imgStyle} />
                   <span
                     className="text-xs"
                     style={truncateStyle}

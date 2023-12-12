@@ -11,6 +11,7 @@
     "@heroicons/react": "^1.0.4",
     "@js-joda/core": "^5.5.3",
     "@material-tailwind/react": "^2.1.4",
+    "@mui/icons-material": "^5.14.19",
     "@mui/lab": "^5.0.0-alpha.155",
     "@mui/material": "^5.14.20",
     "@mui/x-charts": "^6.18.0",

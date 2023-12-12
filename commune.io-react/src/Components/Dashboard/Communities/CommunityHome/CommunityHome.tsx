@@ -19,13 +19,6 @@ function CommunityHome() {
   const [showAllJoinedCommunities, setShowAllJoinedCommunities] =
     useState(false);
 
-  const toggleShowAllCreatedCommunities = () => {
-    setShowAllCreatedCommunities((prev) => !prev);
-    if (!showAllCreatedCommunities) {
-      setShowAllJoinedCommunities(false);
-    }
-  };
-
   const toggleShowAllJoinedCommunities = () => {
     setShowAllJoinedCommunities((prev) => !prev);
     if (!showAllJoinedCommunities) {
@@ -95,11 +88,19 @@ function CommunityHome() {
       {!showAllCreatedCommunities && (
         <ICommunityPanel
           title="Joined Communities"
-          buttonLabel={showAllJoinedCommunities ? "Show Less" : "Show All"}
+          buttonLabel={"Show All"}
           height="600px"
-          onButtonClick={toggleShowAllJoinedCommunities}
+          onButtonClick={() =>
+            navigate(
+              `/communities/${encodeURIComponent("Joined Communities")}`,
+              {
+                state: {
+                  communities: communityHome?.joinedCommunities,
+                },
+              },
+            )
+          }
           communities={communityHome?.joinedCommunities}
-          showAll={showAllJoinedCommunities}
           onCommunityClick={(communityName, communityId) => {
             navigate(`/community/${communityName}/${communityId}`);
           }}
@@ -108,21 +109,27 @@ function CommunityHome() {
         />
       )}
 
-      {!showAllJoinedCommunities && (
-        <ICommunityPanel
-          title="Created Communities"
-          buttonLabel={showAllCreatedCommunities ? "Show Less" : "Show All"}
-          height="600px"
-          onButtonClick={toggleShowAllCreatedCommunities}
-          communities={communityHome?.createdCommunities}
-          showAll={showAllCreatedCommunities}
-          onCommunityClick={(communityName, communityId) => {
-            navigate(`/community/manage/${communityId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={8}
-        />
-      )}
+      <ICommunityPanel
+        title="Created Communities"
+        buttonLabel={"Show All"}
+        height="600px"
+        onButtonClick={() =>
+          navigate(
+            `/communities/${encodeURIComponent("Created Communities")}`,
+            {
+              state: {
+                communities: communityHome?.createdCommunities,
+              },
+            },
+          )
+        }
+        communities={communityHome?.createdCommunities}
+        onCommunityClick={(communityId) => {
+          navigate(`/community/manage/${communityId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={8}
+      />
     </div>
   );
 }

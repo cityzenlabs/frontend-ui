@@ -16,33 +16,6 @@ function CommunityDiscovery() {
   const { isMobile, isLargeScreen } = useScreenSize();
   const [isLoading, setIsLoading] = useState(true);
   const [communityDiscovery, setCommunityDiscovery] = useState<any>();
-  const [showAllTrending, setShowAllTrending] = useState(false);
-  const [showAllUpcoming, setShowAllUpcoming] = useState(false);
-  const [showAllRecommended, setShowAllRecommended] = useState(false);
-
-  const toggleShowAllTrending = () => {
-    setShowAllTrending((prev) => !prev);
-    if (!showAllTrending) {
-      setShowAllUpcoming(false);
-      setShowAllRecommended(false);
-    }
-  };
-
-  const toggleShowAllUpcoming = () => {
-    setShowAllUpcoming((prev) => !prev);
-    if (!showAllUpcoming) {
-      setShowAllTrending(false);
-      setShowAllRecommended(false);
-    }
-  };
-
-  const toggleShowAllRecommended = () => {
-    setShowAllRecommended((prev) => !prev);
-    if (!showAllRecommended) {
-      setShowAllTrending(false);
-      setShowAllUpcoming(false);
-    }
-  };
 
   const fetchCommunityDiscovery = async () => {
     try {
@@ -105,46 +78,46 @@ function CommunityDiscovery() {
           )}
         </div>
 
-        {!showAllUpcoming && !showAllRecommended && (
-          <ICommunityPanel
-            title="Trending"
-            buttonLabel={showAllTrending ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={toggleShowAllTrending}
-            communities={communityDiscovery?.trendingCommunities}
-            showAll={showAllTrending}
-            onCommunityClick={(communityName, communityId) => {
-              navigate(`/community/${communityName}/${communityId}`);
-            }}
-          />
-        )}
-
-        {!showAllTrending && !showAllRecommended && (
-          <ICommunityPanel
-            title="New"
-            buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
-            height="600px"
-            onButtonClick={() =>
-              navigate(
-                `/communities/${encodeURIComponent("New Communities")}`,
-                {
-                  state: {
-                    communities: communityDiscovery?.newCommunities,
-                  },
+        <ICommunityPanel
+          title="Trending"
+          buttonLabel={"Show All"}
+          height="600px"
+          onButtonClick={() =>
+            navigate(
+              `/communities/${encodeURIComponent("Trending Communities")}`,
+              {
+                state: {
+                  communities: communityDiscovery?.trendingCommunities,
                 },
-              )
-            }
-            communities={communityDiscovery?.newCommunities}
-            showAll={showAllUpcoming}
-            onCommunityClick={(communityName, communityId) => {
-              navigate(`/community/${communityName}/${communityId}`);
-            }}
-          />
-        )}
+              },
+            )
+          }
+          communities={communityDiscovery?.trendingCommunities}
+          onCommunityClick={(communityName, communityId) => {
+            navigate(`/community/${communityName}/${communityId}`);
+          }}
+        />
+
+        <ICommunityPanel
+          title="New"
+          buttonLabel={"Show All"}
+          height="600px"
+          onButtonClick={() =>
+            navigate(`/communities/${encodeURIComponent("New Communities")}`, {
+              state: {
+                communities: communityDiscovery?.newCommunities,
+              },
+            })
+          }
+          communities={communityDiscovery?.newCommunities}
+          onCommunityClick={(communityName, communityId) => {
+            navigate(`/community/${communityName}/${communityId}`);
+          }}
+        />
 
         <ICommunityPanel
           title="Recommended"
-          buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
+          buttonLabel={"Show All"}
           height="600px"
           onButtonClick={() =>
             navigate(
@@ -157,7 +130,6 @@ function CommunityDiscovery() {
             )
           }
           communities={communityDiscovery?.recommendedCommunities}
-          showAll={showAllRecommended}
           onCommunityClick={(communityName, communityId) => {
             navigate(`/community/${communityName}/${communityId}`);
           }}

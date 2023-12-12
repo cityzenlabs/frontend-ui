@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import ILabel from "../../../Library/Label/ILabel";
 import { getIconForAttribute } from "../Constants/Constants";
+import ISpinner from "../../../Library/Spinner/ISpinner";
 
 function Profile() {
   const accessToken = useAuth();
@@ -57,7 +58,7 @@ function Profile() {
   };
 
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (

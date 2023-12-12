@@ -35,7 +35,7 @@ import EventAttendeesList from "./Components/Dashboard/Events/EventAttendeesList
 import Profile from "./Components/Dashboard/Profile/Profile";
 import EventCreate from "./Components/Dashboard/Events/EventCreate/EventCreate";
 import { ScreenSizeProvider } from "./Context/ScreenContext";
-import Communities from "./Components/Dashboard/Communities/AllCommunities/Communities";
+import Communities from "./Components/Dashboard/Communities/Communities/Communities";
 
 function App() {
   return (

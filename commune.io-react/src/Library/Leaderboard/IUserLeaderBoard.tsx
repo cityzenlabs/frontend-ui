@@ -16,12 +16,14 @@ interface IUserLeaderBoard {
   users: User[];
   onRowClick: (userId: string) => void;
   picture: string;
+  page: number;
 }
 
 const IUserLeaderBoard: React.FC<IUserLeaderBoard> = ({
   users,
   onRowClick,
   picture,
+  page,
 }) => {
   const tableStyle = {
     width: "100%",
@@ -78,13 +80,15 @@ const IUserLeaderBoard: React.FC<IUserLeaderBoard> = ({
           </tr>
         </thead>
         <tbody style={{ backgroundColor: "white" }}>
-          {users?.map((user) => (
+          {users?.map((user, index) => (
             <tr
               key={user.id}
               style={{ border: "1px solid #DADEE5" }}
               onClick={() => onRowClick(user.id)}
             >
-              <td></td>
+              <td className="text-xs" style={tdStyle}>
+                {4 + (page - 1) * 7 + index}
+              </td>
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
                   <img

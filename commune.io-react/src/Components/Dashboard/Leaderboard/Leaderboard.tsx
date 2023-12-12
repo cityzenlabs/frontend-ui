@@ -7,6 +7,8 @@ import * as LeaderBoardService from "../../../Services/LeaderboardService/Leader
 import { useDash } from "../../../Context/DashboardContext";
 import ICommunityLeaderBoard from "../../../Library/Leaderboard/ICommunityLeaderBoard";
 import IUserLeaderBoard from "../../../Library/Leaderboard/IUserLeaderBoard";
+import ISpinner from "../../../Library/Spinner/ISpinner";
+import IPaginator from "../../../Library/Paginator/Paginator";
 
 function Leaderboard() {
   const accessToken = useAuth();
@@ -14,30 +16,46 @@ function Leaderboard() {
   const [location, setLocation] = useState("city");
   const [category, setCategory] = useState("user");
   const [attribute, setAttribute] = useState("SOCIAL");
-  const [leaderBoard, setLeaderBoard] = useState<any>(null);
+  const [firstThree, setFirstThree] = useState<any>(null);
+  const [totalPages, setTotalPages] = useState<any>();
+  const [rest, setRest] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState<any>(0);
 
-  const fetchFilteredLeaderBoard = async () => {
-    setIsLoading(true);
+  const [page, setPage] = useState<any>(1);
+
+  const fetchFirstThree = async () => {
     try {
       const data = await LeaderBoardService.getLeaderboard(
         accessToken.token,
-        `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${page}`,
+        `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${0}`,
       );
       if (data) {
-        setLeaderBoard(data);
+        setFirstThree(data.content);
+        getTotalPages(data.totalElements);
       }
-    } catch (error) {
-      console.error("Failed to fetch filtered leaderboard:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    } catch (error) {}
+  };
+
+  const fetchRest = async () => {
+    try {
+      const data = await LeaderBoardService.getLeaderboard(
+        accessToken.token,
+        `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${1}`,
+      );
+      if (data) {
+        setRest(data.content);
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    console.log(profilePicture);
-    fetchFilteredLeaderBoard();
+    const fetchData = async () => {
+      try {
+        await Promise.all([fetchFirstThree(), fetchRest()]);
+      } catch (error) {}
+      setIsLoading(false);
+    };
+    fetchData();
   }, [location, category, attribute]);
 
   const getLocation = () => {
@@ -51,71 +69,117 @@ function Leaderboard() {
     }
   };
 
+  const getTotalPages = (totalElements: number) => {
+    if (totalElements < 3) {
+      setTotalPages(0);
+    } else {
+      setTotalPages(Math.ceil((totalElements - 3) / 7));
+    }
+  };
+  const handlePageChange = async (newPage: any) => {
+    setPage(newPage);
+    // Fetch new data based on the new page
+    await getNextPage(newPage);
+  };
+
+  const getNextPage = async (newPage: any) => {
+    try {
+      const data = await LeaderBoardService.getLeaderboard(
+        accessToken.token,
+        `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${newPage}`,
+      );
+      if (data) {
+        setRest(data.content);
+      }
+    } catch (error) {}
+  };
+
   if (isLoading) {
-    return <div></div>;
+    return <ISpinner />;
   }
 
   return (
-    <div className="flex gap-2">
-      <div className="flex flex-col w-4/5">
-        <div className="pb-4 pt-4">
-          <ILabel text="Leaderboard"></ILabel>
+    <div>
+      <div className="flex gap-2">
+        <div className="flex flex-col w-4/5">
+          <div className="pb-4 pt-4">
+            <ILabel text="Leaderboard"></ILabel>
+          </div>
+          <div className="flex gap-2 pb-4">
+            <IPanel height="h-[152px]"></IPanel>
+            <IPanel height="h-[152px]"></IPanel>
+            <IPanel height="h-[152px]"></IPanel>
+          </div>
+
+          {category === "community" && (
+            <ICommunityLeaderBoard
+              communities={rest}
+              onRowClick={() => {}}
+              page={page}
+            />
+          )}
+          {category === "user" && (
+            <IUserLeaderBoard
+              users={rest}
+              onRowClick={() => {}}
+              picture={profilePicture}
+              page={page}
+            />
+          )}
+          <div className="flex justify-center items-center mt-4">
+            <IPaginator
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
-        <div className="flex gap-2 pb-4">
-          <IPanel height="h-[152px]"></IPanel>
-          <IPanel height="h-[152px]"></IPanel>
-          <IPanel height="h-[152px]"></IPanel>
+        <div className="w-1/5 pt-16">
+          <IPanel height="h-[516px]">
+            <IToggleButtonGroup
+              label="Location"
+              options={[
+                { label: "City", value: "city" },
+                { label: "State", value: "state" },
+                { label: "Global", value: "global" },
+              ]}
+              onChange={(newLocation) => {
+                setLocation(newLocation);
+                setPage(1);
+              }}
+              selectedValue={location}
+            ></IToggleButtonGroup>
+            <IToggleButtonGroup
+              label="Category"
+              options={[
+                { label: "User", value: "user" },
+                { label: "Community", value: "community" },
+              ]}
+              onChange={(newCategory) => {
+                setCategory(newCategory);
+                setPage(1);
+              }}
+              selectedValue={category}
+            ></IToggleButtonGroup>
+            <IToggleButtonGroup
+              label="Attribute"
+              options={[
+                { label: "Overall", value: "OVERALL" },
+                { label: "Social", value: "SOCIAL" },
+                { label: "Intelligence", value: "INTELLIGENCE" },
+                { label: "Fitness", value: "FITNESS" },
+                { label: "Nightlife", value: "NIGHTLIFE" },
+                { label: "Adventure", value: "ADVENTURE" },
+                { label: "Culture", value: "CULTURE" },
+              ]}
+              onChange={(newAttribute) => {
+                setAttribute(newAttribute);
+                setPage(1);
+              }}
+              selectedValue={attribute}
+            ></IToggleButtonGroup>
+          </IPanel>
         </div>
-        {category === "community" && (
-          <ICommunityLeaderBoard
-            communities={leaderBoard?.content}
-            onRowClick={() => {}}
-          />
-        )}
-        {category === "user" && (
-          <IUserLeaderBoard
-            users={leaderBoard?.content}
-            onRowClick={() => {}}
-            picture={profilePicture}
-          />
-        )}
-      </div>
-      <div className="w-1/5 pt-16">
-        <IPanel height="h-[516px]">
-          <IToggleButtonGroup
-            label="Location"
-            options={[
-              { label: "City", value: "city" },
-              { label: "State", value: "state" },
-              { label: "Global", value: "global" },
-            ]}
-            onChange={setLocation}
-            selectedValue={location}
-          ></IToggleButtonGroup>
-          <IToggleButtonGroup
-            label="Category"
-            options={[
-              { label: "User", value: "user" },
-              { label: "Community", value: "community" },
-            ]}
-            onChange={setCategory}
-            selectedValue={category}
-          ></IToggleButtonGroup>
-          <IToggleButtonGroup
-            label="Attribute"
-            options={[
-              { label: "Overall", value: "OVERALL" },
-              { label: "Social", value: "SOCIAL" },
-              { label: "Intelligence", value: "INTELLIGENCE" },
-              { label: "Fitness", value: "FITNESS" },
-              { label: "Nightlife", value: "NIGHTLIFE" },
-              { label: "Adventure", value: "ADVENTURE" },
-              { label: "Culture", value: "CULTURE" },
-            ]}
-            onChange={setAttribute}
-            selectedValue={attribute}
-          ></IToggleButtonGroup>
-        </IPanel>
       </div>
     </div>
   );
