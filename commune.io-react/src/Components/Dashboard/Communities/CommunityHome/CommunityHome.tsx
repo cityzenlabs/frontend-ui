@@ -76,13 +76,6 @@ function CommunityHome() {
             CREATED <br /> COMMUNITIES
           </div>
         </IPanel>
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">0</div>
-          <div className="text-xs">
-            PENDING <br />
-            REQUESTS
-          </div>
-        </IPanel>
       </div>
 
       {!showAllCreatedCommunities && (

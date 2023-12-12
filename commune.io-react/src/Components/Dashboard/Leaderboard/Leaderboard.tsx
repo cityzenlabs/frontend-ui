@@ -5,8 +5,8 @@ import IToggleButtonGroup from "../../../Library/ToggleButtonGroup/IToggleButton
 import { useAuth } from "../../../AuthContext";
 import * as LeaderBoardService from "../../../Services/LeaderboardService/LeaderboardService";
 import { useDash } from "../../../Context/DashboardContext";
-import ICommunityLeaderBoard from "../../../Library/Leaderboard/ICommunityLeaderBoard";
-import IUserLeaderBoard from "../../../Library/Leaderboard/IUserLeaderBoard";
+import CommunityLeaderBoard from "./LeaderBoardTables/CommunityLeaderBoard";
+import UserLeaderBoard from "./LeaderBoardTables/UserLeaderBoard";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import IPaginator from "../../../Library/Paginator/Paginator";
 import IMenuButtonFilter from "../../../Library/MenuButtonFilter/IMenuButtonFilter";
@@ -23,6 +23,7 @@ function Leaderboard() {
   const [rest, setRest] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { isExtraLargeScreen } = useScreenSize();
+  const [isTableLoading, setIsTableLoading] = useState(false);
   const [page, setPage] = useState<any>(1);
   const filterOptions = [
     {
@@ -55,12 +56,10 @@ function Leaderboard() {
         { label: "Adventure", value: "ADVENTURE" },
         { label: "Culture", value: "CULTURE" },
       ],
-      onChange: setAttribute, // Assuming you have a setAttribute function
-      selectedValue: attribute, // Assuming you have an attribute state
+      onChange: setAttribute,
+      selectedValue: attribute,
     },
   ];
-
-  // ...
 
   const fetchFirstThree = async () => {
     try {
@@ -150,7 +149,7 @@ function Leaderboard() {
           </div>
 
           {category === "community" && (
-            <ICommunityLeaderBoard
+            <CommunityLeaderBoard
               communities={rest}
               onRowClick={() => {}}
               page={page}
@@ -158,7 +157,7 @@ function Leaderboard() {
             />
           )}
           {category === "user" && (
-            <IUserLeaderBoard
+            <UserLeaderBoard
               users={rest}
               onRowClick={() => {}}
               picture={profilePicture}
@@ -173,12 +172,14 @@ function Leaderboard() {
               onPageChange={handlePageChange}
             />
           </div>
+
+          <ISpinner />
         </div>
 
         {isExtraLargeScreen && (
           <div className="w-1/5 pt-16">
             <IPanel>
-              {filterOptions.map((option, index) => (
+              {filterOptions?.map((option, index) => (
                 <IToggleButtonGroup
                   key={index}
                   label={option.label}

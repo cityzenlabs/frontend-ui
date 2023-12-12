@@ -18,7 +18,7 @@ function IContainer({
 
   return (
     <div
-      className={`xl:ml-[360px] md:ml-[360px] xl:mr-[80px] md:mr-[80px] mr-[80px] ml-[80px]  ${paddingYClass} ${className}`}
+      className={`xl:ml-[360px] md:ml-[360px] xl:mr-[80px] md:mr-[80px] mr-[30px] ml-[30px]  ${paddingYClass} ${className}`}
       style={style}
     >
       {children}

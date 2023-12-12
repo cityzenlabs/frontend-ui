@@ -4,6 +4,8 @@ import ILabel from "../../../../../../Library/Label/ILabel";
 import { CalendarIcon, MapIcon, SunIcon } from "@heroicons/react/outline";
 import { ArrowRightIcon, BadgeCheckIcon } from "@heroicons/react/solid";
 import { useNavigate } from "react-router-dom";
+import { attributeColors } from "../../../../Home/Constants/HomeConstats";
+import { getIconForAttribute } from "../../../../Constants/Constants";
 
 function EventDetails({ event, organizer, community, communityPicture }: any) {
   let navigate = useNavigate();
@@ -48,10 +50,11 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
                 </div>
               </div>
             )}
+            <div className="text-xs">{event?.category}</div>
             <div className="mt-5 flex">
               <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
               <div className="text-[#7E858B]">
-                {event?.city + ", " + event?.state}
+                {event?.city + ", " + event?.state + " | " + event?.address}
               </div>
             </div>
             <div className="mt-5 flex">
@@ -60,6 +63,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
                 {formatDate(event?.startTime)} - {formatDate(event?.endTime)}
               </div>
             </div>
+
             <div className="mt-5 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
               {event?.description}
             </div>
@@ -102,6 +106,53 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
           </div>
         </IPanel>
 
+        {/* Additional Panel (if needed) */}
+        <IPanel height="h-[270px]">
+          <div>
+            <div className="font-md text-xs pt-2">COMMUNITY REQUIREMENTS</div>
+            <div className="grid grid-cols-2 gap-5 py-6">
+              {community?.attributeRequirements &&
+                Object.entries(
+                  community.attributeRequirements as [string, number][],
+                ).map(([attribute, level], index) => {
+                  const color = attributeColors[index % attributeColors.length];
+                  return (
+                    <div
+                      key={attribute}
+                      className="flex justify-between items-center "
+                    >
+                      <div className="flex-1">
+                        <div
+                          className="text-sm font-medium capitalize"
+                          style={{ color }}
+                        >
+                          {attribute.toLowerCase()}
+                        </div>
+                        <div className="text-xs text-[#7E858B]">
+                          Level {level}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          color:
+                            attributeColors[index % attributeColors.length],
+                          borderColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                          backgroundColor: `${
+                            attributeColors[index % attributeColors.length]
+                          }20`,
+                        }}
+                        className="border px-2 py-2 rounded"
+                      >
+                        {getIconForAttribute(attribute)}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </IPanel>
         <IPanel
           height="h-[55px]"
           onPanelClick={() => {
@@ -113,9 +164,6 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>
-
-        {/* Additional Panel (if needed) */}
-        <IPanel height="h-[270px]">{/* Additional content */}</IPanel>
       </div>
     </div>
   );

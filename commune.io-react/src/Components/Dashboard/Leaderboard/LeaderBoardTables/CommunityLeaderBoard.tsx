@@ -1,6 +1,6 @@
 import React from "react";
-import IPanel from "../Panel/IPanel";
-import { tableStyle, thStyle, tdStyle, imgStyle } from "./ILeaderBoardStyles";
+import IPanel from "../../../../Library/Panel/IPanel";
+import { tableStyle, thStyle, tdStyle, imgStyle } from "./LeaderBoardStyles";
 
 // TypeScript interface for a community
 interface Community {
@@ -15,7 +15,7 @@ interface Community {
 }
 
 // Props interface for ICommunityLeaderBoard component
-interface ICommunityLeaderBoardProps {
+interface CommunityLeaderBoardProps {
   communities: Community[];
   onRowClick: (communityId: string) => void;
   page: number;
@@ -40,7 +40,7 @@ const TableRow = ({
       style={{ border: "1px solid #DADEE5" }}
       onClick={() => onRowClick(community.id)}
     >
-      <td style={tdStyle}>{4 + (page - 1) * 7 + index}</td>
+      <td style={tdStyle}>{4 + (page - 1) * 7 + index}.</td>
       <td style={tdStyle}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <img
@@ -48,19 +48,24 @@ const TableRow = ({
             alt={`${community.name}`}
             style={imgStyle}
           />
-          <span>{community.name}</span>
+          <span className="text-xs">{community.name}</span>
         </div>
       </td>
       <td
         style={tdStyle}
+        className="text-xs"
       >{`${community.organizerFirstName} ${community.organizerLastName}`}</td>
-      <td style={tdStyle}>{community.attribute}</td>
-      <td style={tdStyle}>{community.points}</td>
+      <td style={tdStyle} className="text-xs">
+        {community.attribute}
+      </td>
+      <td style={tdStyle} className="text-xs">
+        {community.points}
+      </td>
     </tr>
   );
 };
 
-const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoardProps> = ({
+const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
   communities,
   onRowClick,
   page,
@@ -69,7 +74,7 @@ const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoardProps> = ({
   return (
     <div>
       <div className="xl:flex gap-2">
-        {firstThree.map((community, index) => (
+        {firstThree?.map((community, index) => (
           <div key={community.id} className="mb-4 xl:w-full">
             <IPanel>
               <div className="text-lg pb-2 ">{index + 1}.</div>
@@ -110,15 +115,25 @@ const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoardProps> = ({
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th style={thStyle}>No.</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Organizer</th>
-              <th style={thStyle}>Attribute</th>
-              <th style={thStyle}>Points</th>
+              <th style={thStyle} className="text-xs">
+                No.
+              </th>
+              <th style={thStyle} className="text-xs">
+                Name
+              </th>
+              <th style={thStyle} className="text-xs">
+                Organizer
+              </th>
+              <th style={thStyle} className="text-xs">
+                Attribute
+              </th>
+              <th style={thStyle} className="text-xs">
+                Points
+              </th>
             </tr>
           </thead>
           <tbody>
-            {communities.map((community, index) => (
+            {communities?.map((community, index) => (
               <TableRow
                 key={community.id}
                 community={community}

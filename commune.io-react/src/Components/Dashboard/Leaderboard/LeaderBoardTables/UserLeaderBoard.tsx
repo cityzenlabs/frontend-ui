@@ -1,7 +1,7 @@
 import React from "react";
-import IPanel from "../Panel/IPanel";
+import IPanel from "../../../../Library/Panel/IPanel";
 
-import { tableStyle, thStyle, tdStyle, imgStyle } from "./ILeaderBoardStyles";
+import { tableStyle, thStyle, tdStyle, imgStyle } from "./LeaderBoardStyles";
 
 interface User {
   id: string;
@@ -15,7 +15,7 @@ interface User {
   topAttribute: string;
 }
 
-interface IUserLeaderBoardProps {
+interface UserLeaderBoardProps {
   users: User[];
   onRowClick: (userId: string) => void;
   page: number;
@@ -58,7 +58,7 @@ const TableRow = ({
   );
 };
 
-const IUserLeaderBoard: React.FC<IUserLeaderBoardProps> = ({
+const IUserLeaderBoard: React.FC<UserLeaderBoardProps> = ({
   users,
   onRowClick,
   page,
@@ -67,7 +67,7 @@ const IUserLeaderBoard: React.FC<IUserLeaderBoardProps> = ({
   return (
     <div>
       <div className="xl:flex gap-2">
-        {firstThree.map((user, index) => (
+        {firstThree?.map((user, index) => (
           <div key={user.id} className="mb-4 xl:w-full">
             <IPanel>
               <div className="text-lg pb-2 ">{index + 1}.</div>
@@ -115,7 +115,7 @@ const IUserLeaderBoard: React.FC<IUserLeaderBoardProps> = ({
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {users?.map((user, index) => (
               <TableRow
                 key={user.id}
                 user={user}

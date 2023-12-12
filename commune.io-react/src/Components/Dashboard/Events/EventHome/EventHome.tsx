@@ -94,14 +94,6 @@ function EventHome() {
             CREATED <br /> EVENTS
           </div>
         </IPanel>
-
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">0</div>
-          <div className="text-xs pr-8">
-            PENDING <br />
-            REQUESTS
-          </div>
-        </IPanel>
       </div>
 
       <IEventPanel
