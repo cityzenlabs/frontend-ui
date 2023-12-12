@@ -1,117 +1,135 @@
 import React from "react";
+import IPanel from "../Panel/IPanel";
+import { tableStyle, thStyle, tdStyle, imgStyle } from "./ILeaderBoardStyles";
 
-interface ICommunityLeaderBoard {
-  communities: any;
-  onRowClick: (communityId: string) => void;
-  page: number;
+// TypeScript interface for a community
+interface Community {
+  id: string;
+  name: string;
+  picture: string;
+  organizerFirstName: string;
+  organizerLastName: string;
+  members: number;
+  points: number;
+  attribute: string;
 }
 
-const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoard> = ({
+// Props interface for ICommunityLeaderBoard component
+interface ICommunityLeaderBoardProps {
+  communities: Community[];
+  onRowClick: (communityId: string) => void;
+  page: number;
+  firstThree: Community[];
+}
+
+// TableRow component for table rows
+const TableRow = ({
+  community,
+  index,
+  onRowClick,
+  page,
+}: {
+  community: Community;
+  index: number;
+  onRowClick: (id: string) => void;
+  page: number;
+}) => {
+  return (
+    <tr
+      key={community.id}
+      style={{ border: "1px solid #DADEE5" }}
+      onClick={() => onRowClick(community.id)}
+    >
+      <td style={tdStyle}>{4 + (page - 1) * 7 + index}</td>
+      <td style={tdStyle}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img
+            src={community.picture}
+            alt={`${community.name}`}
+            style={imgStyle}
+          />
+          <span>{community.name}</span>
+        </div>
+      </td>
+      <td
+        style={tdStyle}
+      >{`${community.organizerFirstName} ${community.organizerLastName}`}</td>
+      <td style={tdStyle}>{community.attribute}</td>
+      <td style={tdStyle}>{community.points}</td>
+    </tr>
+  );
+};
+
+const ICommunityLeaderBoard: React.FC<ICommunityLeaderBoardProps> = ({
   communities,
   onRowClick,
   page,
+  firstThree,
 }) => {
-  const tableStyle = {
-    width: "100%",
-    borderCollapse: "collapse" as "collapse",
-  };
-
-  const thStyle = {
-    textAlign: "left" as "left",
-    padding: "8px",
-    backgroundColor: "#5081FF",
-    color: "white",
-  };
-
-  const tdStyle = {
-    textAlign: "left" as "left",
-    padding: "8px",
-  };
-
-  const imgStyle = {
-    width: "30px",
-    height: "30px",
-    borderRadius: "15px",
-    objectFit: "cover" as "cover",
-    marginRight: "8px",
-  };
-
-  const tdContentStyle = {
-    display: "flex", // Use flexbox to lay out children inline
-    alignItems: "center", // Center children vertically within the td
-    gap: "10px", // Add some space between the image and the text
-  };
-
-  const truncateStyle = {
-    maxWidth: "150px", // Adjust this value based on your requirements
-    whiteSpace: "nowrap" as "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
-
   return (
-    <div className="rounded" style={{ width: "100%", overflowX: "auto" }}>
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th className="text-xs" style={thStyle}>
-              No.
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Name
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Organizer
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Attribute
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Points
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Members
-            </th>
-          </tr>
-        </thead>
-        <tbody style={{ backgroundColor: "white" }}>
-          {communities?.map((community: any, index: any) => (
-            <tr
-              key={community.id}
-              style={{ border: "1px solid #DADEE5" }}
-              onClick={() => onRowClick(community.id)}
-            >
-              <td className="text-xs" style={tdStyle}>
-                {" "}
-                {4 + (page - 1) * 7 + index}
-              </td>
-              <td style={tdStyle}>
-                <div style={tdContentStyle}>
-                  <img src={community?.picture} alt={``} style={imgStyle} />
-                  <span
-                    className="text-xs"
-                    style={truncateStyle}
-                  >{`${community?.name}`}</span>
+    <div>
+      <div className="xl:flex gap-2">
+        {firstThree.map((community, index) => (
+          <div key={community.id} className="mb-4 xl:w-full">
+            <IPanel>
+              <div className="text-lg pb-2 ">{index + 1}.</div>
+              <div className="flex items-center ">
+                <div className="pb-2">
+                  <img
+                    src={community.picture}
+                    alt={``}
+                    style={{ borderRadius: "32px", objectFit: "cover" }}
+                    className="w-[64px] h-[64px] mr-2 mb-1"
+                  />
                 </div>
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {community.organizerFirstName +
-                  " " +
-                  community.organizerLastName}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {community.attribute}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {community?.points}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {community?.members}
-              </td>
+                <div>
+                  <div className="text-md">{community.name}</div>
+                  <div className="text-xs text-[#7E858B]">
+                    {`${community.organizerFirstName} ${community.organizerLastName}`}
+                  </div>
+                </div>
+              </div>
+              <div className="flex ">
+                <div className="mr-6">
+                  <div className="text-xs  text-[#7E858B]">Members</div>
+                  <div>{community.members}</div>
+                </div>
+                <div className="mr-6">
+                  <div className="text-xs text-[#7E858B]">Points</div>
+                  <div>{community.points}</div>
+                </div>
+                <div>
+                  <div className="text-xs">{community.attribute}</div>
+                </div>
+              </div>
+            </IPanel>
+          </div>
+        ))}
+      </div>
+      <div className="rounded overflow-x-auto">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>No.</th>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Organizer</th>
+              <th style={thStyle}>Attribute</th>
+              <th style={thStyle}>Points</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {communities.map((community, index) => (
+              <TableRow
+                key={community.id}
+                community={community}
+                index={index}
+                onRowClick={onRowClick}
+                page={page}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

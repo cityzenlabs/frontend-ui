@@ -74,13 +74,13 @@ function CommunityDashboard() {
     fetchData();
   }, []);
 
-  const membersChartData = communityDashboard?.community.analytics
-    ? transformMembersData(communityDashboard.community.analytics)
+  const membersChartData = communityDashboard?.community?.analytics
+    ? transformMembersData(communityDashboard?.community?.analytics)
     : null;
   const membersAttendingEventsChartData = communityDashboard?.community
-    .analytics
+    ?.analytics
     ? transformMembersAttendingEventsData(
-        communityDashboard.community.analytics,
+        communityDashboard?.community?.analytics,
       )
     : null;
 
@@ -105,7 +105,7 @@ function CommunityDashboard() {
             <div className="flex justify-between pt-4 pb-4">
               <div className="flex">
                 {communityDashboard && (
-                  <ILabel text={communityDashboard.community.name}></ILabel>
+                  <ILabel text={communityDashboard?.community?.name}></ILabel>
                 )}
               </div>
 
@@ -182,7 +182,7 @@ function CommunityDashboard() {
 
           <div className="pb-4">
             <CommunityDetails
-              community={communityDashboard.community}
+              community={communityDashboard?.community}
               organizer={organizer}
               communityId={communityId}
               communityPicture={communityPicture}

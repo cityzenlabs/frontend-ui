@@ -17,6 +17,8 @@ import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import { useAuth } from "../../../../AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
+import { ArrowRightIcon } from "@heroicons/react/outline";
+import IPanel from "../../../../Library/Panel/IPanel";
 
 function EventDashboard() {
   const accessToken = useAuth();
@@ -59,13 +61,6 @@ function EventDashboard() {
     fetchData();
   }, []);
 
-  const averageTimeSpent = eventDashboard?.event.eventAnalytics
-    ? transformAverageTimeSpent(eventDashboard?.event.eventAnalytics)
-    : transformAverageTimeSpent(fakeAverageTimeSpent);
-  const averageUserLevel = eventDashboard?.event.eventAnalytics
-    ? transformAverageUserLevel(eventDashboard?.event.eventAnalytics)
-    : transformAverageUserLevel(fakeAverageUserLevel);
-
   if (isLoading) {
     return <ISpinner />;
   }
@@ -102,21 +97,34 @@ function EventDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full pb-4 ">
-        {averageTimeSpent && (
-          <IGraph
-            data={averageTimeSpent.series}
-            categories={averageTimeSpent.categories}
-            title="Average Time Spent"
-          />
-        )}
-        {averageUserLevel && (
-          <IGraph
-            title="Average User Level"
-            data={averageUserLevel.series}
-            categories={averageUserLevel.categories}
-          />
-        )}
+      <div className="grid xl:grid-cols-3 gap-5 xl:w-4/5 lg:w-full pb-4">
+        <IPanel
+          height="h-[60px]"
+          //onPanelClick={() => setShowDashboardEvents("Ongoing Events")}
+        >
+          <div className="flex justify-between items-center">
+            {"Demographics"}
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          </div>
+        </IPanel>
+        <IPanel
+          height="h-[60px]"
+          //onPanelClick={() => setShowDashboardEvents("Pending Events")}
+        >
+          <div className="flex justify-between items-center">
+            {"Analytics"}
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          </div>
+        </IPanel>
+        <IPanel
+          height="h-[60px]"
+          //onPanelClick={() => setShowDashboardEvents("Completed Events")}
+        >
+          <div className="flex justify-between items-center">
+            {"Summary"}
+            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
+          </div>
+        </IPanel>
       </div>
 
       <div className="pb-4">

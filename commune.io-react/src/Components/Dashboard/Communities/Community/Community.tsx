@@ -73,18 +73,6 @@ function Community() {
     } catch (error) {}
   };
 
-  const fetchPicture = async () => {
-    try {
-      const picture = await CommunityService.getCommunityPicture(
-        communityId,
-        accessToken.token,
-      );
-      if (picture) {
-        setCommunityPicture(picture);
-      }
-    } catch (error) {}
-  };
-
   const fetchGallery = async () => {
     try {
       const gallery = await CommunityService.getCommunityPhotoGallery(
@@ -109,7 +97,6 @@ function Community() {
         await Promise.all([
           fetchCommunityData(),
           fetchCommunityEvents(),
-          fetchPicture(),
           fetchGallery(),
         ]);
       } catch (error) {}

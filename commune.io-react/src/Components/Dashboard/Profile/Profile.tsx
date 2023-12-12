@@ -72,7 +72,7 @@ function Profile() {
             <div className="flex">
               <div className="w-[136px] h-[136px] rounded-full overflow-hidden">
                 <img
-                  src="levelUp.png"
+                  src={user?.picture}
                   alt="Avatar"
                   className="w-full h-full object-cover"
                 />
@@ -92,8 +92,7 @@ function Profile() {
                 </div>
               </div>
             </div>
-            <div className="text-lg mt-8">Profile Points</div>
-            <div className="grid lg:grid-cols-2 gap-8  lg:gap-4">
+            <div className="grid lg:grid-cols-2 gap-8 pt-8 lg:gap-4">
               {Object.entries(user?.attributes || {}).map(
                 ([attributeKey, attributeValue], index) => (
                   <div

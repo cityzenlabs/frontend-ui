@@ -10,6 +10,7 @@ import { times } from "../EventCreate/EventCreateConstants";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
+import BasicDateTimePicker from "../../../../Library/DateTimePicker/DateTimePicker";
 
 function EventDashboardEdit() {
   const { eventId } = useParams();
@@ -100,6 +101,7 @@ function EventDashboardEdit() {
           ]}
         ></IInputGroup>
       </div>
+
       <div className="xl:w-1/2 lg:w-1/2 pb-4">
         <IInput
           label="Address"
@@ -111,19 +113,8 @@ function EventDashboardEdit() {
           }
         ></IInput>
       </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IDropdown
-          labelText="Type"
-          options={[
-            { value: "SOCIAL", label: "Social" },
-            { value: "HOSTED", label: "Hosted" },
-          ]}
-          value={type}
-          onChange={setType}
-          placeholder={event?.type}
-        />
-      </div>
+      <BasicDateTimePicker />
+      <BasicDateTimePicker />
 
       <div className="xl:w-1/2 lg:w-1/2 pb-4">
         <ITextArea

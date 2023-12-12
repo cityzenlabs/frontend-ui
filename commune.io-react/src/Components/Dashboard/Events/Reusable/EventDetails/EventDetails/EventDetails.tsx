@@ -9,7 +9,6 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
   let navigate = useNavigate();
 
   const getColorByEventProperty = () => {
-    // Example logic, update according to your needs
     return "#68BEF1";
   };
 
@@ -73,7 +72,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
           <div className="flex items-center">
             <div>
               <img
-                src={organizer?.profilePicture || "default-avatar.png"}
+                src={organizer?.picture || "default-avatar.png"}
                 alt={`${organizer?.firstName} ${organizer?.lastName}`}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
@@ -90,7 +89,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
           <div className="flex items-center">
             <div>
               <img
-                src={communityPicture || "default-event-image.png"}
+                src={community?.picture || "default-event-image.png"}
                 alt={event?.name}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
@@ -109,7 +108,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
             navigate(`/events/${event.id}/attendees`);
           }}
         >
-          <div className="flex justify-between items-center h-full">
+          <div className="flex justify-between items-center ">
             {event?.attendees.length} Attendees
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>

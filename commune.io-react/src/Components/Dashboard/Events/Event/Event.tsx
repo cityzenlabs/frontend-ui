@@ -50,20 +50,7 @@ function Event() {
         }
         if (community) {
           setCommunity(community);
-          fetchCommunityPicture(community.id);
         }
-      }
-    } catch (error) {}
-  };
-
-  const fetchCommunityPicture = async (communityId: any) => {
-    try {
-      const picture = await CommunityService.getCommunityPicture(
-        communityId,
-        accessToken.token,
-      );
-      if (picture) {
-        setCommunityPicture(picture);
       }
     } catch (error) {}
   };
@@ -80,18 +67,6 @@ function Event() {
     } catch (error) {}
   };
 
-  const fetchPicture = async () => {
-    try {
-      const data = await EventService.getEventPicture(
-        accessToken.token,
-        eventId,
-      );
-      if (data) {
-        setEventPicture(data);
-      }
-    } catch (error) {}
-  };
-
   const checkMembership = (event: any) => {
     if (user && event) {
       setHasJoined(user?.joinedEvents.includes(event.id));
@@ -101,7 +76,7 @@ function Event() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchEvent(), fetchRelatedEvents(), fetchPicture()]);
+        await Promise.all([fetchEvent(), fetchRelatedEvents()]);
       } catch (error) {}
       setIsLoading(false);
     };
@@ -144,7 +119,7 @@ function Event() {
         </div>
       </div>
       <div className="pb-4">
-        <ICarousel imageUrls={[eventPicture]} />
+        <ICarousel imageUrls={[event?.picture]} />
       </div>
 
       <div className="pb-4">

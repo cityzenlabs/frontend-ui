@@ -9,6 +9,8 @@ import ICommunityLeaderBoard from "../../../Library/Leaderboard/ICommunityLeader
 import IUserLeaderBoard from "../../../Library/Leaderboard/IUserLeaderBoard";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import IPaginator from "../../../Library/Paginator/Paginator";
+import IMenuButtonFilter from "../../../Library/MenuButtonFilter/IMenuButtonFilter";
+import { useScreenSize } from "../../../Context/ScreenContext";
 
 function Leaderboard() {
   const accessToken = useAuth();
@@ -20,8 +22,45 @@ function Leaderboard() {
   const [totalPages, setTotalPages] = useState<any>();
   const [rest, setRest] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { isExtraLargeScreen } = useScreenSize();
   const [page, setPage] = useState<any>(1);
+  const filterOptions = [
+    {
+      label: "Location",
+      options: [
+        { label: "City", value: "city" },
+        { label: "State", value: "state" },
+        { label: "Global", value: "global" },
+      ],
+      onChange: setLocation, // Assuming you have a setLocation function
+      selectedValue: location, // Assuming you have a location state
+    },
+    {
+      label: "Category",
+      options: [
+        { label: "User", value: "user" },
+        { label: "Community", value: "community" },
+      ],
+      onChange: setCategory, // Assuming you have a setCategory function
+      selectedValue: category, // Assuming you have a category state
+    },
+    {
+      label: "Attribute",
+      options: [
+        { label: "Overall", value: "OVERALL" },
+        { label: "Social", value: "SOCIAL" },
+        { label: "Intelligence", value: "INTELLIGENCE" },
+        { label: "Fitness", value: "FITNESS" },
+        { label: "Nightlife", value: "NIGHTLIFE" },
+        { label: "Adventure", value: "ADVENTURE" },
+        { label: "Culture", value: "CULTURE" },
+      ],
+      onChange: setAttribute, // Assuming you have a setAttribute function
+      selectedValue: attribute, // Assuming you have an attribute state
+    },
+  ];
+
+  // ...
 
   const fetchFirstThree = async () => {
     try {
@@ -30,6 +69,7 @@ function Leaderboard() {
         `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${0}`,
       );
       if (data) {
+        console.log(data);
         setFirstThree(data.content);
         getTotalPages(data.totalElements);
       }
@@ -78,7 +118,7 @@ function Leaderboard() {
   };
   const handlePageChange = async (newPage: any) => {
     setPage(newPage);
-    // Fetch new data based on the new page
+
     await getNextPage(newPage);
   };
 
@@ -101,14 +141,12 @@ function Leaderboard() {
   return (
     <div>
       <div className="flex gap-2">
-        <div className="flex flex-col w-4/5">
-          <div className="pb-4 pt-4">
+        <div className="flex flex-col w-full xl:w-4/5">
+          <div className="flex justify-between items-center pb-4 pt-4">
             <ILabel text="Leaderboard"></ILabel>
-          </div>
-          <div className="flex gap-2 pb-4">
-            <IPanel height="h-[152px]"></IPanel>
-            <IPanel height="h-[152px]"></IPanel>
-            <IPanel height="h-[152px]"></IPanel>
+            {!isExtraLargeScreen && (
+              <IMenuButtonFilter filterOptions={filterOptions} />
+            )}
           </div>
 
           {category === "community" && (
@@ -116,6 +154,7 @@ function Leaderboard() {
               communities={rest}
               onRowClick={() => {}}
               page={page}
+              firstThree={firstThree}
             />
           )}
           {category === "user" && (
@@ -124,9 +163,10 @@ function Leaderboard() {
               onRowClick={() => {}}
               picture={profilePicture}
               page={page}
+              firstThree={firstThree}
             />
           )}
-          <div className="flex justify-center items-center mt-4">
+          <div className="flex justify-center items-center mt-4 pb-4">
             <IPaginator
               currentPage={page}
               totalPages={totalPages}
@@ -134,52 +174,22 @@ function Leaderboard() {
             />
           </div>
         </div>
-        <div className="w-1/5 pt-16">
-          <IPanel height="h-[516px]">
-            <IToggleButtonGroup
-              label="Location"
-              options={[
-                { label: "City", value: "city" },
-                { label: "State", value: "state" },
-                { label: "Global", value: "global" },
-              ]}
-              onChange={(newLocation) => {
-                setLocation(newLocation);
-                setPage(1);
-              }}
-              selectedValue={location}
-            ></IToggleButtonGroup>
-            <IToggleButtonGroup
-              label="Category"
-              options={[
-                { label: "User", value: "user" },
-                { label: "Community", value: "community" },
-              ]}
-              onChange={(newCategory) => {
-                setCategory(newCategory);
-                setPage(1);
-              }}
-              selectedValue={category}
-            ></IToggleButtonGroup>
-            <IToggleButtonGroup
-              label="Attribute"
-              options={[
-                { label: "Overall", value: "OVERALL" },
-                { label: "Social", value: "SOCIAL" },
-                { label: "Intelligence", value: "INTELLIGENCE" },
-                { label: "Fitness", value: "FITNESS" },
-                { label: "Nightlife", value: "NIGHTLIFE" },
-                { label: "Adventure", value: "ADVENTURE" },
-                { label: "Culture", value: "CULTURE" },
-              ]}
-              onChange={(newAttribute) => {
-                setAttribute(newAttribute);
-                setPage(1);
-              }}
-              selectedValue={attribute}
-            ></IToggleButtonGroup>
-          </IPanel>
-        </div>
+
+        {isExtraLargeScreen && (
+          <div className="w-1/5 pt-16">
+            <IPanel>
+              {filterOptions.map((option, index) => (
+                <IToggleButtonGroup
+                  key={index}
+                  label={option.label}
+                  options={option.options}
+                  onChange={option.onChange}
+                  selectedValue={option.selectedValue}
+                />
+              ))}
+            </IPanel>
+          </div>
+        )}
       </div>
     </div>
   );

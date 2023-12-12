@@ -124,7 +124,7 @@ function CommunityHome() {
           )
         }
         communities={communityHome?.createdCommunities}
-        onCommunityClick={(communityId) => {
+        onCommunityClick={(communityName, communityId) => {
           navigate(`/community/manage/${communityId}`);
         }}
         marginTop="mt-0"

@@ -1,3 +1,4 @@
+import { CameraIcon } from "@heroicons/react/outline";
 import React from "react";
 
 interface ICommunityPanelProps {
@@ -59,21 +60,27 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
               }
             >
               <div className="h-28 overflow-hidden rounded-t-lg">
-                <img
-                  src={community.picture}
-                  alt={community.name}
-                  className="w-full h-full object-cover"
-                />
+                {community.picture ? (
+                  <img
+                    src={community?.picture}
+                    alt={""}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="border flex justify-center items-center w-full h-full">
+                    <CameraIcon className="w-20 h-20 text-gray-500" />
+                  </div>
+                )}
               </div>
               <div className="px-2 pt-2 flex items-center justify-between">
                 <h3 className="text-sm font-medium truncate">
-                  {community.name}
+                  {community?.name}
                 </h3>
                 {/* Additional content or icons */}
               </div>
               <div className="px-2 flex items-center justify-between">
                 <div className="text-xs font-medium truncate text-[#7E858B]">
-                  Reputation {community.reputation}
+                  Reputation {community?.reputation}
                 </div>
                 <div className="text-xs font-medium truncate text-[#7E858B]">
                   Public
@@ -81,10 +88,10 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
               </div>
               <div className="px-2 pb-2 flex items-center justify-between">
                 <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {community.attribute}
+                  {community?.attribute}
                 </div>
                 <div className="text-xs text-[#7E858B] font-medium truncate flex">
-                  {community.memberCount} Members
+                  {community?.memberCount} Members
                 </div>
               </div>
             </div>

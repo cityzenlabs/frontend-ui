@@ -1,4 +1,7 @@
 import React from "react";
+import IPanel from "../Panel/IPanel";
+
+import { tableStyle, thStyle, tdStyle, imgStyle } from "./ILeaderBoardStyles";
 
 interface User {
   id: string;
@@ -12,106 +15,118 @@ interface User {
   topAttribute: string;
 }
 
-interface IUserLeaderBoard {
+interface IUserLeaderBoardProps {
   users: User[];
   onRowClick: (userId: string) => void;
-  picture: string;
   page: number;
+  firstThree: User[];
+  picture: string;
 }
 
-const IUserLeaderBoard: React.FC<IUserLeaderBoard> = ({
+const TableRow = ({
+  user,
+  index,
+  onRowClick,
+  page,
+}: {
+  user: User;
+  index: number;
+  onRowClick: (id: string) => void;
+  page: number;
+}) => {
+  return (
+    <tr
+      key={user.id}
+      style={{ border: "1px solid #DADEE5" }}
+      onClick={() => onRowClick(user.id)}
+    >
+      <td style={tdStyle}>{4 + (page - 1) * 7 + index}</td>
+      <td style={tdStyle}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img
+            src={user.picture}
+            alt={`${user.firstName} ${user.lastName}`}
+            style={imgStyle}
+          />
+          <span>{`${user.firstName} ${user.lastName}`}</span>
+        </div>
+      </td>
+      <td style={tdStyle}>{user.topAttribute}</td>
+      <td style={tdStyle}>{user.level}</td>
+      <td style={tdStyle}>{user.points}</td>
+    </tr>
+  );
+};
+
+const IUserLeaderBoard: React.FC<IUserLeaderBoardProps> = ({
   users,
   onRowClick,
-  picture,
   page,
+  firstThree,
 }) => {
-  const tableStyle = {
-    width: "100%",
-    borderCollapse: "collapse" as "collapse",
-  };
-
-  const thStyle = {
-    textAlign: "left" as "left",
-    padding: "8px",
-    backgroundColor: "#5081FF",
-    color: "white",
-  };
-
-  const tdStyle = {
-    textAlign: "left" as "left",
-    padding: "8px",
-  };
-
-  const imgStyle = {
-    width: "30px",
-    height: "30px",
-    borderRadius: "15px",
-    objectFit: "cover" as "cover",
-    marginRight: "8px",
-  };
-
-  const tdContentStyle = {
-    display: "flex", // Use flexbox to lay out children inline
-    alignItems: "center", // Center children vertically within the td
-    gap: "10px", // Add some space between the image and the text
-  };
-
   return (
-    <div className="rounded" style={{ width: "100%", overflowX: "auto" }}>
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th className="text-xs" style={thStyle}>
-              No.
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Name
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Highest Attribute
-            </th>
-            <th className="text-xs" style={thStyle}>
-              Level
-            </th>
-
-            <th className="text-xs" style={thStyle}>
-              Points
-            </th>
-          </tr>
-        </thead>
-        <tbody style={{ backgroundColor: "white" }}>
-          {users?.map((user, index) => (
-            <tr
-              key={user.id}
-              style={{ border: "1px solid #DADEE5" }}
-              onClick={() => onRowClick(user.id)}
-            >
-              <td className="text-xs" style={tdStyle}>
-                {4 + (page - 1) * 7 + index}
-              </td>
-              <td style={tdStyle}>
-                <div style={tdContentStyle}>
+    <div>
+      <div className="xl:flex gap-2">
+        {firstThree.map((user, index) => (
+          <div key={user.id} className="mb-4 xl:w-full">
+            <IPanel>
+              <div className="text-lg pb-2 ">{index + 1}.</div>
+              <div className="flex items-center ">
+                <div className="pb-2">
                   <img
-                    src={picture}
-                    alt={`${user.firstName} ${user.lastName}`}
-                    style={imgStyle}
+                    src={user?.picture}
+                    alt={``}
+                    style={{ borderRadius: "32px", objectFit: "cover" }}
+                    className="w-[64px] h-[64px] mr-2 mb-1"
                   />
-                  <span className="text-xs">{`${user.firstName} ${user.lastName}`}</span>
                 </div>
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {user?.topAttribute}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {user.level}
-              </td>
-              <td className="text-xs" style={tdStyle}>
-                {user.points}
-              </td>
+                <div>
+                  <div className="text-md">
+                    {user?.firstName + " " + user?.lastName}{" "}
+                  </div>
+                </div>
+              </div>
+              <div className="flex ">
+                <div className="mr-6">
+                  <div className="text-xs  text-[#7E858B]">Level</div>
+                  <div>{user?.level}</div>
+                </div>
+                <div className="mr-6">
+                  <div className="text-xs text-[#7E858B]">Points</div>
+                  <div>{user?.points}</div>
+                </div>
+                <div>
+                  <div className="text-xs">{user?.topAttribute}</div>
+                </div>
+              </div>
+            </IPanel>
+          </div>
+        ))}
+      </div>
+      <div className="rounded overflow-x-auto">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>No.</th>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Highest Attribute</th>
+              <th style={thStyle}>Level</th>
+              <th style={thStyle}>Points</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <TableRow
+                key={user.id}
+                user={user}
+                index={index}
+                onRowClick={onRowClick}
+                page={page}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

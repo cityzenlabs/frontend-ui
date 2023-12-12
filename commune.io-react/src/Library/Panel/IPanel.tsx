@@ -16,14 +16,14 @@ function IPanel({
   buttonLabel,
   onButtonClick,
   onPanelClick,
-  children,
-  height = "h-[244px]", // Default height
+  children, // Default height
   marginTop = "mt-0", // Default top margin
   titleColor,
+  height,
 }: IPanelProps) {
   return (
-    <div className={`w-full ${marginTop}`} onClick={onPanelClick}>
-      <div className={`${height} rounded-lg bg-white px-7 py-2`}>
+    <div className={`w-full ${marginTop} `} onClick={onPanelClick}>
+      <div className={` rounded-lg bg-white px-7 py-2 ${height}`}>
         <div className="flex justify-between items-center mb-1">
           <div
             className={`font-medium ${title ? "my-auto" : ""} pt-2`}
