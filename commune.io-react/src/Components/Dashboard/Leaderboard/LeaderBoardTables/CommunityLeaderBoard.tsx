@@ -111,7 +111,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
           </div>
         ))}
       </div>
-      <div className="rounded overflow-x-auto">
+      <div className="rounded overflow-x-auto ">
         <table style={tableStyle}>
           <thead>
             <tr>

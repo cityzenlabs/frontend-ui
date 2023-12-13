@@ -160,7 +160,7 @@ function Community() {
 
         <div className="w-full pb-4">
           {hasJoined && <ICarousel imageUrls={gallery} />}
-          {!hasJoined && <ICarousel imageUrls={[communityPicture]} />}
+          {!hasJoined && <ICarousel imageUrls={[community?.picture]} />}
         </div>
 
         <div className="pb-4">

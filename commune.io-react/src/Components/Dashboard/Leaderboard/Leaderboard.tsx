@@ -25,6 +25,7 @@ function Leaderboard() {
   const { isExtraLargeScreen } = useScreenSize();
   const [isTableLoading, setIsTableLoading] = useState(false);
   const [page, setPage] = useState<any>(1);
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const filterOptions = [
     {
       label: "Location",
@@ -88,11 +89,17 @@ function Leaderboard() {
   };
 
   useEffect(() => {
+    setIsFirstRender(false);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
+      isFirstRender ? setIsLoading(true) : setIsTableLoading(true);
       try {
         await Promise.all([fetchFirstThree(), fetchRest()]);
       } catch (error) {}
       setIsLoading(false);
+      setIsTableLoading(false);
     };
     fetchData();
   }, [location, category, attribute]);
@@ -116,8 +123,8 @@ function Leaderboard() {
     }
   };
   const handlePageChange = async (newPage: any) => {
+    setIsTableLoading(true);
     setPage(newPage);
-
     await getNextPage(newPage);
   };
 
@@ -129,6 +136,7 @@ function Leaderboard() {
       );
       if (data) {
         setRest(data.content);
+        setIsTableLoading(false);
       }
     } catch (error) {}
   };
@@ -147,7 +155,7 @@ function Leaderboard() {
               <IMenuButtonFilter filterOptions={filterOptions} />
             )}
           </div>
-
+          {isTableLoading && <ISpinner />}
           {category === "community" && (
             <CommunityLeaderBoard
               communities={rest}
@@ -172,8 +180,6 @@ function Leaderboard() {
               onPageChange={handlePageChange}
             />
           </div>
-
-          <ISpinner />
         </div>
 
         {isExtraLargeScreen && (

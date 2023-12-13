@@ -11,8 +11,6 @@ import { formatDate, getIconForAttribute } from "../Constants/Constants";
 import ILabel from "../../../Library/Label/ILabel";
 
 function Home() {
-  const [showAllRecommended, setShowAllRecommended] = useState(false);
-
   const navigate = useNavigate();
   const { userHome, user, isLoading } = useDash();
 
@@ -75,7 +73,7 @@ function Home() {
         <div className="xl:w-3/5 w-full pb-4">
           <IPanel
             title="Level up with these events"
-            buttonLabel="See All"
+            buttonLabel="Show All"
             height="h-[471px]"
           >
             <div className="pt-2">

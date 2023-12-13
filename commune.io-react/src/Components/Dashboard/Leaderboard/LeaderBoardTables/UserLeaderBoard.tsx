@@ -48,12 +48,18 @@ const TableRow = ({
             alt={`${user.firstName} ${user.lastName}`}
             style={imgStyle}
           />
-          <span>{`${user.firstName} ${user.lastName}`}</span>
+          <span className="text-xs">{`${user.firstName} ${user.lastName}`}</span>
         </div>
       </td>
-      <td style={tdStyle}>{user.topAttribute}</td>
-      <td style={tdStyle}>{user.level}</td>
-      <td style={tdStyle}>{user.points}</td>
+      <td className="text-xs" style={tdStyle}>
+        {user.topAttribute}
+      </td>
+      <td className="text-xs" style={tdStyle}>
+        {user.level}
+      </td>
+      <td className="text-xs" style={tdStyle}>
+        {user.points}
+      </td>
     </tr>
   );
 };
@@ -107,11 +113,21 @@ const IUserLeaderBoard: React.FC<UserLeaderBoardProps> = ({
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th style={thStyle}>No.</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Highest Attribute</th>
-              <th style={thStyle}>Level</th>
-              <th style={thStyle}>Points</th>
+              <th className="text-xs" style={thStyle}>
+                No.
+              </th>
+              <th className="text-xs" style={thStyle}>
+                Name
+              </th>
+              <th className="text-xs" style={thStyle}>
+                Highest Attribute
+              </th>
+              <th className="text-xs" style={thStyle}>
+                Level
+              </th>
+              <th className="text-xs" style={thStyle}>
+                Points
+              </th>
             </tr>
           </thead>
           <tbody>

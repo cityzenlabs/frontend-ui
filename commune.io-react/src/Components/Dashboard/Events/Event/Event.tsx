@@ -24,9 +24,7 @@ function Event() {
   const [event, setEvent] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
-  const [hasJoined, setHasJoined] = useState<boolean>();
   const [relatedEvents, setRelatedEvents] = useState<any>();
-  const [eventPicture, setEventPicture] = useState<any>();
   const [community, setCommunity] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -45,7 +43,7 @@ function Event() {
         );
         if (organizer) {
           setOrganizer(organizer);
-          checkMembership(event);
+
           callback();
         }
         if (community) {
@@ -67,12 +65,6 @@ function Event() {
     } catch (error) {}
   };
 
-  const checkMembership = (event: any) => {
-    if (user && event) {
-      setHasJoined(user?.joinedEvents.includes(event.id));
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,13 +78,13 @@ function Event() {
 
   const handleJoinOrLeaveEvent = async () => {
     try {
-      const response = hasJoined
+      const response = user?.joinedEvents.includes(event.id)
         ? await EventService.leaveEvent(accessToken.token, eventId)
         : await EventService.joinEvent(accessToken.token, eventId);
 
       if (response.ok) {
         await triggerDataRefresh();
-        fetchEvent(() => setHasJoined(!hasJoined));
+        fetchEvent();
       }
     } catch (error) {}
   };
@@ -109,7 +101,11 @@ function Event() {
         </div>
         <div>
           <IButton
-            text={hasJoined ? "Leave Event" : "Join Event"}
+            text={
+              user?.joinedEvents.includes(event.id)
+                ? "Leave Event"
+                : "Join Event"
+            }
             onClick={handleJoinOrLeaveEvent}
             bgColor={user?.id === organizer?.id ? "bg-white" : "bg-regal-blue"}
             textColor={user?.id === organizer?.id ? "text-black" : "text-white"}

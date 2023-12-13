@@ -129,7 +129,12 @@ function Profile() {
       <div>
         {communities && (
           <ICommunityPanel
-            onButtonClick={toggleShowAllJoined}
+            onButtonClick={() =>
+              navigate(
+                `/communities/${encodeURIComponent("Joined Communities")}`,
+                { state: { communities: communities } },
+              )
+            }
             height="600px"
             title="Joined Communities"
             buttonLabel={showAllJoined ? "Show Less" : "Show All"}
