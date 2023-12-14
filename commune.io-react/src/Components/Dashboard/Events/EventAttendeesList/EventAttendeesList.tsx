@@ -5,7 +5,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import * as EventService from "../../../../Services/EventService/EventService";
 import IUserTable from "../../../../Library/IUserTable/IUserTable";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventAttendeesList() {

@@ -8,7 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import * as SubscriptionService from "../../../../Services/SubscriptionService/SubscriptionService";
 
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import IInput from "../../../../Library/Input/IInput";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import IButton from "../../../../Library/Button/IButton";

@@ -3,7 +3,7 @@ import IInput from "../../../Library/Input/IInput";
 import ICheckbox from "../../../Library/Checkbox/ICheckbox";
 import { Link, useNavigate } from "react-router-dom";
 import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 
 function LoginForm() {
   const { setToken } = useAuth();

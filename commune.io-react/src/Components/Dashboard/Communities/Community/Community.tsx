@@ -9,7 +9,7 @@ import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 
 import { useNavigate } from "react-router-dom";

@@ -4,7 +4,7 @@ import IPanel from "../../../../Library/Panel/IPanel";
 import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 
 import { useNavigate } from "react-router-dom";
 import ISpinner from "../../../../Library/Spinner/ISpinner";

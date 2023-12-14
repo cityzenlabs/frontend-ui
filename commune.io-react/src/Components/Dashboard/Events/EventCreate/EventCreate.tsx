@@ -12,7 +12,7 @@ import IDropdown from "../../../../Library/Dropdown/IDropdown";
 
 import { times } from "./EventCreateConstants";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 import { CategoryKey, EventCreateMapping } from "./EventCreateMapping";
 import IDatePicker from "../../../../Library/DatePicker/IDatePicker";

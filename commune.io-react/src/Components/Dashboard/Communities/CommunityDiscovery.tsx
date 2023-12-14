@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ILabel from "../../../Library/Label/ILabel";
 import IButton from "../../../Library/Button/IButton";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 

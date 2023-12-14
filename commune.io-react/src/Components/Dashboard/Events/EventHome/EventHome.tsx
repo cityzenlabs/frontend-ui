@@ -5,7 +5,7 @@ import IPanel from "../../../../Library/Panel/IPanel";
 import * as EventService from "../../../../Services/EventService/EventService";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import ISpinner from "../../../../Library/Spinner/ISpinner";

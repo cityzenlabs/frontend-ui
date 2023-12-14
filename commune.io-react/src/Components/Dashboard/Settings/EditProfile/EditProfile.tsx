@@ -3,7 +3,8 @@ import IInput from "../../../../Library/Input/IInput";
 import * as UserService from "../../../../Services/UserService/UserService";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import IButton from "../../../../Library/Button/IButton";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
+import { useDash } from "../../../../Context/DashboardContext";
 
 function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
   const [image, setImage] = useState<string>(profilePicture);
@@ -15,6 +16,8 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const accessToken = useAuth();
+
+  const { user, isLoading, triggerDataRefresh } = useDash();
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -63,14 +66,9 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
           nonEmptyFields,
           accessToken.token,
         );
-        getUpdatedUser();
+        await triggerDataRefresh();
         resetForm();
       }
-
-      const updatedUser = await UserService.fetchUserHome(accessToken.token);
-
-      getUpdatedUser();
-      resetForm();
     } catch (error) {}
   };
 

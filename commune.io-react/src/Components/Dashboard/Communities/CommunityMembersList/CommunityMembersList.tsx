@@ -3,7 +3,7 @@ import IContainer from "../../../../Library/Container/IContainer";
 import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import IUserTable from "../../../../Library/IUserTable/IUserTable";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import { useParams } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
-import IBackButton from "../../../../Library/BackButton/IBackButton";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ILabel from "../../../../Library/Label/ILabel";
-import IPanel from "../../../../Library/Panel/IPanel";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
 import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDash } from "../../../../Context/DashboardContext";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function Event() {
@@ -43,7 +40,6 @@ function Event() {
         );
         if (organizer) {
           setOrganizer(organizer);
-
           callback();
         }
         if (community) {

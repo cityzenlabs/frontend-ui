@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import IPanel from "../../../Library/Panel/IPanel";
 import ILabel from "../../../Library/Label/ILabel";
 import IToggleButtonGroup from "../../../Library/ToggleButtonGroup/IToggleButtonGroup";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 import * as LeaderBoardService from "../../../Services/LeaderboardService/LeaderboardService";
 import { useDash } from "../../../Context/DashboardContext";
 import CommunityLeaderBoard from "./LeaderBoardTables/CommunityLeaderBoard";

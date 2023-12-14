@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as UserService from "../Services/UserService/UserService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "./AuthContext";
 
 const DashboardContext = React.createContext<any>("");
 

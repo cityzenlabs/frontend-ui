@@ -9,7 +9,7 @@ import IButton from "../../../../Library/Button/IButton";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 
 function CommunityDashboardEdit() {
   const { communityId } = useParams();

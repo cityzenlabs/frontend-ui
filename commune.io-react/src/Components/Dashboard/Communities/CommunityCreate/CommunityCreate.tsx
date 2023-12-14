@@ -6,7 +6,7 @@ import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 
 import { useDash } from "../../../../Context/DashboardContext";

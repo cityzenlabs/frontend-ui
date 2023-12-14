@@ -18,8 +18,6 @@ import EventDiscovery from "./Components/Dashboard/Events/EventDiscovery";
 import Leaderboard from "./Components/Dashboard/Leaderboard/Leaderboard";
 import Settings from "./Components/Dashboard/Settings/Settings";
 import Notifications from "./Components/Dashboard/Notifications/Notifications";
-import { DashboardProvider } from "./Context/DashboardContext";
-import { AuthProvider } from "./AuthContext";
 import Community from "./Components/Dashboard/Communities/Community/Community";
 import CommunityMembersList from "./Components/Dashboard/Communities/CommunityMembersList/CommunityMembersList";
 import CommunityHome from "./Components/Dashboard/Communities/CommunityHome/CommunityHome";
@@ -36,202 +34,69 @@ import Profile from "./Components/Dashboard/Profile/Profile";
 import EventCreate from "./Components/Dashboard/Events/EventCreate/EventCreate";
 import { ScreenSizeProvider } from "./Context/ScreenContext";
 import Communities from "./Components/Dashboard/Communities/Communities/Communities";
-import {
-  WebSocketContext,
-  WebSocketProvider,
-} from "./Context/WebSocketContext";
 
 function App() {
   return (
     <div>
       <Router>
-        <WebSocketProvider>
-          <AuthProvider>
-            <ScreenSizeProvider>
-              <Routes>
-                <Route path="/" element={<Navigate to="/landing" />} />
-                <Route path="/landing" element={<Landing />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-                <Route
-                  path=""
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route
-                    path="settings"
-                    element={
-                      <DashboardProvider>
-                        <Settings />
-                      </DashboardProvider>
-                    }
-                  />
-                  <Route
-                    path="home"
-                    element={
-                      <DashboardProvider>
-                        <Home />
-                      </DashboardProvider>
-                    }
-                  />
+        <ScreenSizeProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to="/landing" />} />
+            <Route path="/landing" element={<Landing />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path=""
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="home" element={<Home />} />
+              <Route path="communities/:kind" element={<Communities />} />
+              <Route path="communities" element={<CommunityDiscovery />} />
+              <Route
+                path="community/:communityName/:communityId"
+                element={<Community />}
+              />
+              <Route
+                path="community/:communityId/members"
+                element={<CommunityMembersList />}
+              />
+              <Route path="communities/home" element={<CommunityHome />} />
+              <Route path="communities/create" element={<CommunityCreate />} />
+              <Route
+                path="communities/edit/:communityId"
+                element={<CommunityEdit />}
+              />
+              <Route
+                path="community/manage/:communityId"
+                element={<CommunityDashboard />}
+              />
 
-                  <Route
-                    path="communities/:kind"
-                    element={
-                      <DashboardProvider>
-                        <Communities />
-                      </DashboardProvider>
-                    }
-                  />
-                  <Route
-                    path="communities"
-                    element={
-                      <DashboardProvider>
-                        <CommunityDiscovery />
-                      </DashboardProvider>
-                    }
-                  />
-                  <Route
-                    path="community/:communityName/:communityId"
-                    element={
-                      <DashboardProvider>
-                        <Community />
-                      </DashboardProvider>
-                    }
-                  />
+              <Route path="events" element={<EventDiscovery />} />
+              <Route path="event/:eventName/:eventId" element={<Event />} />
+              <Route path="events/home" element={<EventHome />} />
+              <Route
+                path="event/manage/:eventId"
+                element={<EventDashboard />}
+              />
+              <Route path="event/edit/:eventId" element={<EventEdit />} />
+              <Route
+                path="events/:eventId/attendees"
+                element={<EventAttendeesList />}
+              />
+              <Route path="events/create" element={<EventCreate />} />
+              <Route path="/profile/:userId" element={<Profile />} />
 
-                  <Route
-                    path="community/:communityId/members"
-                    element={
-                      <DashboardProvider>
-                        <CommunityMembersList />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="communities/home"
-                    element={
-                      <DashboardProvider>
-                        <CommunityHome />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="communities/create"
-                    element={
-                      <DashboardProvider>
-                        <CommunityCreate />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="communities/edit/:communityId"
-                    element={
-                      <DashboardProvider>
-                        <CommunityEdit />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="community/manage/:communityId"
-                    element={
-                      <DashboardProvider>
-                        <CommunityDashboard />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route path="events" element={<EventDiscovery />} />
-                  <Route
-                    path="leaderboard"
-                    element={
-                      <DashboardProvider>
-                        <Leaderboard />
-                      </DashboardProvider>
-                    }
-                  />
-                  <Route
-                    path="event/:eventName/:eventId"
-                    element={
-                      <DashboardProvider>
-                        <Event />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="events/home"
-                    element={
-                      <DashboardProvider>
-                        <EventHome />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="event/manage/:eventId"
-                    element={
-                      <DashboardProvider>
-                        <EventDashboard />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="event/edit/:eventId"
-                    element={
-                      <DashboardProvider>
-                        <EventEdit />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="events/:eventId/attendees"
-                    element={
-                      <DashboardProvider>
-                        <EventAttendeesList />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="events/create"
-                    element={
-                      <DashboardProvider>
-                        <EventCreate />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route
-                    path="/profile/:userId"
-                    element={
-                      <DashboardProvider>
-                        <Profile />
-                      </DashboardProvider>
-                    }
-                  />
-
-                  <Route path="leader-board" element={<Leaderboard />} />
-                  <Route path="settings" element={<Settings />} />
-                  <Route path="notifications" element={<Notifications />} />
-                </Route>
-                <Route
-                  path="account-created-successfully"
-                  element={<Success />}
-                />
-              </Routes>
-            </ScreenSizeProvider>
-          </AuthProvider>
-        </WebSocketProvider>
+              <Route path="settings" element={<Settings />} />
+              <Route path="leaderboard" element={<Leaderboard />} />
+              <Route path="notifications" element={<Notifications />} />
+            </Route>
+            <Route path="account-created-successfully" element={<Success />} />
+          </Routes>
+        </ScreenSizeProvider>
       </Router>
     </div>
   );

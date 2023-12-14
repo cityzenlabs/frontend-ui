@@ -9,7 +9,7 @@ import ICommunityPanel from "../../../Library/CommunityPanel/ICommunityPanel";
 
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 import ILabel from "../../../Library/Label/ILabel";
 import { getIconForAttribute } from "../Constants/Constants";
 import ISpinner from "../../../Library/Spinner/ISpinner";

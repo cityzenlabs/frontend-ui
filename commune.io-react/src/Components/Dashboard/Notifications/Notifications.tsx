@@ -1,19 +1,14 @@
-// NotificationsComponent.js
-import React, { useContext } from "react";
-import { WebSocketContext } from "../../../Context/WebSocketContext"; // Adjust the import path
+import React from "react";
+import { useSelector } from "react-redux";
 
 function NotificationsComponent() {
-  const context = useContext(WebSocketContext);
-
-  // Check if context is not null
-  if (!context) return null;
-
-  const { messages } = context;
+  // Use useSelector to access the messages from the Redux store
+  const messages = useSelector((state: any) => state.webSocket.messages);
 
   return (
     <div>
       <h2>Notifications</h2>
-      {messages.map((msg, index) => (
+      {messages.map((msg: any, index: any) => (
         <div key={index}>{JSON.stringify(msg)}</div>
       ))}
     </div>

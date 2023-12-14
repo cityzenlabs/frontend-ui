@@ -14,7 +14,7 @@ import {
 import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 import { ArrowRightIcon } from "@heroicons/react/outline";

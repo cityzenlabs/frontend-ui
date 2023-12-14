@@ -4,7 +4,7 @@ import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import * as EventService from "../../../../Services/EventService/EventService";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../../AuthContext";
+import { useAuth } from "../../../../Context/AuthContext";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { times } from "../EventCreate/EventCreateConstants";
 import ITextArea from "../../../../Library/TextArea/ITextArea";

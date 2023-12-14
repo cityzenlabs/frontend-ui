@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as EventService from "../../../Services/EventService/EventService";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 import IContainer from "../../../Library/Container/IContainer";
 import IPanel from "../../../Library/Panel/IPanel";
 import IEventPanel from "../../../Library/EventPanel/IEventPanel";
