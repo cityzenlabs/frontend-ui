@@ -106,7 +106,7 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
                 className="w-[30px] h-[30px] mr-2 mb-1"
               />
             </div>
-            <div className="text-md">Community</div>
+            <div className="text-md">{community?.name}</div>
           </div>
 
           <div className="text-[#7E858B] text-sm mb-6">

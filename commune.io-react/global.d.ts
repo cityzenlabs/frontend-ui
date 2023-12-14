@@ -3,6 +3,7 @@ declare module "*.png";
 declare module "*jpeg";
 // in a declarations.d.ts file
 declare module "flowbite-datepicker";
+declare module "stompjs";
 
 // Global augmentations
 declare global {

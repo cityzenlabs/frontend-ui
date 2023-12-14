@@ -2,6 +2,7 @@ import React from "react";
 import IPanel from "../../../../Library/Panel/IPanel";
 
 import { tableStyle, thStyle, tdStyle, imgStyle } from "./LeaderBoardStyles";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
@@ -70,12 +71,13 @@ const IUserLeaderBoard: React.FC<UserLeaderBoardProps> = ({
   page,
   firstThree,
 }) => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="xl:flex gap-2">
         {firstThree?.map((user, index) => (
           <div key={user.id} className="mb-4 xl:w-full">
-            <IPanel>
+            <IPanel onPanelClick={() => navigate(`/profile/${user.id}`)}>
               <div className="text-lg pb-2 ">{index + 1}.</div>
               <div className="flex items-center ">
                 <div className="pb-2">

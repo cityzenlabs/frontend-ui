@@ -36,196 +36,202 @@ import Profile from "./Components/Dashboard/Profile/Profile";
 import EventCreate from "./Components/Dashboard/Events/EventCreate/EventCreate";
 import { ScreenSizeProvider } from "./Context/ScreenContext";
 import Communities from "./Components/Dashboard/Communities/Communities/Communities";
+import {
+  WebSocketContext,
+  WebSocketProvider,
+} from "./Context/WebSocketContext";
 
 function App() {
   return (
     <div>
       <Router>
-        <AuthProvider>
-          <ScreenSizeProvider>
-            <Routes>
-              <Route path="/" element={<Navigate to="/landing" />} />
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route
-                path=""
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              >
+        <WebSocketProvider>
+          <AuthProvider>
+            <ScreenSizeProvider>
+              <Routes>
+                <Route path="/" element={<Navigate to="/landing" />} />
+                <Route path="/landing" element={<Landing />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
                 <Route
-                  path="settings"
+                  path=""
                   element={
-                    <DashboardProvider>
-                      <Settings />
-                    </DashboardProvider>
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
                   }
-                />
-                <Route
-                  path="home"
-                  element={
-                    <DashboardProvider>
-                      <Home />
-                    </DashboardProvider>
-                  }
-                />
+                >
+                  <Route
+                    path="settings"
+                    element={
+                      <DashboardProvider>
+                        <Settings />
+                      </DashboardProvider>
+                    }
+                  />
+                  <Route
+                    path="home"
+                    element={
+                      <DashboardProvider>
+                        <Home />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="communities/:kind"
-                  element={
-                    <DashboardProvider>
-                      <Communities />
-                    </DashboardProvider>
-                  }
-                />
-                <Route
-                  path="communities"
-                  element={
-                    <DashboardProvider>
-                      <CommunityDiscovery />
-                    </DashboardProvider>
-                  }
-                />
-                <Route
-                  path="community/:communityName/:communityId"
-                  element={
-                    <DashboardProvider>
-                      <Community />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="communities/:kind"
+                    element={
+                      <DashboardProvider>
+                        <Communities />
+                      </DashboardProvider>
+                    }
+                  />
+                  <Route
+                    path="communities"
+                    element={
+                      <DashboardProvider>
+                        <CommunityDiscovery />
+                      </DashboardProvider>
+                    }
+                  />
+                  <Route
+                    path="community/:communityName/:communityId"
+                    element={
+                      <DashboardProvider>
+                        <Community />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="community/:communityId/members"
-                  element={
-                    <DashboardProvider>
-                      <CommunityMembersList />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="community/:communityId/members"
+                    element={
+                      <DashboardProvider>
+                        <CommunityMembersList />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="communities/home"
-                  element={
-                    <DashboardProvider>
-                      <CommunityHome />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="communities/home"
+                    element={
+                      <DashboardProvider>
+                        <CommunityHome />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="communities/create"
-                  element={
-                    <DashboardProvider>
-                      <CommunityCreate />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="communities/create"
+                    element={
+                      <DashboardProvider>
+                        <CommunityCreate />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="communities/edit/:communityId"
-                  element={
-                    <DashboardProvider>
-                      <CommunityEdit />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="communities/edit/:communityId"
+                    element={
+                      <DashboardProvider>
+                        <CommunityEdit />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="community/manage/:communityId"
-                  element={
-                    <DashboardProvider>
-                      <CommunityDashboard />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="community/manage/:communityId"
+                    element={
+                      <DashboardProvider>
+                        <CommunityDashboard />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route path="events" element={<EventDiscovery />} />
-                <Route
-                  path="leaderboard"
-                  element={
-                    <DashboardProvider>
-                      <Leaderboard />
-                    </DashboardProvider>
-                  }
-                />
-                <Route
-                  path="event/:eventName/:eventId"
-                  element={
-                    <DashboardProvider>
-                      <Event />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route path="events" element={<EventDiscovery />} />
+                  <Route
+                    path="leaderboard"
+                    element={
+                      <DashboardProvider>
+                        <Leaderboard />
+                      </DashboardProvider>
+                    }
+                  />
+                  <Route
+                    path="event/:eventName/:eventId"
+                    element={
+                      <DashboardProvider>
+                        <Event />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="events/home"
-                  element={
-                    <DashboardProvider>
-                      <EventHome />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="events/home"
+                    element={
+                      <DashboardProvider>
+                        <EventHome />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="event/manage/:eventId"
-                  element={
-                    <DashboardProvider>
-                      <EventDashboard />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="event/manage/:eventId"
+                    element={
+                      <DashboardProvider>
+                        <EventDashboard />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="event/edit/:eventId"
-                  element={
-                    <DashboardProvider>
-                      <EventEdit />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="event/edit/:eventId"
+                    element={
+                      <DashboardProvider>
+                        <EventEdit />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="events/:eventId/attendees"
-                  element={
-                    <DashboardProvider>
-                      <EventAttendeesList />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="events/:eventId/attendees"
+                    element={
+                      <DashboardProvider>
+                        <EventAttendeesList />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="events/create"
-                  element={
-                    <DashboardProvider>
-                      <EventCreate />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="events/create"
+                    element={
+                      <DashboardProvider>
+                        <EventCreate />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route
-                  path="/profile/:userId"
-                  element={
-                    <DashboardProvider>
-                      <Profile />
-                    </DashboardProvider>
-                  }
-                />
+                  <Route
+                    path="/profile/:userId"
+                    element={
+                      <DashboardProvider>
+                        <Profile />
+                      </DashboardProvider>
+                    }
+                  />
 
-                <Route path="leader-board" element={<Leaderboard />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="notifications" element={<Notifications />} />
-              </Route>
-              <Route
-                path="account-created-successfully"
-                element={<Success />}
-              />
-            </Routes>
-          </ScreenSizeProvider>
-        </AuthProvider>
+                  <Route path="leader-board" element={<Leaderboard />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="notifications" element={<Notifications />} />
+                </Route>
+                <Route
+                  path="account-created-successfully"
+                  element={<Success />}
+                />
+              </Routes>
+            </ScreenSizeProvider>
+          </AuthProvider>
+        </WebSocketProvider>
       </Router>
     </div>
   );

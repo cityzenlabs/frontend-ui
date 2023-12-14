@@ -68,6 +68,10 @@ function Sidebar({
     if (route === "Leaderboard") {
       navigate("leaderboard");
     }
+
+    if (route === "Notifications") {
+      navigate("notifications");
+    }
   };
 
   const handleViewProfile = () => {

@@ -81,7 +81,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
               <div className="flex items-center ">
                 <div className="pb-2">
                   <img
-                    src={community.picture}
+                    src={community?.picture}
                     alt={``}
                     style={{ borderRadius: "32px", objectFit: "cover" }}
                     className="w-[64px] h-[64px] mr-2 mb-1"

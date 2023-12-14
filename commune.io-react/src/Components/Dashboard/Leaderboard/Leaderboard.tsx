@@ -11,9 +11,11 @@ import ISpinner from "../../../Library/Spinner/ISpinner";
 import IPaginator from "../../../Library/Paginator/Paginator";
 import IMenuButtonFilter from "../../../Library/MenuButtonFilter/IMenuButtonFilter";
 import { useScreenSize } from "../../../Context/ScreenContext";
+import { useNavigate } from "react-router-dom";
 
 function Leaderboard() {
   const accessToken = useAuth();
+  const navigate = useNavigate();
   const { user, profilePicture } = useDash();
   const [location, setLocation] = useState("city");
   const [category, setCategory] = useState("user");
@@ -69,7 +71,6 @@ function Leaderboard() {
         `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${0}`,
       );
       if (data) {
-        console.log(data);
         setFirstThree(data.content);
         getTotalPages(data.totalElements);
       }
@@ -167,7 +168,7 @@ function Leaderboard() {
           {category === "user" && (
             <UserLeaderBoard
               users={rest}
-              onRowClick={() => {}}
+              onRowClick={(userId) => navigate(`/profile/${userId}`)}
               picture={profilePicture}
               page={page}
               firstThree={firstThree}
