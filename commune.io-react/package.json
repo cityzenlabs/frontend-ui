@@ -37,6 +37,8 @@
     "flowbite-react": "^0.7.0",
     "heroicons": "^2.0.18",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "momentjs": "^2.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-chartjs-2": "^5.2.0",
@@ -85,6 +87,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/moment": "^2.13.0",
     "@types/react": "^18.2.21",
     "@types/react-datepicker": "^4.19.3",
     "@types/react-dom": "^18.2.7",

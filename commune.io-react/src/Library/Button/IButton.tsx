@@ -23,7 +23,7 @@ function IButton({
 }: IButtonProps) {
   return (
     <button
-      className={`rounded-lg text-xs sm:text-sm md:text-sm lg:text-sm ${textColor} ${bgColor} border ${borderColor} px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-1 lg:py-1 font-light ${className}`}
+      className={`rounded-lg text-xs  ${textColor} ${bgColor} border ${borderColor} px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-1 lg:py-1 font-light ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

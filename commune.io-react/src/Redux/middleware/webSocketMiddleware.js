@@ -1,13 +1,12 @@
 // middleware/webSocketMiddleware.js
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import { useDash } from "../../Context/DashboardContext";
 import {
   receiveMessage,
   connectWebSocket,
   disconnectWebSocket,
 } from "../actions/webSocketActions";
-
-// middleware/webSocketMiddleware.js
 
 const webSocketMiddleware = (store) => {
   let socket = null;
