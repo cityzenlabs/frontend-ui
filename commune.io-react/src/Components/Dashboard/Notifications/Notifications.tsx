@@ -1,13 +1,13 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useContext, useState } from "react";
 import ILabel from "../../../Library/Label/ILabel";
 import IPanel from "../../../Library/Panel/IPanel";
 import moment from "moment";
 import IButton from "../../../Library/Button/IButton";
+import { WebSocketContext } from "../../../Context/WebSocketContext";
 
 function NotificationsComponent() {
-  const messages = useSelector((state: any) => state.webSocket.messages);
-
+  const webSocketContext = useContext(WebSocketContext);
+  const { messages } = webSocketContext as any;
   const getTimeCategory = (timestamp: any) => {
     const now = moment();
     const messageDate = moment(timestamp);
@@ -20,7 +20,7 @@ function NotificationsComponent() {
     return "Older";
   };
 
-  const categorizedMessages = messages.reduce((acc: any, msg: any) => {
+  const categorizedMessages = messages?.reduce((acc: any, msg: any) => {
     const category = getTimeCategory(msg.timestamp);
     if (!acc[category]) {
       acc[category] = [];

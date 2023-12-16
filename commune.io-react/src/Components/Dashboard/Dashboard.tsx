@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import IContainer from "../../Library/Container/IContainer";
+import { WebSocketContext } from "../../Context/WebSocketContext";
 
 function Dashboard() {
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);
@@ -11,10 +12,7 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    // Save to sessionStorage when sideBarSelection changes
     sessionStorage.setItem("sidebarSelection", sideBarSelection);
-
-    // Optional: Clean up listener when component unmounts
     return () => {
       sessionStorage.removeItem("sidebarSelection");
     };
