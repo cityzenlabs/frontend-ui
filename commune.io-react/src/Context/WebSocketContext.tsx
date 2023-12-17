@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useState, useEffect } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { useDash } from "./DashboardContext"; // Import useDash from DashboardContext
@@ -6,6 +12,7 @@ import { useAuth } from "./AuthContext";
 import * as NotificationsService from "../Services/NotificationsService/NotificationsService";
 interface WebSocketContextType {
   messages: any[];
+  markNotificationAsRead: any;
 }
 
 export const WebSocketContext = createContext<WebSocketContextType | null>(
@@ -20,6 +27,14 @@ export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
   const accessToken = useAuth();
   const { user } = useDash();
   const [messages, setMessages] = useState<any[]>([]);
+
+  const markNotificationAsRead = useCallback((id: any) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.id === id ? { ...message, read: true } : message,
+      ),
+    );
+  }, []);
 
   const fetchNotifications = async () => {
     try {
@@ -73,7 +88,7 @@ export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
   }, [user]);
 
   return (
-    <WebSocketContext.Provider value={{ messages }}>
+    <WebSocketContext.Provider value={{ messages, markNotificationAsRead }}>
       {children}
     </WebSocketContext.Provider>
   );

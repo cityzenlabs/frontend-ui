@@ -51,22 +51,10 @@ function CommunityDashboard() {
     } catch (error) {}
   };
 
-  const fetchPicture = async () => {
-    try {
-      const picture = await CommunityService.getCommunityPicture(
-        communityId,
-        accessToken.token,
-      );
-      if (picture) {
-        setCommunityPicture(picture);
-      }
-    } catch (error) {}
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([getCommunityDashboard(), fetchPicture()]);
+        await Promise.all([getCommunityDashboard()]);
       } catch (error) {}
       setIsLoading(false);
     };

@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as UserService from "../../../../Services/UserService/UserService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ILabel from "../../../../Library/Label/ILabel";
-import IGraph from "../../../../Library/Graph/IGraph";
-import {
-  fakeAverageTimeSpent,
-  fakeAverageUserLevel,
-  transformAverageTimeSpent,
-  transformAverageUserLevel,
-} from "./EventDashboardGraphAnalytics";
+
 import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";

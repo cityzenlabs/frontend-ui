@@ -48,7 +48,7 @@ function EventDiscovery() {
     }
   };
 
-  const fetchEventHome = async () => {
+  const fetchEventDiscovery = async () => {
     try {
       const data = await EventService.getEventDiscovery(accessToken.token);
       setEventDiscovery(data);
@@ -58,7 +58,7 @@ function EventDiscovery() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchEventHome()]);
+        await fetchEventDiscovery();
       } catch (error) {}
       setIsLoading(false);
     };

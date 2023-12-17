@@ -31,7 +31,7 @@ function CommunityDiscovery() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchCommunityDiscovery()]);
+        await fetchCommunityDiscovery();
       } catch (error) {}
       setIsLoading(false);
     };

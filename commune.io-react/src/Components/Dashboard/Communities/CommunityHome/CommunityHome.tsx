@@ -14,17 +14,6 @@ function CommunityHome() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [communityHome, setCommunityHome] = useState<any>();
-  const [showAllCreatedCommunities, setShowAllCreatedCommunities] =
-    useState(false);
-  const [showAllJoinedCommunities, setShowAllJoinedCommunities] =
-    useState(false);
-
-  const toggleShowAllJoinedCommunities = () => {
-    setShowAllJoinedCommunities((prev) => !prev);
-    if (!showAllJoinedCommunities) {
-      setShowAllCreatedCommunities(false);
-    }
-  };
 
   const fetchHome = async () => {
     try {
@@ -38,7 +27,7 @@ function CommunityHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchHome()]);
+        await fetchHome();
       } catch (error) {}
       setIsLoading(false);
     };
@@ -78,29 +67,24 @@ function CommunityHome() {
         </IPanel>
       </div>
 
-      {!showAllCreatedCommunities && (
-        <ICommunityPanel
-          title="Joined Communities"
-          buttonLabel={"Show All"}
-          height="600px"
-          onButtonClick={() =>
-            navigate(
-              `/communities/${encodeURIComponent("Joined Communities")}`,
-              {
-                state: {
-                  communities: communityHome?.joinedCommunities,
-                },
-              },
-            )
-          }
-          communities={communityHome?.joinedCommunities}
-          onCommunityClick={(communityName, communityId) => {
-            navigate(`/community/${communityName}/${communityId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={4}
-        />
-      )}
+      <ICommunityPanel
+        title="Joined Communities"
+        buttonLabel={"Show All"}
+        height="600px"
+        onButtonClick={() =>
+          navigate(`/communities/${encodeURIComponent("Joined Communities")}`, {
+            state: {
+              communities: communityHome?.joinedCommunities,
+            },
+          })
+        }
+        communities={communityHome?.joinedCommunities}
+        onCommunityClick={(communityName, communityId) => {
+          navigate(`/community/${communityName}/${communityId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={4}
+      />
 
       <ICommunityPanel
         title="Created Communities"

@@ -19,7 +19,6 @@ function EventHome() {
   const [pendingEvents, setPendingEvents] = useState<any>();
   const [ongoingEvents, setOngoingEvents] = useState<any>();
   const [completedEvents, setCompletedEvents] = useState<any>();
-  const [route, setRoute] = useState<any>();
 
   const fetchHome = async () => {
     try {
@@ -33,7 +32,7 @@ function EventHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchHome()]);
+        await fetchHome();
       } catch (error) {}
       setIsLoading(false);
     };

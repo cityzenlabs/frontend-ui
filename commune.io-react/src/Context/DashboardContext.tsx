@@ -22,17 +22,9 @@ export const DashboardProvider = ({ children }: any) => {
     const fetchData = async () => {
       try {
         const userDataPromise = UserService.fetchUserHome(accessToken.token);
-        const profilePicturePromise = UserService.fetchProfilePicture(
-          accessToken.token,
-        );
-
-        const [userHomeData, imageUrl] = await Promise.all([
-          userDataPromise,
-          profilePicturePromise,
-        ]);
+        const [userHomeData] = await Promise.all([userDataPromise]);
         setUserHome(userHomeData);
         setUser(userHomeData.user);
-        setProfilePicture(imageUrl);
         setIsLoading(false);
       } catch (error) {}
     };
@@ -42,7 +34,7 @@ export const DashboardProvider = ({ children }: any) => {
 
   return (
     <DashboardContext.Provider
-      value={{ userHome, user, profilePicture, isLoading, triggerDataRefresh }}
+      value={{ userHome, user, isLoading, triggerDataRefresh }}
     >
       {children}
     </DashboardContext.Provider>

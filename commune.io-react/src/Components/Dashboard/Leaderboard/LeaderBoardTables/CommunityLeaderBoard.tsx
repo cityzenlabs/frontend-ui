@@ -88,23 +88,23 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
                   />
                 </div>
                 <div>
-                  <div className="text-md">{community.name}</div>
+                  <div className="text-md">{community?.name}</div>
                   <div className="text-xs text-[#7E858B]">
-                    {`${community.organizerFirstName} ${community.organizerLastName}`}
+                    {`${community?.organizerFirstName} ${community?.organizerLastName}`}
                   </div>
                 </div>
               </div>
               <div className="flex ">
                 <div className="mr-6">
                   <div className="text-xs  text-[#7E858B]">Members</div>
-                  <div>{community.members}</div>
+                  <div>{community?.members}</div>
                 </div>
                 <div className="mr-6">
                   <div className="text-xs text-[#7E858B]">Points</div>
-                  <div>{community.points}</div>
+                  <div>{community?.points}</div>
                 </div>
                 <div>
-                  <div className="text-xs">{community.attribute}</div>
+                  <div className="text-xs">{community?.attribute}</div>
                 </div>
               </div>
             </IPanel>
