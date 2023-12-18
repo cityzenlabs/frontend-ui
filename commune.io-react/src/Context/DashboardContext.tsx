@@ -9,16 +9,10 @@ export const useDashboard = () => useContext(DashboardContext);
 export const DashboardProvider = ({ children }: any) => {
   const [userHome, setUserHome] = useState<any>(null);
   const [user, setUser] = useState<any>({});
-  const [profilePicture, setProfilePicture] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<any>(true);
-  const [triggerRefresh, setTriggerRefresh] = useState<any>(false);
   const [joinedCommunities, setJoinedCommunities] = useState<any>();
   const [joinedEvents, setJoinedEvents] = useState<any>();
   const accessToken = useAuth();
-
-  const triggerDataRefresh = () => {
-    setTriggerRefresh((prev: any) => !prev);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +28,14 @@ export const DashboardProvider = ({ children }: any) => {
     };
 
     fetchData();
-  }, [triggerRefresh, accessToken]);
+  }, [accessToken]);
+
+  const updateUserFields = (fieldsToUpdate: any) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      ...fieldsToUpdate,
+    }));
+  };
 
   return (
     <DashboardContext.Provider
@@ -42,11 +43,11 @@ export const DashboardProvider = ({ children }: any) => {
         userHome,
         user,
         isLoading,
-        triggerDataRefresh,
         joinedCommunities,
         setJoinedCommunities,
         joinedEvents,
         setJoinedEvents,
+        updateUserFields,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 export const updateUserSubscription = async (token: any, tier: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/subscription`, {
+    const response = await fetch(`http://localhost:8080/user/subscription`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const updateUserSubscription = async (token: any, tier: any) => {
 
 export const updatePaymentMethod = async (token: any, paymentMethodId: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/payment-method`, {
+    const response = await fetch(`http://localhost:8080/user/billing`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import IContainer from "../../Library/Container/IContainer";
-import { WebSocketContext } from "../../Context/WebSocketContext";
 
 function Dashboard() {
   const [sidebarVisibilty, setSidebarVisibility] = useState<boolean>(false);

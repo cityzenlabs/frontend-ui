@@ -1,6 +1,6 @@
 export const fetchUserProfile = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/profile`, {
+    const response = await fetch(`http://localhost:8080/user/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -14,7 +14,7 @@ export const fetchUserProfile = async (token: any) => {
 
 export const fetchUserHome = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/home`, {
+    const response = await fetch(`http://localhost:8080/user/home`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -28,7 +28,7 @@ export const fetchUserHome = async (token: any) => {
 
 export const fetchUser = async (token: any, id: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/${id}`, {
+    const response = await fetch(`http://localhost:8080/user/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,93 +40,25 @@ export const fetchUser = async (token: any, id: any) => {
   }
 };
 
-export const fetchProfilePicture = async (token: any) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8080/users/profile-picture`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    const imageUrl = await response.text();
-    return imageUrl;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updateProfilePicture = async (file: string, token: any) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/users/profile-picture`,
-      {
-        method: "POST",
-        body: file,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`http://localhost:8080/user/picture`, {
+      method: "POST",
+      body: file,
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     const imageUrl = await response.text();
     return imageUrl;
   } catch (error) {
     throw error;
   }
 };
-
-// userService.js
-
-export const updateEmail = async (email: string, token: any) => {
-  try {
-    const response = await fetch(`http://localhost:8080/users/update-auth`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        authType: "EMAIL",
-        authIdentifier: email,
-      }),
-    });
-    if (response.ok) {
-      return "success";
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
-// userService.js
-
-export const updatePhoneNumber = async (phoneNumber: string, token: any) => {
-  try {
-    const response = await fetch(`http://localhost:8080/users/update-auth`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        authType: "PHONE_NUMBER",
-        authIdentifier: phoneNumber,
-      }),
-    });
-    if (response.ok) {
-      return "success";
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
-// userService.js
 
 export const updateProfileInfo = async (data: any, token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/users`, {
+    const response = await fetch(`http://localhost:8080/user`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

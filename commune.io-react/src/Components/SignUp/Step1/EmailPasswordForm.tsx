@@ -14,7 +14,7 @@ function EmailPasswordForm({ onNextStep, userData, updateUser }: any) {
     if (userData.email && userData.password) {
       try {
         const response = await fetch(
-          `http://localhost:8080/users/new-user-validation`,
+          `http://localhost:8080/users/new-user-validate`,
           {
             method: "POST",
             headers: {
@@ -27,7 +27,7 @@ function EmailPasswordForm({ onNextStep, userData, updateUser }: any) {
         const result = await response.json();
 
         if (!result) {
-          setError("Email already taken!"); // or handle this in a better way
+          setError("Email already taken!");
         } else {
           onNextStep();
         }

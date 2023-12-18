@@ -1,41 +1,37 @@
 import React, { useState } from "react";
+import IButton from "../../../../Library/Button/IButton";
 
 function Notifications() {
   const options = [
     {
       id: "1",
-      title: "Enable Desktop notifications",
+      title: "User Notifications",
       description: "Get alerts directly on your desktop screen.",
     },
     {
       id: "2",
-      title: "Communication email",
+      title: "Event Notifications",
       description: "Receive regular updates and newsletters.",
     },
     {
       id: "3",
-      title: "Receive news and updates from us",
+      title: "Community Notifications",
       description: "Stay informed with the latest news.",
     },
     {
       id: "4",
-      title: "Receive tips and tutorials from us",
+      title: "Leaderboard Notifications",
       description: "Enhance your skills with our curated tips.",
     },
     {
       id: "5",
-      title: "User research",
+      title: "Event Organizer Notifications",
       description: "Participate in surveys and feedback sessions.",
     },
     {
       id: "6",
-      title: "New join to the community",
+      title: "Community Organizer Notifications",
       description: "Get notified when someone joins.",
-    },
-    {
-      id: "7",
-      title: "New join to the event",
-      description: "Never miss out on any community events.",
     },
   ];
 
@@ -60,9 +56,7 @@ function Notifications() {
           key={option.id}
           className={`flex items-center mb-8 ${
             option.title === "Communication email" ? "border-b pb-8" : ""
-          } ${
-            index === 2 ? "mt-2.5" : "" // Add margin-top to the option after "Communication email"
-          }`}
+          } ${index === 2 ? "mt-2.5" : ""}`}
         >
           <div className="relative flex items-center">
             <input
@@ -73,7 +67,7 @@ function Notifications() {
               onChange={() => toggleOption(option.id)}
             />
             <span
-              className={`w-6 h-6 border transition transform cursor-pointer ${
+              className={`w-5 h-5 border transition transform cursor-pointer ${
                 checkedOptions[option.id]
                   ? "border-regal-blue bg-white"
                   : "border-slate-400 bg-white"
@@ -82,7 +76,7 @@ function Notifications() {
             >
               {checkedOptions[option.id] && (
                 <svg
-                  className="w-5 h-5 text-regal-blue"
+                  className="w-4 h-4 text-regal-blue"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -109,9 +103,7 @@ function Notifications() {
         </div>
       ))}
       <div className="mt-8 ">
-        <button className="rounded-2xl font-light text-white text-md bg-regal-blue py-3 px-4 ">
-          Save Changes
-        </button>
+        <IButton text="Save Changes" onClick={() => console.log("")}></IButton>
       </div>
     </div>
   );

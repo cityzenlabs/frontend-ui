@@ -8,15 +8,11 @@ import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useAuth } from "../../../../Context/AuthContext";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
-
-import { useDash } from "../../../../Context/DashboardContext";
 import { useNavigate } from "react-router-dom";
 
 function CommunityCreate() {
   let navigate = useNavigate();
   const accessToken = useAuth();
-  const { triggerDataRefresh } = useDash();
-
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");

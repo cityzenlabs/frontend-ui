@@ -51,7 +51,7 @@ function Leaderboard() {
     {
       label: "Attribute",
       options: [
-        { label: "Overall", value: "OVERALL" },
+        { label: "Overall", value: "" },
         { label: "Social", value: "SOCIAL" },
         { label: "Intelligence", value: "INTELLIGENCE" },
         { label: "Fitness", value: "FITNESS" },

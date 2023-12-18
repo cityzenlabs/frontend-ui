@@ -6,8 +6,9 @@ import IButton from "../../../../Library/Button/IButton";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 
-function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
-  const [image, setImage] = useState<string>(profilePicture);
+function EditProfile() {
+  const { user, updateUserFields } = useDash();
+  const [image, setImage] = useState<string>(user?.picture);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -16,8 +17,6 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const accessToken = useAuth();
-
-  const { user, isLoading, triggerDataRefresh } = useDash();
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -62,12 +61,14 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
       }
 
       if (Object.keys(nonEmptyFields).length > 0) {
-        const updatedUser = await UserService.updateProfileInfo(
+        const response = await UserService.updateProfileInfo(
           nonEmptyFields,
           accessToken.token,
         );
-        await triggerDataRefresh();
-        resetForm();
+        if (response) {
+          updateUserFields(nonEmptyFields);
+          resetForm();
+        }
       }
     } catch (error) {}
   };
@@ -76,9 +77,9 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
     <div>
       <div className="flex items-center">
         <div className="relative w-20 h-20">
-          {profilePicture && profilePicture !== "" ? ( // Check if profilePicture prop is not an empty string
+          {user?.picture ? (
             <img
-              src={profilePicture} // Use profilePicture as the image source
+              src={user?.picture}
               alt="Profile"
               className="rounded-full w-full h-full object-cover"
             />
@@ -116,7 +117,7 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
         <IInput
           name="firstName"
           label="First Name"
-          placeholder={userHome?.firstName}
+          placeholder={user?.firstName}
           value={firstName}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFirstName(e.target.value)
@@ -128,7 +129,7 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
         <IInput
           name="lastName"
           label="Last Name"
-          placeholder={userHome?.lastName}
+          placeholder={user?.lastName}
           value={lastName}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setLastName(e.target.value)
@@ -139,7 +140,7 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
         <IInput
           name="email"
           label="Email"
-          placeholder={userHome?.email}
+          placeholder={user?.email}
           value={email}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -150,7 +151,7 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
         <IInput
           name="phoneNumber"
           label="Phone Number"
-          placeholder={userHome?.phoneNumber}
+          placeholder={user?.phoneNumber}
           value={phoneNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setPhoneNumber(e.target.value)
@@ -163,14 +164,14 @@ function EditProfile({ profilePicture, getUpdatedUser, userHome }: any) {
           inputs={[
             {
               name: "City",
-              placeholder: userHome?.city,
+              placeholder: user?.city,
               value: city,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setCity(e.target.value),
             },
             {
               name: "State",
-              placeholder: userHome?.state,
+              placeholder: user?.state,
               value: state,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setState(e.target.value),
