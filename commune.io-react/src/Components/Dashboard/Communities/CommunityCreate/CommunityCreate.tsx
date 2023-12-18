@@ -63,16 +63,14 @@ function CommunityCreate() {
         community,
         accessToken.token,
       );
-      if (result.id) {
-        navigate(`/community/manage/${result.id}`);
-        triggerDataRefresh();
-        if (imageFiles.length > 0) {
-          await CommunityService.updateCommunityPicture(
-            accessToken.token,
-            result.id,
-            imageFiles[0],
-          );
-        }
+      navigate(`/community/manage/${result.id}`);
+
+      if (imageFiles.length > 0) {
+        await CommunityService.updateCommunityPicture(
+          accessToken.token,
+          result?.id,
+          imageFiles[0],
+        );
       }
     } catch (error) {}
   };

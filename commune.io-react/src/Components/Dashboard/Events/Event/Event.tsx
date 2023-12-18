@@ -30,7 +30,7 @@ function Event() {
       const event = await EventService.getEvent(accessToken.token, eventId);
       if (event) {
         setEvent(event);
-        const community = await CommunityService.getCommunity(
+        const community = await CommunityService.getCommunityPage(
           event.host,
           accessToken.token,
         );

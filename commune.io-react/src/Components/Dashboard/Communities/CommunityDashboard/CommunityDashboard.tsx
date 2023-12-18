@@ -28,25 +28,22 @@ function CommunityDashboard() {
   const [communityDashboard, setCommunityDashboard] = useState<any>(null);
   const [showDashboardEvents, setShowDashboardEvents] = useState("");
   const [organizer, setOrganizer] = useState<any>();
+  const [organizerId, setOrganizerId] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [communityPicture, setCommunityPicture] = useState<any>("");
+  const [membersList, setMembersList] = useState<any>();
 
   const getCommunityDashboard = async (callback = () => {}) => {
     try {
-      const data = await CommunityService.getCommunityDashboard(
+      const communityDashboard = await CommunityService.getCommunityDashboard(
         communityId,
         accessToken.token,
       );
-      if (data) {
-        setCommunityDashboard(data);
-        const organizer = await UserService.fetchUser(
-          accessToken.token,
-          data.community.organizer,
-        );
-        if (organizer) {
-          setOrganizer(organizer);
-        }
-        callback();
+      if (communityDashboard) {
+        setCommunityDashboard(communityDashboard);
+        setOrganizerId(communityDashboard?.community?.organizer);
+        setOrganizer(communityDashboard?.organizer);
+        setMembersList(communityDashboard?.community?.members);
       }
     } catch (error) {}
   };
@@ -54,7 +51,7 @@ function CommunityDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([getCommunityDashboard()]);
+        await getCommunityDashboard();
       } catch (error) {}
       setIsLoading(false);
     };
@@ -100,7 +97,11 @@ function CommunityDashboard() {
               <div className="flex">
                 <IButton
                   text={"Edit"}
-                  onClick={() => navigate(`/communities/edit/${communityId}`)}
+                  onClick={() =>
+                    navigate(`/communities/edit/${communityId}`, {
+                      state: { community: communityDashboard?.community },
+                    })
+                  }
                   bgColor="bg-regal-blue"
                   textColor="text-white"
                   className="px-6  mr-4"
@@ -174,6 +175,7 @@ function CommunityDashboard() {
               organizer={organizer}
               communityId={communityId}
               communityPicture={communityPicture}
+              membersList={membersList}
             />
           </div>
 

@@ -8,10 +8,11 @@ export const useDashboard = () => useContext(DashboardContext);
 
 export const DashboardProvider = ({ children }: any) => {
   const [userHome, setUserHome] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>({});
   const [profilePicture, setProfilePicture] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<any>(true);
   const [triggerRefresh, setTriggerRefresh] = useState<any>(false);
+  const [joinedCommunities, setJoinedCommunities] = useState<any>();
   const accessToken = useAuth();
 
   const triggerDataRefresh = () => {
@@ -26,6 +27,7 @@ export const DashboardProvider = ({ children }: any) => {
         setUserHome(userHomeData);
         setUser(userHomeData.user);
         setIsLoading(false);
+        setJoinedCommunities(userHomeData.user.joinedCommunities);
       } catch (error) {}
     };
 
@@ -34,7 +36,14 @@ export const DashboardProvider = ({ children }: any) => {
 
   return (
     <DashboardContext.Provider
-      value={{ userHome, user, isLoading, triggerDataRefresh }}
+      value={{
+        userHome,
+        user,
+        isLoading,
+        triggerDataRefresh,
+        joinedCommunities,
+        setJoinedCommunities,
+      }}
     >
       {children}
     </DashboardContext.Provider>

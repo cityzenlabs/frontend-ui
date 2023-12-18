@@ -31,7 +31,7 @@ function EventDashboard() {
         );
         if (data) {
           setEventDashboard(data);
-          const community = await CommunityService.getCommunity(
+          const community = await CommunityService.getCommunityPage(
             data?.event.host,
             accessToken.token,
           );

@@ -128,7 +128,7 @@ export const getCommunityMembers = async (id: any, token: any) => {
   }
 };
 
-export const getCommunity = async (id: any, token: any) => {
+export const getCommunityPage = async (id: any, token: any) => {
   try {
     const response = await fetch(`http://localhost:8080/communities/${id}`, {
       method: "GET",
@@ -273,7 +273,7 @@ export const editCommunity = async (token: any, id: any, community: any) => {
       body: JSON.stringify(community),
     });
     if (response.ok) {
-      return response;
+      return response.json();
     } else {
       return response;
     }

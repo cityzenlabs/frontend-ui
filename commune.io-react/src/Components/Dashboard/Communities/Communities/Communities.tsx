@@ -19,10 +19,8 @@ function Communities({
 
   useEffect(() => {
     if (location.state?.communities) {
-      console.log(location.state.communities);
       setCommunities(location.state.communities);
       setIsLoading(false);
-    } else {
     }
   }, [location.state]);
 

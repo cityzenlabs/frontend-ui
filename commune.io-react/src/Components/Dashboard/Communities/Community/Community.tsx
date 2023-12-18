@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
-import IPanel from "../../../../Library/Panel/IPanel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import * as UserService from "../../../../Services/UserService/UserService";
 import ILabel from "../../../../Library/Label/ILabel";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import IButton from "../../../../Library/Button/IButton";
@@ -17,88 +14,41 @@ import ISpinner from "../../../../Library/Spinner/ISpinner";
 function Community() {
   const { communityId } = useParams();
   const accessToken = useAuth();
-  const { user, triggerDataRefresh } = useDash();
+  const { user, joinedCommunities, setJoinedCommunities } = useDash();
   const navigate = useNavigate();
-
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
-  const [hasJoined, setHasJoined] = useState<boolean>();
   const [gallery, setGallery] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [socialEvents, setSocialEvents] = useState<any>("");
   const [hostedEvents, setHostedEvents] = useState<any>("");
   const [showAllSocialEvents, setShowAllSocialEvents] = useState(false);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
+  const [organizerId, setOrganizerId] = useState<any>();
+  const [membersList, setMembersList] = useState<any>();
 
-  const fetchCommunityData = async (callback = () => {}) => {
+  const fetchCommunityData = async () => {
     try {
-      const community = await CommunityService.getCommunity(
+      const communityPage = await CommunityService.getCommunityPage(
         communityId,
         accessToken.token,
       );
-      if (community) {
-        setCommunity(community);
-        const organizer = await UserService.fetchUser(
-          accessToken.token,
-          community.organizer,
-        );
-        if (organizer) {
-          setOrganizer(organizer);
-          checkMembership(community);
-          callback();
-        }
+      if (communityPage) {
+        setCommunity(communityPage?.community);
+        setOrganizerId(communityPage?.community?.organizerId);
+        setOrganizer(communityPage?.organizer);
+        setHostedEvents(communityPage?.upcomingHostedEvents);
+        setSocialEvents(communityPage?.upcomingSocialEvents);
+        setMembersList(communityPage?.community?.members);
       }
     } catch (error) {}
-  };
-
-  const fetchCommunityEvents = async () => {
-    try {
-      const upcomingEvents = await CommunityService.getCommunityEvents(
-        communityId,
-        accessToken.token,
-        "upcoming",
-      );
-      if (upcomingEvents) {
-        const hostedEvents = upcomingEvents.filter(
-          (event: any) => event.type === "HOSTED",
-        );
-        const socialEvents = upcomingEvents.filter(
-          (event: any) => event.type === "SOCIAL",
-        );
-
-        setHostedEvents(hostedEvents);
-        setSocialEvents(socialEvents);
-      }
-    } catch (error) {}
-  };
-
-  const fetchGallery = async () => {
-    try {
-      const gallery = await CommunityService.getCommunityPhotoGallery(
-        accessToken.token,
-        communityId,
-      );
-      if (gallery) {
-        setGallery(gallery);
-      }
-    } catch (error) {}
-  };
-
-  const checkMembership = (communityData: any) => {
-    if (user && communityData) {
-      setHasJoined(user?.joinedCommunities.includes(communityData.id));
-    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([
-          fetchCommunityData(),
-          fetchCommunityEvents(),
-          fetchGallery(),
-        ]);
+        await fetchCommunityData();
       } catch (error) {}
       setIsLoading(false);
     };
@@ -108,29 +58,30 @@ function Community() {
 
   const handleJoinOrLeaveCommunity = async () => {
     try {
-      const response = hasJoined
+      const response = joinedCommunities?.includes(communityId)
         ? await CommunityService.leaveCommunity(accessToken.token, communityId)
         : await CommunityService.joinCommunity(accessToken.token, communityId);
 
       if (response.ok) {
-        await triggerDataRefresh();
-        fetchCommunityData(() => setHasJoined(!hasJoined));
+        if (!joinedCommunities?.includes(communityId)) {
+          const updatedMembersList = [...membersList, user?.id];
+          setMembersList(updatedMembersList);
+          setJoinedCommunities((prevCommunities: any) => [
+            ...prevCommunities,
+            communityId,
+          ]);
+        } else {
+          const updatedMembersList = membersList.filter(
+            (id: any) => id !== user?.id,
+          );
+          setMembersList(updatedMembersList);
+          const updatedJoinedCommunities = joinedCommunities?.filter(
+            (id: any) => id !== communityId,
+          );
+          setJoinedCommunities(updatedJoinedCommunities);
+        }
       }
     } catch (error) {}
-  };
-
-  const toggleShowAllSocialEvents = () => {
-    setShowAllSocialEvents((prev) => !prev);
-    if (!showAllSocialEvents) {
-      setShowAllHostedEvents(false);
-    }
-  };
-
-  const toggleShowAllHostedEvents = () => {
-    setShowAllHostedEvents((prev) => !prev);
-    if (!showAllHostedEvents) {
-      setShowAllSocialEvents(false);
-    }
   };
 
   if (isLoading) {
@@ -146,21 +97,27 @@ function Community() {
           </div>
           <div className="flex">
             <IButton
-              text={hasJoined ? "Leave Community" : "Join Community"}
-              onClick={handleJoinOrLeaveCommunity}
-              bgColor={user?.id === organizer.id ? "bg-white" : "bg-regal-blue"}
-              textColor={
-                user?.id === organizer.id ? "text-black" : "text-white"
+              text={
+                joinedCommunities?.includes(communityId)
+                  ? "Leave Community"
+                  : "Join Community"
               }
+              onClick={handleJoinOrLeaveCommunity}
+              bgColor={user?.id === organizerId ? "bg-white" : "bg-regal-blue"}
+              textColor={user?.id === organizerId ? "text-black" : "text-white"}
               className="px-6"
-              disabled={user?.id === organizer.id}
+              disabled={user?.id === organizerId}
             />
           </div>
         </div>
 
         <div className="w-full pb-4">
-          {hasJoined && <ICarousel imageUrls={gallery} />}
-          {!hasJoined && <ICarousel imageUrls={[community?.picture]} />}
+          {joinedCommunities?.includes(communityId) && (
+            <ICarousel imageUrls={gallery} />
+          )}
+          {!joinedCommunities?.includes(communityId) && (
+            <ICarousel imageUrls={[community?.picture]} />
+          )}
         </div>
 
         <div className="pb-4">
@@ -169,15 +126,16 @@ function Community() {
             organizer={organizer}
             communityId={communityId}
             communityPicture={communityPicture}
+            membersList={membersList}
           />
         </div>
 
-        {hasJoined && !showAllSocialEvents && (
+        {joinedCommunities?.includes(communityId) && (
           <IEventPanel
             title="Upcoming Hosted Events"
             height="600px"
             buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
-            onButtonClick={toggleShowAllHostedEvents}
+            onButtonClick={() => console.log("")}
             events={hostedEvents}
             showAll={showAllHostedEvents}
             onEventClick={(eventName, eventId) => {
@@ -188,12 +146,12 @@ function Community() {
           />
         )}
 
-        {hasJoined && !showAllHostedEvents && (
+        {joinedCommunities?.includes(communityId) && (
           <IEventPanel
             title="Upcoming Social Events"
             height="600px"
             buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
-            onButtonClick={toggleShowAllSocialEvents}
+            onButtonClick={() => console.log("")}
             events={socialEvents}
             showAll={showAllSocialEvents}
             onEventClick={(eventName, eventId) => {

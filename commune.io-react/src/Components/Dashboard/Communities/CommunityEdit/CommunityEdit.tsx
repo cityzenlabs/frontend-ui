@@ -8,13 +8,12 @@ import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
 
 function CommunityDashboardEdit() {
-  const { communityId } = useParams();
   const accessToken = useAuth();
-
+  const location = useLocation();
   const [community, setCommunity] = useState<any>();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
@@ -54,25 +53,13 @@ function CommunityDashboardEdit() {
     setDescription("");
     setImageFiles([]);
   };
-  const fetchCommunityData = async (callback = () => {}) => {
-    try {
-      const community = await CommunityService.getCommunity(
-        communityId,
-        accessToken.token,
-      );
-      if (community) {
-        setCommunity(community);
-      }
-    } catch (error) {}
-  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([fetchCommunityData()]);
-    };
-
-    fetchData();
-  }, [communityId, accessToken.token]);
+    if (location.state?.community) {
+      setCommunity(location.state.community);
+    } else {
+    }
+  }, [accessToken.token]);
 
   const handleEditCommunity = async () => {
     const fieldsToCheck: any = [
@@ -127,7 +114,6 @@ function CommunityDashboardEdit() {
       };
       const currentValue = stateValues[field.stateKey];
 
-      // Always include the attribute requirements with their original or updated values
       if (
         [
           "social",
@@ -144,7 +130,6 @@ function CommunityDashboardEdit() {
         acc.attributeRequirements[field.stateKey.toUpperCase()] =
           currentValue !== "" ? Number(currentValue) : field.original;
       } else {
-        // For other fields, update only if there is a change
         if (currentValue !== "" && currentValue !== field.original) {
           acc[field.stateKey] = currentValue;
         }
@@ -159,7 +144,7 @@ function CommunityDashboardEdit() {
         updatedFields,
       );
       if (result) {
-        fetchCommunityData();
+        setCommunity(result);
         resetFields();
         if (imageFiles.length > 0) {
           await CommunityService.updateCommunityPicture(

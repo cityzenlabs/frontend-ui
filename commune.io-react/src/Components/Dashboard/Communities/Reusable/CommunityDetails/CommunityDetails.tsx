@@ -13,7 +13,12 @@ import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { getIconForAttribute } from "../../../Constants/Constants";
 
-const CommunityDetails = ({ community, organizer, communityId }: any) => {
+const CommunityDetails = ({
+  community,
+  organizer,
+  communityId,
+  membersList,
+}: any) => {
   let navigate = useNavigate();
 
   const getColorByGenderRequirements = () => {
@@ -89,9 +94,7 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
                 className="w-[30px] h-[30px] mr-2 mb-1"
               />
             </div>
-            <div className="text-md">
-              {organizer?.firstName + " " + organizer?.lastName}
-            </div>
+            <div className="text-md">{organizer?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
             Reputation Score - {organizer?.reputation}
@@ -167,7 +170,7 @@ const CommunityDetails = ({ community, organizer, communityId }: any) => {
           }}
         >
           <div className="flex justify-between items-center">
-            {community?.members?.length} Members
+            {membersList?.length} Members
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>
