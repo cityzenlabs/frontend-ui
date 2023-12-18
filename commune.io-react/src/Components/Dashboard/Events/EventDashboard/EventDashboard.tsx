@@ -19,33 +19,22 @@ function EventDashboard() {
   const navigate = useNavigate();
   const [eventDashboard, setEventDashboard] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
+  const [organizerId, setOrganizerId] = useState<any>();
   const [community, setCommunity] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await EventService.getEventDashboard(
+        const eventDashboard = await EventService.getEventDashboard(
           accessToken.token,
           eventId,
         );
-        if (data) {
-          setEventDashboard(data);
-          const community = await CommunityService.getCommunityPage(
-            data?.event.host,
-            accessToken.token,
-          );
-          const organizer = await UserService.fetchUser(
-            accessToken.token,
-            data.event.organizer,
-          );
-          if (organizer) {
-            setOrganizer(organizer);
-          }
-
-          if (community) {
-            setCommunity(community);
-          }
+        if (eventDashboard) {
+          setEventDashboard(eventDashboard);
+          setOrganizerId(eventDashboard?.event?.organizerId);
+          setOrganizer(eventDashboard?.organizer);
+          setCommunity(eventDashboard?.host);
         }
       } catch (error) {}
       setIsLoading(false);
@@ -70,7 +59,11 @@ function EventDashboard() {
         <div className="flex">
           <IButton
             text={"Edit"}
-            onClick={() => navigate(`/event/edit/${eventId}`)}
+            onClick={() =>
+              navigate(`/event/edit/${eventId}`, {
+                state: { event: eventDashboard?.event },
+              })
+            }
             bgColor="bg-regal-blue"
             textColor="text-white"
             className="px-6  mr-4"

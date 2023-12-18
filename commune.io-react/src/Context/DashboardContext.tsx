@@ -13,6 +13,7 @@ export const DashboardProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState<any>(true);
   const [triggerRefresh, setTriggerRefresh] = useState<any>(false);
   const [joinedCommunities, setJoinedCommunities] = useState<any>();
+  const [joinedEvents, setJoinedEvents] = useState<any>();
   const accessToken = useAuth();
 
   const triggerDataRefresh = () => {
@@ -28,6 +29,7 @@ export const DashboardProvider = ({ children }: any) => {
         setUser(userHomeData.user);
         setIsLoading(false);
         setJoinedCommunities(userHomeData.user.joinedCommunities);
+        setJoinedEvents(userHomeData.user.joinedEvents);
       } catch (error) {}
     };
 
@@ -43,6 +45,8 @@ export const DashboardProvider = ({ children }: any) => {
         triggerDataRefresh,
         joinedCommunities,
         setJoinedCommunities,
+        joinedEvents,
+        setJoinedEvents,
       }}
     >
       {children}

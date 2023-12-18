@@ -57,7 +57,6 @@ function CommunityDashboardEdit() {
   useEffect(() => {
     if (location.state?.community) {
       setCommunity(location.state.community);
-    } else {
     }
   }, [accessToken.token]);
 

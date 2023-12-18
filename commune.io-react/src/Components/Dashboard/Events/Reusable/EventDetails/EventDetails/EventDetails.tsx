@@ -7,7 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { attributeColors } from "../../../../Home/Constants/HomeConstats";
 import { getIconForAttribute } from "../../../../Constants/Constants";
 
-function EventDetails({ event, organizer, community, communityPicture }: any) {
+function EventDetails({
+  event,
+  organizer,
+  community,
+  communityPicture,
+  attendeesList,
+}: any) {
   let navigate = useNavigate();
 
   const getColorByEventProperty = () => {
@@ -82,9 +88,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
                 className="w-[30px] h-[30px] mr-2 mb-1"
               />
             </div>
-            <div className="text-md">
-              {organizer?.firstName + " " + organizer?.lastName}
-            </div>
+            <div className="text-md">{organizer?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
             Reputation Score - {organizer?.reputation}
@@ -111,11 +115,12 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
           <div>
             <div className="font-md text-xs pt-2">COMMUNITY REQUIREMENTS</div>
             <div className="grid grid-cols-2 gap-5 py-6">
-              {community?.attributeRequirements &&
+              {event?.attributeRequirements &&
                 Object.entries(
-                  community.attributeRequirements as [string, number][],
+                  event.attributeRequirements as [string, number][],
                 ).map(([attribute, level], index) => {
-                  const color = attributeColors[index % attributeColors.length];
+                  const color =
+                    attributeColors[index % attributeColors?.length];
                   return (
                     <div
                       key={attribute}
@@ -135,12 +140,12 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
                       <div
                         style={{
                           color:
-                            attributeColors[index % attributeColors.length],
+                            attributeColors[index % attributeColors?.length],
                           borderColor: `${
-                            attributeColors[index % attributeColors.length]
+                            attributeColors[index % attributeColors?.length]
                           }20`,
                           backgroundColor: `${
-                            attributeColors[index % attributeColors.length]
+                            attributeColors[index % attributeColors?.length]
                           }20`,
                         }}
                         className="border px-2 py-2 rounded"
@@ -160,7 +165,7 @@ function EventDetails({ event, organizer, community, communityPicture }: any) {
           }}
         >
           <div className="flex justify-between items-center ">
-            {event?.attendees.length} Attendees
+            {attendeesList?.length} Attendees
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>

@@ -16,11 +16,12 @@ import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 import { CategoryKey, EventCreateMapping } from "./EventCreateMapping";
 import IDatePicker from "../../../../Library/DatePicker/IDatePicker";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
 
 function EventCreate({}: any) {
   let navigate = useNavigate();
   const accessToken = useAuth();
-  const { user, triggerDataRefresh } = useDash();
+  const { user } = useDash();
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -113,30 +114,26 @@ function EventCreate({}: any) {
       type: type,
       category: category,
       attribute: attribute,
-      host: community,
+      hostId: community,
     };
 
     try {
       const result = await EventService.createEvent(event, accessToken.token);
-      if (result.id) {
-        triggerDataRefresh();
-
+      if (result) {
         navigate(`/event/manage/${result.id}`);
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
             accessToken.token,
-            result.id,
+            result?.id,
             imageFiles[0],
           );
         }
       }
-    } catch (error) {
-      // Handle errors if needed
-    }
+    } catch (error) {}
   };
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with your loading indicator
+    return <ISpinner />;
   }
 
   return (

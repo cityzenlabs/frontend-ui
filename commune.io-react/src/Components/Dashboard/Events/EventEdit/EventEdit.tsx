@@ -3,7 +3,7 @@ import ILabel from "../../../../Library/Label/ILabel";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import * as EventService from "../../../../Services/EventService/EventService";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
 import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { times } from "../EventCreate/EventCreateConstants";
@@ -21,7 +21,7 @@ function EventDashboardEdit() {
   const [state, setState] = useState("");
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const location = useLocation();
   const [type, setType] = useState<string>("");
   const [description, setDescription] = useState("");
 
@@ -34,25 +34,12 @@ function EventDashboardEdit() {
     }
   };
 
-  const fetchEventData = async (callback = () => {}) => {
-    try {
-      const event = await EventService.getEvent(accessToken.token, eventId);
-      if (event) {
-        setEvent(event);
-      }
-    } catch (error) {}
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([fetchEventData()]);
-      } catch (error) {}
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [eventId, accessToken.token]);
+    if (location.state?.event) {
+      setEvent(location.state.event);
+    }
+    setIsLoading(false);
+  }, [accessToken.token]);
 
   if (isLoading) {
     return <ISpinner />;
