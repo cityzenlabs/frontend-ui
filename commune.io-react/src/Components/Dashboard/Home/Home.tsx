@@ -130,6 +130,18 @@ function Home() {
         </div>
       </div>
 
+      {userHome?.upcomingEvents && (
+        <IEventPanel
+          events={userHome?.upcomingEvents}
+          title="Upcoming Events"
+          height="600px"
+          buttonLabel="Show All"
+          onEventClick={(eventName, eventId) => {
+            navigate(`/event/${eventName}/${eventId}`);
+          }}
+        />
+      )}
+
       {userHome?.recommendedCommunities && (
         <ICommunityPanel
           communities={userHome?.recommendedCommunities}
@@ -144,18 +156,6 @@ function Home() {
           }
           onCommunityClick={(communityName, communityId) => {
             navigate(`/community/${communityName}/${communityId}`);
-          }}
-        />
-      )}
-
-      {userHome?.upcomingEvents && (
-        <IEventPanel
-          events={userHome?.upcomingEvents}
-          title="Upcoming Events"
-          height="600px"
-          buttonLabel="Show All"
-          onEventClick={(eventName, eventId) => {
-            navigate(`/event/${eventName}/${eventId}`);
           }}
         />
       )}
