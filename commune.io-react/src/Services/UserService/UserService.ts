@@ -42,8 +42,8 @@ export const fetchUser = async (token: any, id: any) => {
 
 export const updateProfilePicture = async (file: string, token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/user/picture`, {
-      method: "POST",
+    const response = await fetch(`http://localhost:8080/user/photo`, {
+      method: "PUT",
       body: file,
       headers: {
         Authorization: `Bearer ${token}`,

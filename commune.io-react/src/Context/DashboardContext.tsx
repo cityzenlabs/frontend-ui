@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import * as UserService from "../Services/UserService/UserService";
 import { useAuth } from "./AuthContext";
 
@@ -27,6 +27,7 @@ export const DashboardProvider = ({ children }: any) => {
   }, [accessToken]);
 
   const updateUserFields = (fieldsToUpdate: any) => {
+    console.log(user);
     setUser((prevUser: any) => ({
       ...prevUser,
       ...fieldsToUpdate,

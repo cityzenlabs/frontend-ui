@@ -217,16 +217,13 @@ export const joinEvent = async (token: any, id: any) => {
 
 export const getEventPicture = async (token: any, id: any) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/events/${id}/event-picture`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`http://localhost:8080/events/${id}/photo`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     if (response.ok) {
       return response.text();
     } else {
