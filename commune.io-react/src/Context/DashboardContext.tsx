@@ -10,8 +10,6 @@ export const DashboardProvider = ({ children }: any) => {
   const [userHome, setUserHome] = useState<any>(null);
   const [user, setUser] = useState<any>({});
   const [isLoading, setIsLoading] = useState<any>(true);
-  const [joinedCommunities, setJoinedCommunities] = useState<any>();
-  const [joinedEvents, setJoinedEvents] = useState<any>();
   const accessToken = useAuth();
 
   useEffect(() => {
@@ -22,8 +20,6 @@ export const DashboardProvider = ({ children }: any) => {
         setUserHome(userHomeData);
         setUser(userHomeData.user);
         setIsLoading(false);
-        setJoinedCommunities(userHomeData.user.joinedCommunities);
-        setJoinedEvents(userHomeData.user.joinedEvents);
       } catch (error) {}
     };
 
@@ -37,17 +33,47 @@ export const DashboardProvider = ({ children }: any) => {
     }));
   };
 
+  const joinCommunity = (communityId: string) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      joinedCommunities: [...prevUser.joinedCommunities, communityId],
+    }));
+  };
+
+  const leaveCommunity = (communityId: string) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      joinedCommunities: prevUser.joinedCommunities.filter(
+        (id: any) => id !== communityId,
+      ),
+    }));
+  };
+
+  const joinEvent = (eventId: string) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      joinedEvents: [...prevUser.joinedEvents, eventId],
+    }));
+  };
+
+  const leaveEvent = (eventId: string) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      joinedEvents: prevUser.joinedEvents.filter((id: any) => id !== eventId),
+    }));
+  };
+
   return (
     <DashboardContext.Provider
       value={{
         userHome,
         user,
         isLoading,
-        joinedCommunities,
-        setJoinedCommunities,
-        joinedEvents,
-        setJoinedEvents,
         updateUserFields,
+        joinCommunity,
+        leaveCommunity,
+        joinEvent,
+        leaveEvent,
       }}
     >
       {children}

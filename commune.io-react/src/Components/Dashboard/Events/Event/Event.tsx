@@ -13,9 +13,8 @@ import ISpinner from "../../../../Library/Spinner/ISpinner";
 function Event() {
   const { eventId } = useParams();
   const accessToken = useAuth();
-  const { user, joinedEvents, setJoinedEvents } = useDash();
+  const { user, joinEvent, leaveEvent } = useDash();
   const navigate = useNavigate();
-
   const [event, setEvent] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
   const [organizer, setOrganizer] = useState<any>();
@@ -55,19 +54,16 @@ function Event() {
         ? await EventService.leaveEvent(accessToken.token, eventId)
         : await EventService.joinEvent(accessToken.token, eventId);
       if (response.ok) {
-        if (!joinedEvents?.includes(eventId)) {
-          const updatedMembersList = [...attendeesList, user?.id];
-          setAttendeesList(updatedMembersList);
-          setJoinedEvents((prevEvents: any) => [...prevEvents, eventId]);
-        } else {
+        if (user?.joinedEvents?.includes(eventId)) {
           const updatedMembersList = attendeesList.filter(
             (id: any) => id !== user?.id,
           );
           setAttendeesList(updatedMembersList);
-          const updatedJoinedEvents = joinedEvents?.filter(
-            (id: any) => id !== eventId,
-          );
-          setJoinedEvents(updatedJoinedEvents);
+          leaveEvent(eventId);
+        } else {
+          const updatedMembersList = [...attendeesList, user?.id];
+          setAttendeesList(updatedMembersList);
+          joinEvent(eventId);
         }
       }
     } catch (error) {}
@@ -86,7 +82,9 @@ function Event() {
         <div>
           <IButton
             text={
-              joinedEvents?.includes(event?.id) ? "Leave Event" : "Join Event"
+              user?.joinedEvents?.includes(eventId)
+                ? "Leave Event"
+                : "Join Event"
             }
             onClick={handleJoinOrLeaveEvent}
             bgColor={user?.id === organizerId ? "bg-white" : "bg-regal-blue"}
@@ -110,7 +108,7 @@ function Event() {
         />
       </div>
 
-      {joinedEvents?.includes(eventId) && (
+      {user?.joinedEvents?.includes(eventId) && (
         <IEventPanel
           title="Related"
           buttonLabel="Show All"

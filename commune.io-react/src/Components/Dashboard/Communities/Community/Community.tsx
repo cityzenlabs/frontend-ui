@@ -14,7 +14,7 @@ import ISpinner from "../../../../Library/Spinner/ISpinner";
 function Community() {
   const { communityId } = useParams();
   const accessToken = useAuth();
-  const { user, joinedCommunities, setJoinedCommunities } = useDash();
+  const { user, joinCommunity, leaveCommunity } = useDash();
   const navigate = useNavigate();
   const [community, setCommunity] = useState<any>();
   const [communityPicture, setCommunityPicture] = useState<any>();
@@ -58,27 +58,21 @@ function Community() {
 
   const handleJoinOrLeaveCommunity = async () => {
     try {
-      const response = joinedCommunities?.includes(communityId)
+      const response = user?.joinedCommunities?.includes(communityId)
         ? await CommunityService.leaveCommunity(accessToken.token, communityId)
         : await CommunityService.joinCommunity(accessToken.token, communityId);
 
       if (response.ok) {
-        if (!joinedCommunities?.includes(communityId)) {
-          const updatedMembersList = [...membersList, user?.id];
-          setMembersList(updatedMembersList);
-          setJoinedCommunities((prevCommunities: any) => [
-            ...prevCommunities,
-            communityId,
-          ]);
-        } else {
+        if (user?.joinedCommunities?.includes(communityId)) {
           const updatedMembersList = membersList.filter(
             (id: any) => id !== user?.id,
           );
           setMembersList(updatedMembersList);
-          const updatedJoinedCommunities = joinedCommunities?.filter(
-            (id: any) => id !== communityId,
-          );
-          setJoinedCommunities(updatedJoinedCommunities);
+          leaveCommunity(communityId);
+        } else {
+          const updatedMembersList = [...membersList, user?.id];
+          setMembersList(updatedMembersList);
+          joinCommunity(communityId);
         }
       }
     } catch (error) {}
@@ -98,7 +92,7 @@ function Community() {
           <div className="flex">
             <IButton
               text={
-                joinedCommunities?.includes(communityId)
+                user?.joinedCommunities?.includes(communityId)
                   ? "Leave Community"
                   : "Join Community"
               }
@@ -112,10 +106,10 @@ function Community() {
         </div>
 
         <div className="w-full pb-4">
-          {joinedCommunities?.includes(communityId) && (
+          {user?.joinedCommunities?.includes(communityId) && (
             <ICarousel imageUrls={gallery} />
           )}
-          {!joinedCommunities?.includes(communityId) && (
+          {!user?.joinedCommunities?.includes(communityId) && (
             <ICarousel imageUrls={[community?.picture]} />
           )}
         </div>
@@ -130,7 +124,7 @@ function Community() {
           />
         </div>
 
-        {joinedCommunities?.includes(communityId) && (
+        {user?.joinedCommunities?.includes(communityId) && (
           <IEventPanel
             title="Upcoming Hosted Events"
             height="600px"
@@ -146,7 +140,7 @@ function Community() {
           />
         )}
 
-        {joinedCommunities?.includes(communityId) && (
+        {user?.joinedCommunities?.includes(communityId) && (
           <IEventPanel
             title="Upcoming Social Events"
             height="600px"
