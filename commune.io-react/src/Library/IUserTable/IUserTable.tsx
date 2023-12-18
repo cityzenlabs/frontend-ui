@@ -5,7 +5,7 @@ interface User {
   firstName: string;
   lastName: string;
   gender: string;
-  picture: string;
+  photo: string;
   age: number;
   level: number;
   points: number;
@@ -81,7 +81,7 @@ const IUserTable: React.FC<IUserTableProps> = ({ users, onRowClick }) => {
               <td style={tdStyle}>
                 <div style={tdContentStyle}>
                   <img
-                    src={user.picture || "default-avatar.png"}
+                    src={user?.photo || "default-avatar.png"}
                     alt={`${user.firstName} ${user.lastName}`}
                     style={imgStyle}
                   />

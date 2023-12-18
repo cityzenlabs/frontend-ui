@@ -106,7 +106,7 @@ function Community() {
         </div>
 
         <div className="w-full pb-4">
-          <ICarousel imageUrls={[community?.picture]} />
+          <ICarousel imageUrls={[community?.photo]} />
         </div>
 
         <div className="pb-4">

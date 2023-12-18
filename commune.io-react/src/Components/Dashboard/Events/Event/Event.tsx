@@ -95,7 +95,7 @@ function Event() {
         </div>
       </div>
       <div className="pb-4">
-        <ICarousel imageUrls={[event?.picture]} />
+        <ICarousel imageUrls={[event?.photo]} />
       </div>
 
       <div className="pb-4">

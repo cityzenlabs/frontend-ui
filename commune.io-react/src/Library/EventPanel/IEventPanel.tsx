@@ -59,9 +59,9 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
               onClick={() => onEventClick && onEventClick(event.name, event.id)}
             >
               <div className="h-28 overflow-hidden rounded-t-lg">
-                {event.picture ? (
+                {event?.photo ? (
                   <img
-                    src={event.picture}
+                    src={event?.photo}
                     alt={event.name}
                     className="w-full h-full object-cover"
                   />

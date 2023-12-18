@@ -108,16 +108,13 @@ export const updateEventPicture = async (
   formData.append("file", image); // Assuming 'image' is the key expected by your backend
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/events/${id}/event-picture`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData, // Send formData as body
+    const response = await fetch(`http://localhost:8080/events/${id}/photo`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: formData, // Send formData as body
+    });
 
     if (response.ok) {
       return response.json();

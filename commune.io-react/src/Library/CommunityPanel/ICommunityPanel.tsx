@@ -60,9 +60,9 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
               }
             >
               <div className="h-28 overflow-hidden rounded-t-lg">
-                {community.picture ? (
+                {community.photo ? (
                   <img
-                    src={community?.picture}
+                    src={community?.photo}
                     alt={""}
                     className="w-full h-full object-cover"
                   />

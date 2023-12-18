@@ -82,7 +82,7 @@ function EventDetails({
           <div className="flex items-center">
             <div>
               <img
-                src={organizer?.picture || "default-avatar.png"}
+                src={organizer?.photo || "default-avatar.png"}
                 alt={`${organizer?.firstName} ${organizer?.lastName}`}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
@@ -97,7 +97,7 @@ function EventDetails({
           <div className="flex items-center">
             <div>
               <img
-                src={community?.picture || "default-event-image.png"}
+                src={community?.photo || "default-event-image.png"}
                 alt={event?.name}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"

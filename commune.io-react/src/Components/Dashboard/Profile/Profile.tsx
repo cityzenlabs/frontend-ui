@@ -72,7 +72,7 @@ function Profile() {
             <div className="flex">
               <div className="w-[136px] h-[136px] rounded-full overflow-hidden">
                 <img
-                  src={user?.picture}
+                  src={user?.photo}
                   alt="Avatar"
                   className="w-full h-full object-cover"
                 />

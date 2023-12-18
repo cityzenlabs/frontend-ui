@@ -88,7 +88,7 @@ const CommunityDetails = ({
           <div className="flex items-center ">
             <div>
               <img
-                src={organizer?.picture}
+                src={organizer?.photo}
                 alt={``}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
@@ -103,7 +103,7 @@ const CommunityDetails = ({
           <div className="flex items-center ">
             <div>
               <img
-                src={community?.picture}
+                src={community?.photo}
                 alt={``}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
