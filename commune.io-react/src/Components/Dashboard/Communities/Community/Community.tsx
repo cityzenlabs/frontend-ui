@@ -106,12 +106,7 @@ function Community() {
         </div>
 
         <div className="w-full pb-4">
-          {user?.joinedCommunities?.includes(communityId) && (
-            <ICarousel imageUrls={gallery} />
-          )}
-          {!user?.joinedCommunities?.includes(communityId) && (
-            <ICarousel imageUrls={[community?.picture]} />
-          )}
+          <ICarousel imageUrls={[community?.picture]} />
         </div>
 
         <div className="pb-4">
