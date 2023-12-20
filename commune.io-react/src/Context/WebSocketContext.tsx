@@ -64,6 +64,7 @@ export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
           `/topic/notifications/${user?.id}`,
           (notification) => {
             const message = JSON.parse(notification.body);
+            console.log(message);
             setMessages((prevMessages) => {
               if (
                 !prevMessages.some(

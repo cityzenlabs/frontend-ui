@@ -61,7 +61,6 @@ function CommunityDiscovery() {
             />
           </div>
 
-          {/* Menu button shown on non-large screens */}
           {!isLargeScreen && (
             <IMenuButton
               options={[

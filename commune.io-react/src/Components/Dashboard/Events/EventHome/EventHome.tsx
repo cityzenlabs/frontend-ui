@@ -106,7 +106,7 @@ function EventHome() {
             : navigate(`/event/manage/${eventId}`);
         }}
         marginTop="mt-0"
-        paddingB={8}
+        paddingB={4}
       />
 
       <IEventPanel
@@ -120,7 +120,7 @@ function EventHome() {
             : navigate(`/event/manage/${eventId}`);
         }}
         marginTop="mt-0"
-        paddingB={8}
+        paddingB={4}
       />
 
       <IEventPanel
@@ -134,7 +134,7 @@ function EventHome() {
             : navigate(`/event/manage/${eventId}`);
         }}
         marginTop="mt-0"
-        paddingB={8}
+        paddingB={4}
       />
     </div>
   );

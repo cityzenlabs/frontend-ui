@@ -22,7 +22,6 @@ function Settings({ profilePicture, getUpdatedUser, userHome, token }: any) {
                 "Security",
                 "Notifications",
                 "Subscription",
-                "Billing",
                 "Support",
               ].map((tab) => (
                 <Tab

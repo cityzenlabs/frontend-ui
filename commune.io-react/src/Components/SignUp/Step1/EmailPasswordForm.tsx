@@ -13,16 +13,13 @@ function EmailPasswordForm({ onNextStep, userData, updateUser }: any) {
 
     if (userData.email && userData.password) {
       try {
-        const response = await fetch(
-          `http://localhost:8080/users/new-user-validate`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyData),
+        const response = await fetch(`http://localhost:8080/user/validate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify(bodyData),
+        });
 
         const result = await response.json();
 

@@ -65,7 +65,7 @@ function EditProfile() {
           nonEmptyFields,
           accessToken.token,
         );
-        if (response) {
+        if (response.id) {
           updateUserFields(nonEmptyFields);
           resetForm();
         }

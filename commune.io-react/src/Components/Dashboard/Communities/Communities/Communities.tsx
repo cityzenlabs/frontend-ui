@@ -30,17 +30,11 @@ function Communities({
   return (
     <div>
       <div className="pt-4 pb-4">
-        <ILabel text="Communities"></ILabel>
+        <ILabel text={kind}></ILabel>
       </div>
       <div>
         <div className={` rounded-lg bg-white px-7 py-2`}>
           <div className="flex justify-between items-center mb-1">
-            <div
-              className={`font-medium ${title ? "my-auto" : ""}`}
-              style={{ color: titleColor }}
-            >
-              {kind}
-            </div>
             {buttonLabel && (
               <button
                 className="text-xs border rounded px-4 py-1 my-auto"
@@ -66,7 +60,7 @@ function Communities({
               >
                 <div className="h-28 overflow-hidden rounded-t-lg">
                   <img
-                    src={community?.picture}
+                    src={community?.photo}
                     alt={community?.name}
                     className="w-full h-full object-cover"
                   />
