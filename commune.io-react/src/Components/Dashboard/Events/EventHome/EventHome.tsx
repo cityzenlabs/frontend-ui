@@ -97,7 +97,7 @@ function EventHome() {
 
       <IEventPanel
         title="Ongoing"
-        buttonLabel="Show All"
+        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
         height="600px"
         events={ongoingEvents}
         onEventClick={(eventName, eventId) => {
@@ -107,11 +107,16 @@ function EventHome() {
         }}
         marginTop="mt-0"
         paddingB={4}
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Ongoing Events")}`, {
+            state: { events: ongoingEvents },
+          })
+        }
       />
 
       <IEventPanel
         title="Pending"
-        buttonLabel="Show All"
+        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
         height="600px"
         events={pendingEvents}
         onEventClick={(eventName, eventId) => {
@@ -121,11 +126,16 @@ function EventHome() {
         }}
         marginTop="mt-0"
         paddingB={4}
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Pending Events")}`, {
+            state: { events: pendingEvents },
+          })
+        }
       />
 
       <IEventPanel
         title="Completed"
-        buttonLabel="Show All"
+        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
         height="600px"
         events={completedEvents}
         onEventClick={(eventName, eventId) => {
@@ -135,6 +145,11 @@ function EventHome() {
         }}
         marginTop="mt-0"
         paddingB={4}
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Completed Events")}`, {
+            state: { events: completedEvents },
+          })
+        }
       />
     </div>
   );

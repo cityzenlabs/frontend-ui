@@ -113,6 +113,7 @@ function Community() {
           <CommunityDetails
             community={community}
             organizer={organizer}
+            organizerId={organizerId}
             communityId={communityId}
             communityPicture={communityPicture}
             membersList={membersList}
@@ -124,7 +125,14 @@ function Community() {
             title="Upcoming Hosted Events"
             height="600px"
             buttonLabel={showAllHostedEvents ? "Show Less" : "Show All"}
-            onButtonClick={() => console.log("")}
+            onButtonClick={() =>
+              navigate(
+                `/events/${encodeURIComponent("Upcoming Hosted Events")}`,
+                {
+                  state: { events: hostedEvents },
+                },
+              )
+            }
             events={hostedEvents}
             showAll={showAllHostedEvents}
             onEventClick={(eventName, eventId) => {
@@ -140,7 +148,14 @@ function Community() {
             title="Upcoming Social Events"
             height="600px"
             buttonLabel={showAllSocialEvents ? "Show Less" : "Show All"}
-            onButtonClick={() => console.log("")}
+            onButtonClick={() =>
+              navigate(
+                `/events/${encodeURIComponent("Upcoming Social Events")}`,
+                {
+                  state: { events: socialEvents },
+                },
+              )
+            }
             events={socialEvents}
             showAll={showAllSocialEvents}
             onEventClick={(eventName, eventId) => {

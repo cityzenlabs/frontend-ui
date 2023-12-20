@@ -1,36 +1,42 @@
-import React from "react";
 import { CameraIcon } from "@heroicons/react/outline";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ISpinner from "../../../../Library/Spinner/ISpinner";
+import ILabel from "../../../../Library/Label/ILabel";
 
-interface IEventPanelProps {
-  events: any[];
-  showAll?: boolean;
-  onEventClick?: (name: string, id: string) => void;
-  title?: string;
-  buttonLabel?: string;
-  onButtonClick?: () => void;
-  height?: string;
-  marginTop?: string;
-  titleColor?: string;
-
-  paddingB?: number;
-}
-
-const IEventPanel: React.FC<IEventPanelProps> = ({
-  events,
+function Events({
   showAll,
   onEventClick,
   title,
   buttonLabel,
   onButtonClick,
-  height = "h-[244px]",
+  //height = "h-[244px]",
   marginTop = "mt-0",
   titleColor,
   paddingB = 4,
-}) => {
-  const paddingBClass = `pb-${paddingB}`;
+}: any) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { kind }: any = useParams();
+  const [events, setEvents] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (location.state?.events) {
+      setEvents(location.state.events);
+      setIsLoading(false);
+    }
+  }, [location.state]);
+
+  if (isLoading) {
+    return <ISpinner />;
+  }
   return (
-    <div className={`${marginTop} ${paddingBClass}`}>
-      <div className={`${height} rounded-lg bg-white px-7 py-2`}>
+    <div>
+      <div className="pt-4 pb-4">
+        <ILabel text={kind}></ILabel>
+      </div>
+      <div className={` rounded-lg bg-white px-7 py-2`}>
         <div className="flex justify-between items-center mb-1">
           <div
             className={`font-medium ${title ? "my-auto" : ""}`}
@@ -52,19 +58,17 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1 pb-4">
-          {events?.slice(0, 4).map((event, index) => (
+          {events?.map((event: any, index: any) => (
             <div
               key={index}
               className="rounded-lg shadow-md flex flex-col"
-              onClick={() =>
-                onEventClick && onEventClick(event?.name, event?.id)
-              }
+              onClick={() => navigate(`/event/${event?.name}/${event?.id}`)}
             >
               <div className="h-28 overflow-hidden rounded-t-lg">
                 {event?.photo ? (
                   <img
                     src={event?.photo}
-                    alt={event?.name}
+                    alt={event.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -74,11 +78,11 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
                 )}
               </div>
               <div className="px-2 pt-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium truncate">{event?.name}</h3>
+                <h3 className="text-sm font-medium truncate">{event.name}</h3>
               </div>
               <div className="px-2 flex items-center justify-between">
                 <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event?.category}
+                  {event.category}
                 </div>
                 <div className="text-xs font-medium truncate text-[#7E858B]">
                   Public
@@ -86,10 +90,10 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
               </div>
               <div className="px-2 pb-2 flex items-center justify-between">
                 <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event?.address}
+                  {event.address}
                 </div>
                 <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event?.attendees + " Attendees"}
+                  {event.attendees + " Attendees"}
                 </div>
               </div>
             </div>
@@ -98,6 +102,6 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
       </div>
     </div>
   );
-};
+}
 
-export default IEventPanel;
+export default Events;

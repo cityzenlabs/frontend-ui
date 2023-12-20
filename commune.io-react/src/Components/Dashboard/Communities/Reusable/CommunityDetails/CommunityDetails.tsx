@@ -18,6 +18,7 @@ const CommunityDetails = ({
   organizer,
   communityId,
   membersList,
+  organizerId,
 }: any) => {
   let navigate = useNavigate();
 
@@ -86,7 +87,7 @@ const CommunityDetails = ({
       <div className="col-span-3 xl:col-span-1 flex flex-col gap-5">
         <IPanel height="177px">
           <div className="flex items-center ">
-            <div>
+            <div onClick={() => navigate(`/profile/${organizerId}`)}>
               <img
                 src={organizer?.photo}
                 alt={``}
@@ -101,7 +102,11 @@ const CommunityDetails = ({
           </div>
 
           <div className="flex items-center ">
-            <div>
+            <div
+              onClick={() =>
+                navigate(`/community/${community?.name}/${community?.id}`)
+              }
+            >
               <img
                 src={community?.photo}
                 alt={``}

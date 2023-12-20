@@ -54,8 +54,7 @@ function Communities({
                 key={community?.communityId}
                 className="rounded-lg shadow-md flex flex-col"
                 onClick={() =>
-                  onCommunityClick &&
-                  onCommunityClick(community.name, community.id)
+                  navigate(`/community/${community?.name}/${community?.id}`)
                 }
               >
                 <div className="h-28 overflow-hidden rounded-t-lg">

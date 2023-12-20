@@ -93,11 +93,19 @@ function Profile() {
               </div>
             </div>
             <div className="grid lg:grid-cols-2 gap-8 pt-8 lg:gap-4">
-              {Object.entries(user?.attributes || {}).map(
-                ([attributeKey, attributeValue], index) => (
+              {Object.entries(user?.attributes || {})
+                .sort(([, attrA]: any, [, attrB]: any) => {
+                  // Sort by level first (assuming level and points are properties of each attribute)
+                  if (attrA.level > attrB.level) return -1;
+                  if (attrA.level < attrB.level) return 1;
+
+                  // If levels are the same, sort by points
+                  return attrB.points - attrA.points;
+                })
+                .map(([attributeKey, attributeValue], index) => (
                   <div
                     key={attributeKey}
-                    className="flex items-center xl:w-[90%] " // Flex container for each grid item
+                    className="flex items-center xl:w-[90%] "
                   >
                     <IAttributeBar
                       attributeKey={attributeKey}
@@ -105,7 +113,7 @@ function Profile() {
                       color={attributeColors[index % attributeColors.length]}
                     />
                     <div
-                      className="ml-auto border py-3 px-3 rounded" // Positioned to the right
+                      className="ml-auto border py-3 px-3 rounded"
                       style={{
                         color: attributeColors[index % attributeColors.length],
                         borderColor: `${
@@ -119,8 +127,7 @@ function Profile() {
                       {getIconForAttribute(attributeKey)}
                     </div>
                   </div>
-                ),
-              )}
+                ))}
             </div>
           </div>
         </IPanel>

@@ -20,34 +20,6 @@ function EventDiscovery() {
 
   const [eventDiscovery, setEventDiscovery] = useState<any>();
 
-  const [showAllTrending, setShowAllTrending] = useState(false);
-  const [showAllUpcoming, setShowAllUpcoming] = useState(false);
-  const [showAllRecommended, setShowAllRecommended] = useState(false);
-
-  const toggleShowAllTrending = () => {
-    setShowAllTrending((prev) => !prev);
-    if (!showAllTrending) {
-      setShowAllUpcoming(false);
-      setShowAllRecommended(false);
-    }
-  };
-
-  const toggleShowAllUpcoming = () => {
-    setShowAllUpcoming((prev) => !prev);
-    if (!showAllUpcoming) {
-      setShowAllTrending(false);
-      setShowAllRecommended(false);
-    }
-  };
-
-  const toggleShowAllRecommended = () => {
-    setShowAllRecommended((prev) => !prev);
-    if (!showAllRecommended) {
-      setShowAllTrending(false);
-      setShowAllUpcoming(false);
-    }
-  };
-
   const fetchEventDiscovery = async () => {
     try {
       const data = await EventService.getEventDiscovery(accessToken.token);
@@ -74,7 +46,6 @@ function EventDiscovery() {
       <div className="flex justify-between pt-4 pb-4">
         <ILabel text="Discover Events" />
 
-        {/* Buttons shown only on large screens */}
         <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
           <IButton
             text="Home"
@@ -89,8 +60,6 @@ function EventDiscovery() {
             className="px-6"
           />
         </div>
-
-        {/* Menu button shown on non-large screens */}
         {!isLargeScreen && (
           <IMenuButton
             options={[
@@ -106,50 +75,57 @@ function EventDiscovery() {
           />
         )}
       </div>
-      {!showAllUpcoming && !showAllRecommended && (
-        <IEventPanel
-          title="Trending"
-          buttonLabel={showAllTrending ? "Show Less" : "Show All"}
-          height="600px"
-          onButtonClick={toggleShowAllTrending}
-          events={eventDiscovery?.trendingEvents}
-          onEventClick={(eventName, eventId) => {
-            navigate(`/event/${eventName}/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={4}
-        />
-      )}
 
-      {!showAllTrending && !showAllRecommended && (
-        <IEventPanel
-          title="Upcoming"
-          buttonLabel={showAllUpcoming ? "Show Less" : "Show All"}
-          height="600px"
-          onButtonClick={toggleShowAllUpcoming}
-          events={eventDiscovery?.upcomingEvents}
-          onEventClick={(eventName, eventId) => {
-            navigate(`/event/${eventName}/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={4}
-        />
-      )}
+      <IEventPanel
+        title="Trending"
+        buttonLabel={"Show All"}
+        height="600px"
+        events={eventDiscovery?.trendingEvents}
+        onEventClick={(eventName, eventId) => {
+          navigate(`/event/${eventName}/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={4}
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Trending Events")}`, {
+            state: { events: eventDiscovery?.trendingEvents },
+          })
+        }
+      />
 
-      {!showAllTrending && !showAllUpcoming && (
-        <IEventPanel
-          title="Recommended"
-          buttonLabel={showAllRecommended ? "Show Less" : "Show All"}
-          height="600px"
-          onButtonClick={toggleShowAllRecommended}
-          events={eventDiscovery?.recommendedEvents}
-          onEventClick={(eventName, eventId) => {
-            navigate(`/event/${eventName}/${eventId}`);
-          }}
-          marginTop="mt-0"
-          paddingB={4}
-        />
-      )}
+      <IEventPanel
+        title="Upcoming"
+        buttonLabel={"Show All"}
+        height="600px"
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Upcoming Events")}`, {
+            state: { events: eventDiscovery?.upcomingEvents },
+          })
+        }
+        events={eventDiscovery?.upcomingEvents}
+        onEventClick={(eventName, eventId) => {
+          navigate(`/event/${eventName}/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={4}
+      />
+
+      <IEventPanel
+        title="Recommended"
+        buttonLabel={"Show All"}
+        height="600px"
+        onButtonClick={() =>
+          navigate(`/events/${encodeURIComponent("Recommended Events")}`, {
+            state: { events: eventDiscovery?.recommendedEvents },
+          })
+        }
+        events={eventDiscovery?.recommendedEvents}
+        onEventClick={(eventName, eventId) => {
+          navigate(`/event/${eventName}/${eventId}`);
+        }}
+        marginTop="mt-0"
+        paddingB={4}
+      />
     </div>
   );
 }

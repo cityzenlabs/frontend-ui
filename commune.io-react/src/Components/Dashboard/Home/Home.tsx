@@ -37,8 +37,13 @@ function Home() {
           <div className="pb-4">
             <IPanel title="Your Top 4 Attributes" height="h-[403px]">
               <div className="xl:flex lg:flex flex-wrap">
-                {Object.entries(userHome?.topFourAttributes || {}).map(
-                  ([attributeKey, attributeValue], index) => (
+                {Object.entries(userHome?.topFourAttributes || {})
+                  .sort(([, attrA]: any, [, attrB]: any) => {
+                    if (attrA.level > attrB.level) return -1;
+                    if (attrA.level < attrB.level) return 1;
+                    return attrB.points - attrA.points;
+                  })
+                  .map(([attributeKey, attributeValue], index) => (
                     <div
                       key={attributeKey}
                       className="flex w-full items-center mb-6 mt-2"
@@ -64,8 +69,7 @@ function Home() {
                         {getIconForAttribute(attributeKey)}
                       </div>
                     </div>
-                  ),
-                )}
+                  ))}
               </div>
             </IPanel>
           </div>
@@ -139,6 +143,11 @@ function Home() {
           onEventClick={(eventName, eventId) => {
             navigate(`/event/${eventName}/${eventId}`);
           }}
+          onButtonClick={() =>
+            navigate(`/events/${encodeURIComponent("Upcoming Events")}`, {
+              state: { events: userHome?.upcomingEvents },
+            })
+          }
         />
       )}
 

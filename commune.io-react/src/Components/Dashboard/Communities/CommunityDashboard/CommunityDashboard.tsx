@@ -189,6 +189,14 @@ function CommunityDashboard() {
             }}
             marginTop="mt-0"
             paddingB={4}
+            onButtonClick={() =>
+              navigate(
+                `/events/${encodeURIComponent("Upcoming Hosted Events")}`,
+                {
+                  state: { events: communityDashboard?.upcomingHostedEvents },
+                },
+              )
+            }
           />
 
           <IEventPanel
@@ -199,6 +207,14 @@ function CommunityDashboard() {
             onEventClick={(eventName, eventId) => {
               navigate(`/communities/event/${eventId}`);
             }}
+            onButtonClick={() =>
+              navigate(
+                `/events/${encodeURIComponent("Upcoming Social Events")}`,
+                {
+                  state: { events: communityDashboard?.upcomingSocialEvents },
+                },
+              )
+            }
             marginTop="mt-0"
             paddingB={4}
           />

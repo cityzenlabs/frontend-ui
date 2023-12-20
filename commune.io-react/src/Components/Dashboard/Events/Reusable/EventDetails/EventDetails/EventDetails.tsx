@@ -11,8 +11,9 @@ function EventDetails({
   event,
   organizer,
   community,
-  communityPicture,
+  organizerId,
   attendeesList,
+  communityId,
 }: any) {
   let navigate = useNavigate();
 
@@ -80,7 +81,7 @@ function EventDetails({
       <div className="col-span-3 xl:col-span-1 flex flex-col gap-5">
         <IPanel height="177px">
           <div className="flex items-center">
-            <div>
+            <div onClick={() => navigate(`/profile/${organizerId}`)}>
               <img
                 src={organizer?.photo || "default-avatar.png"}
                 alt={`${organizer?.firstName} ${organizer?.lastName}`}
@@ -95,7 +96,11 @@ function EventDetails({
           </div>
 
           <div className="flex items-center">
-            <div>
+            <div
+              onClick={() =>
+                navigate(`/community/${community?.name}/${communityId}`)
+              }
+            >
               <img
                 src={community?.photo || "default-event-image.png"}
                 alt={event?.name}

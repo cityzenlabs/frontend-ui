@@ -1,6 +1,7 @@
 import React from "react";
 import IPanel from "../../../../Library/Panel/IPanel";
 import { tableStyle, thStyle, tdStyle, imgStyle } from "./LeaderBoardStyles";
+import { useNavigate } from "react-router-dom";
 
 // TypeScript interface for a community
 interface Community {
@@ -17,7 +18,7 @@ interface Community {
 // Props interface for ICommunityLeaderBoard component
 interface CommunityLeaderBoardProps {
   communities: Community[];
-  onRowClick: (communityId: string) => void;
+  onRowClick: (community: any) => void;
   page: number;
   firstThree: Community[];
 }
@@ -31,7 +32,7 @@ const TableRow = ({
 }: {
   community: Community;
   index: number;
-  onRowClick: (id: string) => void;
+  onRowClick: (community: any) => void;
   page: number;
 }) => {
   return (
@@ -71,6 +72,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
   page,
   firstThree,
 }) => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="xl:flex gap-2">
@@ -79,7 +81,12 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
             <IPanel>
               <div className="text-lg pb-2 ">{index + 1}.</div>
               <div className="flex items-center ">
-                <div className="pb-2">
+                <div
+                  className="pb-2"
+                  onClick={() =>
+                    navigate(`/community/${community?.name}/${community?.id}`)
+                  }
+                >
                   <img
                     src={community?.picture}
                     alt={``}

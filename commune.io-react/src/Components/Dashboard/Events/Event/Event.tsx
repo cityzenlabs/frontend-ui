@@ -23,6 +23,7 @@ function Event() {
   const [community, setCommunity] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [attendeesList, setAttendeesList] = useState<any>();
+  const [communityId, setCommunityId] = useState<any>();
 
   const fetchEvent = async () => {
     try {
@@ -33,6 +34,7 @@ function Event() {
         setOrganizer(eventPage?.organizer);
         setCommunity(eventPage?.host);
         setAttendeesList(eventPage?.event?.attendees);
+        setCommunityId(eventPage?.event?.hostId);
       }
     } catch (error) {}
   };
@@ -102,9 +104,11 @@ function Event() {
         <EventDetails
           event={event}
           organizer={organizer}
+          organizerId={organizerId}
           community={community}
           communityPicture={communityPicture}
           attendeesList={attendeesList}
+          communityId={communityId}
         />
       </div>
 
@@ -119,6 +123,11 @@ function Event() {
           }}
           marginTop="mt-0"
           paddingB={8}
+          onButtonClick={() =>
+            navigate(`/events/${encodeURIComponent("Related Events")}`, {
+              state: { events: relatedEvents },
+            })
+          }
         />
       )}
     </div>

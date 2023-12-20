@@ -34,6 +34,7 @@ import Profile from "./Components/Dashboard/Profile/Profile";
 import EventCreate from "./Components/Dashboard/Events/EventCreate/EventCreate";
 import { ScreenSizeProvider } from "./Context/ScreenContext";
 import Communities from "./Components/Dashboard/Communities/Communities/Communities";
+import Events from "./Components/Dashboard/Events/Events/Events";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             >
               <Route path="home" element={<Home />} />
               <Route path="communities/:kind" element={<Communities />} />
+              <Route path="events/:kind" element={<Events />} />
               <Route path="communities" element={<CommunityDiscovery />} />
               <Route
                 path="community/:communityName/:communityId"
