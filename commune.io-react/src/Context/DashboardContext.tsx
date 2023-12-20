@@ -11,6 +11,7 @@ export const DashboardProvider = ({ children }: any) => {
   const [user, setUser] = useState<any>({});
   const [isLoading, setIsLoading] = useState<any>(true);
   const accessToken = useAuth();
+  const [trigger, setTrigger] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,6 @@ export const DashboardProvider = ({ children }: any) => {
   }, [accessToken]);
 
   const updateUserFields = (fieldsToUpdate: any) => {
-    console.log(user);
     setUser((prevUser: any) => ({
       ...prevUser,
       ...fieldsToUpdate,

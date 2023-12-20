@@ -18,6 +18,8 @@ function Home() {
     return <ISpinner />;
   }
 
+  console.log(userHome);
+
   return (
     <div>
       <div className="pt-4">
@@ -37,7 +39,7 @@ function Home() {
           <div className="pb-4">
             <IPanel title="Your Top 4 Attributes" height="h-[403px]">
               <div className="xl:flex lg:flex flex-wrap">
-                {Object.entries(userHome?.topFourAttributes || {})
+                {Object.entries(userHome?.topAttributes || {})
                   .sort(([, attrA]: any, [, attrB]: any) => {
                     if (attrA.level > attrB.level) return -1;
                     if (attrA.level < attrB.level) return 1;
@@ -81,54 +83,60 @@ function Home() {
             height="h-[471px]"
           >
             <div className="pt-2">
-              {(userHome?.levelUpEvents || [])
-                .slice(0, 4)
-                .map((event: any, index: any) => (
-                  <div
-                    onClick={() =>
-                      navigate(`/event/${event?.name}/${event?.id}`)
-                    }
-                    key={index}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "16px",
-                      background: "#f9f9f9",
-                      overflow: "hidden",
-                    }}
-                  >
+              {Object.keys(userHome?.topAttributeEvents).map((attribute) => {
+                const events = userHome?.topAttributeEvents[attribute];
+                if (events.length > 0) {
+                  const firstEvent = events[0];
+                  return (
                     <div
-                      className="py-3 px-3 rounded"
-                      style={{ width: "100px", height: "90px" }}
+                      onClick={() =>
+                        navigate(`/event/${firstEvent.name}/${firstEvent.id}`)
+                      }
+                      key={firstEvent.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "16px",
+                        background: "#f9f9f9",
+                        overflow: "hidden",
+                      }}
                     >
-                      <img
-                        src={event.picture}
-                        alt={event.name}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          borderRadius: "8px 8px 8px 8px",
-                        }}
-                      />
-                    </div>
-                    <div style={{ padding: "8px 16px" }}>
-                      <div style={{ margin: "0" }} className="text-sm">
-                        {event.name}
-                      </div>
                       <div
-                        style={{ margin: "0", color: "#666" }}
-                        className="text-xs"
+                        className="py-3 px-3 rounded"
+                        style={{ width: "100px", height: "90px" }}
                       >
-                        {formatDate(event.startTime) + " • "}
-                        {formatDate(event.endTime)}
+                        <img
+                          src={firstEvent.photo}
+                          alt={firstEvent.name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            borderRadius: "8px 8px 8px 8px",
+                          }}
+                        />
                       </div>
-                      <div className="text-xs" style={{ color: "#666" }}>
-                        {event.address}
+                      <div style={{ padding: "8px 16px" }}>
+                        <div style={{ margin: "0" }} className="text-sm">
+                          {firstEvent.name}
+                        </div>
+                        <div
+                          style={{ margin: "0", color: "#666" }}
+                          className="text-xs"
+                        >
+                          {formatDate(firstEvent.startTime) + " • "}
+                          {formatDate(firstEvent.endTime)}
+                        </div>
+                        <div className="text-xs" style={{ color: "#666" }}>
+                          {firstEvent.address + " | " + firstEvent?.attribute}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                } else {
+                  return null; // If no events for this attribute, skip rendering
+                }
+              })}
             </div>
           </IPanel>
         </div>

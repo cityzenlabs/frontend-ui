@@ -136,6 +136,8 @@ function CommunityDashboardEdit() {
       return acc;
     }, {});
 
+    console.log(updatedFields);
+
     try {
       const result = await CommunityService.editCommunity(
         accessToken.token,
@@ -231,7 +233,7 @@ function CommunityDashboardEdit() {
             {
               name: "Social",
               placeholder: "Social",
-              displayLabel: `Social- ${community?.attributeRequirements.SOCIAL}`,
+              displayLabel: `Social- ${community?.attributeRequirements?.SOCIAL}`,
               value: social,
               numberOnly: true,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -240,7 +242,7 @@ function CommunityDashboardEdit() {
             {
               name: "Intelligence",
               placeholder: "",
-              displayLabel: `Intelligence - ${community?.attributeRequirements.INTELLIGENCE}`,
+              displayLabel: `Intelligence - ${community?.attributeRequirements?.INTELLIGENCE}`,
               numberOnly: true,
               value: intelligence,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -249,7 +251,7 @@ function CommunityDashboardEdit() {
             {
               name: "Night Life",
               placeholder: "Night Life",
-              displayLabel: `Night Life - ${community?.attributeRequirements.NIGHTLIFE}`,
+              displayLabel: `Night Life - ${community?.attributeRequirements?.NIGHTLIFE}`,
               numberOnly: true,
               value: nightLife,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -266,7 +268,7 @@ function CommunityDashboardEdit() {
             {
               name: "Adventure",
               placeholder: "Adventure",
-              displayLabel: `Adventure - ${community?.attributeRequirements.ADVENTURE}`,
+              displayLabel: `Adventure - ${community?.attributeRequirements?.ADVENTURE}`,
               numberOnly: true,
               value: adventure,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -275,7 +277,7 @@ function CommunityDashboardEdit() {
             {
               name: "Culture",
               placeholder: "Culture",
-              displayLabel: `Culture - ${community?.attributeRequirements.CULTURE}`,
+              displayLabel: `Culture - ${community?.attributeRequirements?.CULTURE}`,
               numberOnly: true,
               value: culture,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -285,7 +287,7 @@ function CommunityDashboardEdit() {
             {
               name: "Fitness",
               placeholder: "Fitness",
-              displayLabel: `Fitness - ${community?.attributeRequirements.FITNESS}`,
+              displayLabel: `Fitness - ${community?.attributeRequirements?.FITNESS}`,
               numberOnly: true,
               value: fitness,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -299,8 +301,8 @@ function CommunityDashboardEdit() {
           <IDropdown
             labelText="Gender Requirements"
             placeholder={
-              community?.genderRequirements.toUpperCase()[0] +
-              community?.genderRequirements.toLowerCase().slice(1)
+              community?.genderRequirements?.toUpperCase()[0] +
+              community?.genderRequirements?.toLowerCase().slice(1)
             }
             options={[
               { label: "Male", value: "MALE" },

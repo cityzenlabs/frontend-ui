@@ -18,7 +18,7 @@ interface Community {
 // Props interface for ICommunityLeaderBoard component
 interface CommunityLeaderBoardProps {
   communities: Community[];
-  onRowClick: (community: any) => void;
+  onRowClick: (communityName: any, communityId: any) => void;
   page: number;
   firstThree: Community[];
 }
@@ -32,14 +32,14 @@ const TableRow = ({
 }: {
   community: Community;
   index: number;
-  onRowClick: (community: any) => void;
+  onRowClick: (communityName: any, communityId: any) => void;
   page: number;
 }) => {
   return (
     <tr
       key={community.id}
       style={{ border: "1px solid #DADEE5" }}
-      onClick={() => onRowClick(community.id)}
+      onClick={() => onRowClick(community?.name, community?.id)}
     >
       <td style={tdStyle}>{4 + (page - 1) * 7 + index}.</td>
       <td style={tdStyle}>

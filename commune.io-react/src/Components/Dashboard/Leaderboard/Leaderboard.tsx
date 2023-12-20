@@ -160,8 +160,8 @@ function Leaderboard() {
           {category === "community" && (
             <CommunityLeaderBoard
               communities={rest}
-              onRowClick={(community) =>
-                navigate(`/community/${community?.name}/${community?.id}`)
+              onRowClick={(communityName: any, communityId: any) =>
+                navigate(`/community/${communityName}/${communityId}`)
               }
               page={page}
               firstThree={firstThree}
