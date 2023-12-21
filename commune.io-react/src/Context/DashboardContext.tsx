@@ -7,19 +7,15 @@ const DashboardContext = React.createContext<any>("");
 export const useDashboard = () => useContext(DashboardContext);
 
 export const DashboardProvider = ({ children }: any) => {
-  const [userHome, setUserHome] = useState<any>(null);
   const [user, setUser] = useState<any>({});
   const [isLoading, setIsLoading] = useState<any>(true);
   const accessToken = useAuth();
-  const [trigger, setTrigger] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDataPromise = UserService.fetchUserHome(accessToken.token);
-        const [userHomeData] = await Promise.all([userDataPromise]);
-        setUserHome(userHomeData);
-        setUser(userHomeData.user);
+        const user = await UserService.fetchUserProfile(accessToken.token);
+        setUser(user);
         setIsLoading(false);
       } catch (error) {}
     };
@@ -67,7 +63,6 @@ export const DashboardProvider = ({ children }: any) => {
   return (
     <DashboardContext.Provider
       value={{
-        userHome,
         user,
         isLoading,
         updateUserFields,

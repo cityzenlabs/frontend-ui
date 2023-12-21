@@ -9,16 +9,39 @@ import IEventPanel from "../../../Library/EventPanel/IEventPanel";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import { formatDate, getIconForAttribute } from "../Constants/Constants";
 import ILabel from "../../../Library/Label/ILabel";
+import * as UserService from "../../../Services/UserService/UserService";
+import { useAuth } from "../../../Context/AuthContext";
 
 function Home() {
   const navigate = useNavigate();
-  const { userHome, user, isLoading } = useDash();
+  const accessToken = useAuth();
+  const { user } = useDash();
+  const [userHome, setUserHome] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetchUserHome = async () => {
+    try {
+      const userHome = await UserService.fetchUserHome(accessToken.token);
+      if (userHome) {
+        setUserHome(userHome);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchUserHome();
+      } catch (error) {}
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [accessToken.token]);
 
   if (isLoading) {
     return <ISpinner />;
   }
-
-  console.log(userHome);
 
   return (
     <div>
@@ -83,60 +106,61 @@ function Home() {
             height="h-[471px]"
           >
             <div className="pt-2">
-              {Object.keys(userHome?.topAttributeEvents).map((attribute) => {
-                const events = userHome?.topAttributeEvents[attribute];
-                if (events.length > 0) {
-                  const firstEvent = events[0];
-                  return (
-                    <div
-                      onClick={() =>
-                        navigate(`/event/${firstEvent.name}/${firstEvent.id}`)
-                      }
-                      key={firstEvent.id}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "16px",
-                        background: "#f9f9f9",
-                        overflow: "hidden",
-                      }}
-                    >
+              {userHome?.topAttributeEvents &&
+                Object.keys(userHome?.topAttributeEvents).map((attribute) => {
+                  const events = userHome?.topAttributeEvents[attribute];
+                  if (events && events.length > 0) {
+                    const firstEvent = events[0];
+                    return (
                       <div
-                        className="py-3 px-3 rounded"
-                        style={{ width: "100px", height: "90px" }}
+                        onClick={() =>
+                          navigate(`/event/${firstEvent.name}/${firstEvent.id}`)
+                        }
+                        key={firstEvent.id}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                          background: "#f9f9f9",
+                          overflow: "hidden",
+                        }}
                       >
-                        <img
-                          src={firstEvent.photo}
-                          alt={firstEvent.name}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            borderRadius: "8px 8px 8px 8px",
-                          }}
-                        />
-                      </div>
-                      <div style={{ padding: "8px 16px" }}>
-                        <div style={{ margin: "0" }} className="text-sm">
-                          {firstEvent.name}
-                        </div>
                         <div
-                          style={{ margin: "0", color: "#666" }}
-                          className="text-xs"
+                          className="py-3 px-3 rounded"
+                          style={{ width: "100px", height: "90px" }}
                         >
-                          {formatDate(firstEvent.startTime) + " • "}
-                          {formatDate(firstEvent.endTime)}
+                          <img
+                            src={firstEvent.photo}
+                            alt={firstEvent.name}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              borderRadius: "8px 8px 8px 8px",
+                            }}
+                          />
                         </div>
-                        <div className="text-xs" style={{ color: "#666" }}>
-                          {firstEvent.address + " | " + firstEvent?.attribute}
+                        <div style={{ padding: "8px 16px" }}>
+                          <div style={{ margin: "0" }} className="text-sm">
+                            {firstEvent.name}
+                          </div>
+                          <div
+                            style={{ margin: "0", color: "#666" }}
+                            className="text-xs"
+                          >
+                            {formatDate(firstEvent.startTime) + " • "}
+                            {formatDate(firstEvent.endTime)}
+                          </div>
+                          <div className="text-xs" style={{ color: "#666" }}>
+                            {firstEvent.address + " | " + firstEvent?.attribute}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                } else {
-                  return null; // If no events for this attribute, skip rendering
-                }
-              })}
+                    );
+                  } else {
+                    return null; // If no events for this attribute, skip rendering
+                  }
+                })}
             </div>
           </IPanel>
         </div>
@@ -147,7 +171,7 @@ function Home() {
           events={userHome?.upcomingEvents}
           title="Upcoming Events"
           height="600px"
-          buttonLabel="Show All"
+          buttonLabel={userHome?.upcomingEvents?.length ? "Show All" : ""}
           onEventClick={(eventName, eventId) => {
             navigate(`/event/${eventName}/${eventId}`);
           }}

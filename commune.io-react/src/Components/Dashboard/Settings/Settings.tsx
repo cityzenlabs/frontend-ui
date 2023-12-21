@@ -7,7 +7,7 @@ import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
 import Subscriptions from "./Subscriptions/Subscriptions";
 
-function Settings({ profilePicture, getUpdatedUser, userHome, token }: any) {
+function Settings({ token }: any) {
   return (
     <div>
       <div className="pt-4 pb-4">
