@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IAttributeBar from "../../../Library/AttributeBar/IAttributeBar";
 import IPanel from "../../../Library/Panel/IPanel";
-import IContainer from "../../../Library/Container/IContainer";
 import { attributeColors } from "../Home/Constants/HomeConstats";
 import * as UserService from "../../../Services/UserService/UserService";
 import * as CommunityService from "../../../Services/CommunityService/CommunityService";

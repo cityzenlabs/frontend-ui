@@ -28,7 +28,7 @@ const IMenuButton: React.FC<IMenuButtonProps> = ({ options }) => {
         </div>
       </Menu.Button>
 
-      <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none">
+      <Menu.Items className="z-50  absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none">
         {options.map((option, index) => (
           <Menu.Item key={index}>
             {({ active }) => (

@@ -1,8 +1,10 @@
-import { CameraIcon } from "@heroicons/react/outline";
+import { CameraIcon, UsersIcon } from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 import ILabel from "../../../../Library/Label/ILabel";
+import { useDash } from "../../../../Context/DashboardContext";
+import { formatDate } from "../../Constants/Constants";
 
 function Events({
   showAll,
@@ -20,9 +22,11 @@ function Events({
   const { kind }: any = useParams();
   const [events, setEvents] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { user } = useDash();
 
   useEffect(() => {
     if (location.state?.events) {
+      console.log(location.state.events);
       setEvents(location.state.events);
       setIsLoading(false);
     }
@@ -36,68 +40,75 @@ function Events({
       <div className="pt-4 pb-4">
         <ILabel text={kind}></ILabel>
       </div>
-      <div className={` rounded-lg bg-white px-7 py-2`}>
-        <div className="flex justify-between items-center mb-1">
-          <div
-            className={`font-medium ${title ? "my-auto" : ""}`}
-            style={{ color: titleColor }}
-          >
-            {title}
-          </div>
-          {buttonLabel && (
-            <button
-              className="text-xs border rounded px-4 py-1 my-auto"
-              onClick={(e) => {
-                e.stopPropagation();
-                onButtonClick && onButtonClick();
-              }}
-            >
-              {buttonLabel}
-            </button>
-          )}
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1 pb-4">
-          {events?.map((event: any, index: any) => (
-            <div
-              key={index}
-              className="rounded-lg shadow-md flex flex-col"
-              onClick={() => navigate(`/event/${event?.name}/${event?.id}`)}
-            >
-              <div className="h-28 overflow-hidden rounded-t-lg">
-                {event?.photo ? (
-                  <img
-                    src={event?.photo}
-                    alt={event.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="flex justify-center items-center w-full h-full bg-gray-100 rounded-t-lg">
-                    <CameraIcon className="w-8 h-8 text-gray-500" />
+      <div>
+        <div className="xl:w-3/4 w-full">
+          <div>
+            {events?.map((event: any) => (
+              <div
+                key={event?.communityId}
+                className="pb-4 flex justify-between"
+                onClick={() => navigate(`/event/${event?.name}/${event?.id}`)}
+              >
+                <div className="flex ">
+                  <div className=" h-[170px] xl:w-[250px] w-[200px]  overflow-hidden rounded">
+                    <img
+                      src={event?.photo}
+                      alt={event?.name}
+                      className=" w-full h-full object-cover "
+                    />
                   </div>
-                )}
-              </div>
-              <div className="px-2 pt-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium truncate">{event.name}</h3>
-              </div>
-              <div className="px-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event.category}
+                  <div className="ml-4 mt-1 text-[10px]">
+                    <span className="border rounded-full py-1 px-3 font-thin text-white bg-black">
+                      {event?.private ? "PRIVATE" : "PUBLIC"}
+                    </span>
+                    <div className="mt-4">
+                      <div className="text-xs font-thin mb-1">
+                        {formatDate(event?.startTime)}
+                      </div>
+                      <div className="text-lg mb-1">{event?.name}</div>
+                      <div
+                        className="text-xs font-thin xl:w-[300px] lg:w-[200px] md:w-[150px] sm:w-[200px] w-[200px] mb-1"
+                        style={{
+                          maxHeight: "inherit",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      </div>
+                      <div className="text-xs font-thin">{event?.address}</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  Public
+
+                <div
+                  className="border bg-black px-2 rounded-full flex items-center font-thin"
+                  style={{ height: "fit-content" }}
+                >
+                  <div className="text-sm mr-1 text-white">
+                    {event?.attendees}
+                  </div>
+                  <div>
+                    <UsersIcon
+                      className="h-3.5 w-3.5 text-white"
+                      aria-hidden="true"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="px-2 pb-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event.address}
-                </div>
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event.attendees + " Attendees"}
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

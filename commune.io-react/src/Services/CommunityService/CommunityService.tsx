@@ -1,6 +1,6 @@
 export const createCommunity = async (community: any, token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities`, {
+    const response = await fetch(`http://localhost:8080/community`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const createCommunity = async (community: any, token: any) => {
 export const getCommunityDashboard = async (communityId: any, token: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${communityId}/dashboard`,
+      `http://localhost:8080/community/${communityId}/dashboard`,
       {
         method: "GET",
         headers: {
@@ -42,16 +42,13 @@ export const getCommunityDashboard = async (communityId: any, token: any) => {
 
 export const getCommunityDiscovery = async (token: any) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/communities/discovery`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`http://localhost:8080/community/discovery`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     if (response.ok) {
       return response.json();
     } else {
@@ -65,7 +62,7 @@ export const getCommunityDiscovery = async (token: any) => {
 export const getCommunityEvents = async (id: any, token: any, status: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/events/${status}`,
+      `http://localhost:8080/community/${id}/events/${status}`,
       {
         method: "GET",
         headers: {
@@ -87,7 +84,7 @@ export const getCommunityEvents = async (id: any, token: any, status: any) => {
 export const getCommunityMembers = async (id: any, token: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/members`,
+      `http://localhost:8080/community/${id}/members`,
       {
         method: "GET",
         headers: {
@@ -108,7 +105,7 @@ export const getCommunityMembers = async (id: any, token: any) => {
 
 export const getCommunityPage = async (id: any, token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities/${id}`, {
+    const response = await fetch(`http://localhost:8080/community/${id}/page`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -127,7 +124,7 @@ export const getCommunityPage = async (id: any, token: any) => {
 
 export const getCommunityHome = async (token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities/home`, {
+    const response = await fetch(`http://localhost:8080/community/home`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +151,7 @@ export const updateCommunityPicture = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/photo`,
+      `http://localhost:8080/community/${id}/photo`,
       {
         method: "PUT",
         headers: {
@@ -176,16 +173,13 @@ export const updateCommunityPicture = async (
 
 export const getJoinedCommunities = async (token: any, id: any) => {
   try {
-    const response = await fetch(
-      `http://localhost:8080/communities/${id}/joined`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`http://localhost:8080/user/${id}/joined`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     if (response.ok) {
       return response.json();
     } else {
@@ -199,7 +193,7 @@ export const getJoinedCommunities = async (token: any, id: any) => {
 export const leaveCommunity = async (token: any, id: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/members`,
+      `http://localhost:8080/community/${id}/members`,
       {
         method: "DELETE",
         headers: {
@@ -221,7 +215,7 @@ export const leaveCommunity = async (token: any, id: any) => {
 export const joinCommunity = async (token: any, id: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/members`,
+      `http://localhost:8080/community/${id}/members`,
       {
         method: "PUT",
         headers: {
@@ -242,7 +236,7 @@ export const joinCommunity = async (token: any, id: any) => {
 
 export const editCommunity = async (token: any, id: any, community: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities/${id}`, {
+    const response = await fetch(`http://localhost:8080/community/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -263,7 +257,7 @@ export const editCommunity = async (token: any, id: any, community: any) => {
 export const getCommunityPhotoGallery = async (token: any, id: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/communities/${id}/gallery`,
+      `http://localhost:8080/community/${id}/gallery`,
       {
         method: "GET",
         headers: {

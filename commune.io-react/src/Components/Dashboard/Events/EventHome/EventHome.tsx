@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import ILabel from "../../../../Library/Label/ILabel";
-import IContainer from "../../../../Library/Container/IContainer";
 import IPanel from "../../../../Library/Panel/IPanel";
 import * as EventService from "../../../../Services/EventService/EventService";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
+import IToggleButton from "../../../../Library/ToggleButton/IToggleButton";
 
 function EventHome() {
   const accessToken = useAuth();
   const navigate = useNavigate();
   const [eventHome, setEventHome] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const [joinedOrCreated, setJoinedOrCreated] = useState<any>("");
+  const [activeTab, setActiveTab] = useState<any>("");
   const [pendingEvents, setPendingEvents] = useState<any>();
   const [ongoingEvents, setOngoingEvents] = useState<any>();
   const [completedEvents, setCompletedEvents] = useState<any>();
@@ -41,17 +40,21 @@ function EventHome() {
 
   useEffect(() => {
     if (eventHome) {
-      if (joinedOrCreated === "Joined") {
+      if (activeTab === "Joined") {
         setPendingEvents(eventHome.pendingJoinedEvents);
         setCompletedEvents(eventHome.completedJoinedEvents);
         setOngoingEvents(eventHome.ongoingJoinedEvents);
-      } else if (joinedOrCreated === "Created") {
+      } else if (activeTab === "Created") {
         setPendingEvents(eventHome.pendingCreatedEvents);
         setCompletedEvents(eventHome.completedCreatedEvents);
         setOngoingEvents(eventHome.ongoingCreatedEvents);
       }
     }
-  }, [joinedOrCreated, eventHome]);
+  }, [activeTab, eventHome]);
+
+  const handleToggle = (tab: any) => {
+    setActiveTab(tab);
+  };
 
   if (isLoading) {
     return <ISpinner />;
@@ -59,23 +62,12 @@ function EventHome() {
 
   return (
     <div>
-      <div className="xl:flex lg:flex items-center justify-between pb-4 pt-4">
+      <div className="flex items-center justify-between pb-4 pt-4">
         <div className="flex items-center">
           <ILabel text="Event Home" />
         </div>
         <div>
-          <IMenuButton
-            options={[
-              {
-                label: "Joined",
-                action: () => setJoinedOrCreated("Joined"),
-              },
-              {
-                label: "Created",
-                action: () => setJoinedOrCreated("Created"),
-              },
-            ]}
-          />
+          <IToggleButton activeTab={activeTab} onToggle={handleToggle} />
         </div>
       </div>
 
@@ -97,11 +89,11 @@ function EventHome() {
 
       <IEventPanel
         title="Ongoing"
-        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
+        buttonLabel={activeTab === "" ? "" : "Show All"}
         height="600px"
         events={ongoingEvents}
         onEventClick={(eventName, eventId) => {
-          joinedOrCreated === "Joined"
+          activeTab === "Joined"
             ? navigate(`/event/${eventName}/${eventId}`)
             : navigate(`/event/manage/${eventId}`);
         }}
@@ -116,11 +108,11 @@ function EventHome() {
 
       <IEventPanel
         title="Pending"
-        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
+        buttonLabel={activeTab === "" ? "" : "Show All"}
         height="600px"
         events={pendingEvents}
         onEventClick={(eventName, eventId) => {
-          joinedOrCreated === "Joined"
+          activeTab === "Joined"
             ? navigate(`/event/${eventName}/${eventId}`)
             : navigate(`/event/manage/${eventId}`);
         }}
@@ -135,11 +127,11 @@ function EventHome() {
 
       <IEventPanel
         title="Completed"
-        buttonLabel={joinedOrCreated === "" ? "" : "Show All"}
+        buttonLabel={activeTab === "" ? "" : "Show All"}
         height="600px"
         events={completedEvents}
         onEventClick={(eventName, eventId) => {
-          joinedOrCreated === "Joined"
+          activeTab === "Joined"
             ? navigate(`/event/${eventName}/${eventId}`)
             : navigate(`/event/manage/${eventId}`);
         }}
