@@ -12,6 +12,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import ILabel from "../../../Library/Label/ILabel";
 import { getIconForAttribute } from "../Constants/Constants";
 import ISpinner from "../../../Library/Spinner/ISpinner";
+import IReputationBar from "../../../Library/ReputationBar/IReputationBar";
 
 function Profile() {
   const accessToken = useAuth();
@@ -81,7 +82,10 @@ function Profile() {
                   {user?.firstName} {user?.lastName}
                 </div>
                 <div className="text-sm text-[#7E858B]">
-                  Reputation Score - {user?.reputation}
+                  <IReputationBar
+                    reputation={user?.reputation}
+                    color="regal-blue"
+                  />
                 </div>
                 <div className="text-sm text-[#7E858B]">
                   {user?.city}, {user.state}{" "}
@@ -94,11 +98,8 @@ function Profile() {
             <div className="grid lg:grid-cols-2 gap-8 pt-8 lg:gap-4">
               {Object.entries(user?.attributes || {})
                 .sort(([, attrA]: any, [, attrB]: any) => {
-                  // Sort by level first (assuming level and points are properties of each attribute)
                   if (attrA.level > attrB.level) return -1;
                   if (attrA.level < attrB.level) return 1;
-
-                  // If levels are the same, sort by points
                   return attrB.points - attrA.points;
                 })
                 .map(([attributeKey, attributeValue], index) => (

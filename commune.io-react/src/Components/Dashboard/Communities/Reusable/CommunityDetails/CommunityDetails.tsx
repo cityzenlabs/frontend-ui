@@ -12,6 +12,7 @@ import { attributeColors } from "../Constants/CommunityConstants";
 import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { getIconForAttribute } from "../../../Constants/Constants";
+import IReputationBar from "../../../../../Library/ReputationBar/IReputationBar";
 
 const CommunityDetails = ({
   community,
@@ -83,7 +84,6 @@ const CommunityDetails = ({
         </IPanel>
       </div>
 
-      {/* Organizer and Requirements Panel */}
       <div className="col-span-3 xl:col-span-1 flex flex-col gap-5">
         <IPanel height="177px">
           <div className="flex items-center ">
@@ -98,7 +98,10 @@ const CommunityDetails = ({
             <div className="text-md">{organizer?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
-            Reputation Score - {organizer?.reputation}
+            <IReputationBar
+              reputation={organizer?.reputation}
+              color="regal-blue"
+            />
           </div>
 
           <div className="flex items-center ">
@@ -118,7 +121,10 @@ const CommunityDetails = ({
           </div>
 
           <div className="text-[#7E858B] text-sm mb-6">
-            Reputation Score - {community?.reputation}
+            <IReputationBar
+              reputation={community?.reputation}
+              color="regal-blue"
+            />
           </div>
         </IPanel>
 

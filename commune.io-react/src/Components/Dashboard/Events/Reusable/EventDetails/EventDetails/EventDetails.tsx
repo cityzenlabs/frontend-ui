@@ -6,6 +6,7 @@ import { ArrowRightIcon, BadgeCheckIcon } from "@heroicons/react/solid";
 import { useNavigate } from "react-router-dom";
 import { attributeColors } from "../../../../Home/Constants/HomeConstats";
 import { getIconForAttribute } from "../../../../Constants/Constants";
+import IReputationBar from "../../../../../../Library/ReputationBar/IReputationBar";
 
 function EventDetails({
   event,
@@ -92,7 +93,10 @@ function EventDetails({
             <div className="text-md">{organizer?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
-            Reputation Score - {organizer?.reputation}
+            <IReputationBar
+              reputation={organizer?.reputation}
+              color="regal-blue"
+            />
           </div>
 
           <div className="flex items-center">
@@ -111,7 +115,10 @@ function EventDetails({
             <div className="text-md">{community?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
-            Reputation Score - {community?.reputation}
+            <IReputationBar
+              reputation={community?.reputation}
+              color="regal-blue"
+            />
           </div>
         </IPanel>
 
