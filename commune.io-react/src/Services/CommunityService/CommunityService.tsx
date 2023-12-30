@@ -1,6 +1,6 @@
 export const createCommunity = async (community: any, token: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/communities`, {
+    const response = await fetch(`http://localhost:8080/community`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

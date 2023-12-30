@@ -12,7 +12,7 @@ const IReputationBar: React.FC<IReputationBarProps> = ({
   return (
     <div className="w-full">
       <div className="text-xs text-[#7E858B] mb-1">
-        Reputation Score - {reputation}
+        Reputation - {reputation}
       </div>
       <div
         style={{

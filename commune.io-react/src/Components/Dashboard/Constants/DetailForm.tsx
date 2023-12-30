@@ -12,13 +12,14 @@ function DetailForm({
   setState,
   description,
   setDescription,
+  community,
 }: any) {
   return (
     <div>
       <div className="pb-4">
         <IInput
           label="Community Name"
-          placeholder="Name"
+          placeholder={community ? community?.name : "Name"}
           name="name"
           value={name}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -32,14 +33,16 @@ function DetailForm({
           inputs={[
             {
               name: "city",
-              placeholder: "City",
+              placeholder: community ? community?.city : "City",
+
               value: city,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setCity(e.target.value),
             },
             {
               name: "state",
-              placeholder: "State",
+              placeholder: community ? community?.state : "State",
+
               value: state,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setState(e.target.value),
@@ -50,7 +53,7 @@ function DetailForm({
       <div className="pb-4">
         <ITextArea
           name="description"
-          placeholder=""
+          placeholder={community ? community?.description : "Description..."}
           value={description}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setDescription(e.target.value)

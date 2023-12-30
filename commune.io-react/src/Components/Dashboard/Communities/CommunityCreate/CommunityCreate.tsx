@@ -121,7 +121,7 @@ function CommunityCreate() {
   return (
     <div>
       <div className="pt-4 pb-4">
-        <ILabel text="Create Communities"></ILabel>
+        <ILabel text="Create Community"></ILabel>
       </div>
       <IPanel>
         <IStepper steps={steps} activeStep={activeStep} />

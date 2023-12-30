@@ -6,10 +6,13 @@ import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
+import ITab from "../../../../Library/Tab/ITab";
+import IPanel from "../../../../Library/Panel/IPanel";
+import PhotoForm from "../../Constants/PhotoForm";
+import DetailForm from "../../Constants/DetailForm";
 
 function CommunityDashboardEdit() {
   const accessToken = useAuth();
@@ -19,16 +22,12 @@ function CommunityDashboardEdit() {
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
-  const [minimumAge, setMinAge] = useState<string>("");
-  const [maximumAge, setMaxAge] = useState<string>("");
-  const [genderRequirements, setGenderRequirements] = useState("");
-  const [social, setSocial] = useState("");
-  const [intelligence, setIntelligence] = useState("");
-  const [nightLife, setNightLife] = useState("");
-  const [adventure, setAdventure] = useState("");
-  const [culture, setCulture] = useState("");
-  const [fitness, setFitness] = useState("");
   const [description, setDescription] = useState("");
+  const [tabValue, setTabValue] = React.useState(0);
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -41,15 +40,6 @@ function CommunityDashboardEdit() {
     setName("");
     setCity("");
     setState("");
-    setMinAge("");
-    setMaxAge("");
-    setGenderRequirements("");
-    setSocial("");
-    setIntelligence("");
-    setNightLife("");
-    setAdventure("");
-    setCulture("");
-    setFitness("");
     setDescription("");
     setImageFiles([]);
   };
@@ -65,78 +55,21 @@ function CommunityDashboardEdit() {
       { stateKey: "name", original: community?.name },
       { stateKey: "city", original: community?.city },
       { stateKey: "state", original: community?.state },
-      { stateKey: "minimumAge", original: community?.minimumAge },
-      { stateKey: "maximumAge", original: community?.maximumAge },
-      {
-        stateKey: "genderRequirements",
-        original: community?.genderRequirements,
-      },
-      { stateKey: "social", original: community?.attributeRequirements.SOCIAL },
-      {
-        stateKey: "intelligence",
-        original: community?.attributeRequirements.INTELLIGENCE,
-      },
-      {
-        stateKey: "nightLife",
-        original: community?.attributeRequirements.NIGHTLIFE,
-      },
-      {
-        stateKey: "adventure",
-        original: community?.attributeRequirements.ADVENTURE,
-      },
-      {
-        stateKey: "culture",
-        original: community?.attributeRequirements.CULTURE,
-      },
-      {
-        stateKey: "fitness",
-        original: community?.attributeRequirements.FITNESS,
-      },
       { stateKey: "description", original: community?.description },
     ];
+
+    console.log(fieldsToCheck);
 
     const updatedFields = fieldsToCheck.reduce((acc: any, field: any) => {
       const stateValues: any = {
         name,
         city,
         state,
-        minimumAge,
-        maximumAge,
-        genderRequirements,
-        social,
-        intelligence,
-        nightLife,
-        adventure,
-        culture,
-        fitness,
         description,
       };
-      const currentValue = stateValues[field.stateKey];
-
-      if (
-        [
-          "social",
-          "intelligence",
-          "nightLife",
-          "adventure",
-          "culture",
-          "fitness",
-        ].includes(field.stateKey)
-      ) {
-        if (!acc.attributeRequirements) {
-          acc.attributeRequirements = {};
-        }
-        acc.attributeRequirements[field.stateKey.toUpperCase()] =
-          currentValue !== "" ? Number(currentValue) : field.original;
-      } else {
-        if (currentValue !== "" && currentValue !== field.original) {
-          acc[field.stateKey] = currentValue;
-        }
-      }
+      acc[field.stateKey] = stateValues[field.stateKey];
       return acc;
     }, {});
-
-    console.log(updatedFields);
 
     try {
       const result = await CommunityService.editCommunity(
@@ -160,183 +93,42 @@ function CommunityDashboardEdit() {
 
   return (
     <div>
-      <div className="xl:flex lg:flex items-center justify-between pt-4 pb-4">
-        <div className="flex items-center">
-          <ILabel text="Edit Community" />
+      <div className="pt-4 pb-4">
+        <ILabel text="Edit Community" />
+      </div>
+      <IPanel>
+        <ITab tabValue={tabValue} handleTabChange={handleTabChange} />
+        <div className="xl:pl-[14.5%] xl:pr-[14.5%] mt-10">
+          {tabValue === 1 && (
+            <PhotoForm
+              imageFiles={imageFiles}
+              handleImageChange={handleImageChange}
+            />
+          )}
+          {tabValue === 0 && (
+            <DetailForm
+              community={community}
+              name={name}
+              setName={setName}
+              city={city}
+              setCity={setCity}
+              state={state}
+              setState={setState}
+              description={description}
+              setDescription={setDescription}
+            />
+          )}
         </div>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInput
-          label="Name"
-          placeholder={community?.name}
-          name="name"
-          value={name}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setName(e.target.value)
-          }
-        ></IInput>
-      </div>
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInputGroup
-          label="Location"
-          inputs={[
-            {
-              name: "city",
-              placeholder: community?.city,
-              value: city,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setCity(e.target.value),
-              disabled: true,
-            },
-            {
-              name: "state",
-              placeholder: community?.state,
-              value: state,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setState(e.target.value),
-              disabled: true,
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInputGroup
-          label="Age"
-          inputs={[
-            {
-              name: "min",
-              placeholder: community?.minimumAge,
-              value: minimumAge,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setMinAge(e.target.value),
-              numberOnly: true,
-            },
-            {
-              name: "max",
-              placeholder: community?.maximumAge,
-              value: maximumAge,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setMaxAge(e.target.value),
-              numberOnly: true,
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-full pb-4">
-        <IInputGroup
-          label="Attributes"
-          floatingLabel={true}
-          inputs={[
-            {
-              name: "Social",
-              placeholder: "Social",
-              displayLabel: `Social- ${community?.attributeRequirements?.SOCIAL}`,
-              value: social,
-              numberOnly: true,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setSocial(e.target.value),
-            },
-            {
-              name: "Intelligence",
-              placeholder: "",
-              displayLabel: `Intelligence - ${community?.attributeRequirements?.INTELLIGENCE}`,
-              numberOnly: true,
-              value: intelligence,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setIntelligence(e.target.value),
-            },
-            {
-              name: "Night Life",
-              placeholder: "Night Life",
-              displayLabel: `Night Life - ${community?.attributeRequirements?.NIGHTLIFE}`,
-              numberOnly: true,
-              value: nightLife,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setNightLife(e.target.value),
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-      <div className="xl:w-1/2 pb-4">
-        <IInputGroup
-          label=""
-          floatingLabel={true}
-          inputs={[
-            {
-              name: "Adventure",
-              placeholder: "Adventure",
-              displayLabel: `Adventure - ${community?.attributeRequirements?.ADVENTURE}`,
-              numberOnly: true,
-              value: adventure,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setAdventure(e.target.value),
-            },
-            {
-              name: "Culture",
-              placeholder: "Culture",
-              displayLabel: `Culture - ${community?.attributeRequirements?.CULTURE}`,
-              numberOnly: true,
-              value: culture,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setCulture(e.target.value),
-            },
-
-            {
-              name: "Fitness",
-              placeholder: "Fitness",
-              displayLabel: `Fitness - ${community?.attributeRequirements?.FITNESS}`,
-              numberOnly: true,
-              value: fitness,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setFitness(e.target.value),
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-      <div className="flex xl:w-1/2 lg:w-1/2 pb-4">
-        <div className="mr-2 w-full">
-          <IDropdown
-            labelText="Gender Requirements"
-            placeholder={
-              community?.genderRequirements?.toUpperCase()[0] +
-              community?.genderRequirements?.toLowerCase().slice(1)
-            }
-            options={[
-              { label: "Male", value: "MALE" },
-              { label: "Female", value: "FEMALE" },
-              { label: "Neutral", value: "NEUTRAL" },
-            ]}
-            onChange={(newValue) => setGenderRequirements(newValue)}
-            value={genderRequirements}
-          ></IDropdown>
+        <div className="pb-4 text-center">
+          <IButton
+            onClick={handleEditCommunity}
+            className="px-4 py-2 "
+            text="Save"
+            bgColor="bg-regal-blue"
+            textColor="text-white"
+          />
         </div>
-      </div>
-
-      <div className="xl:w-1/2 pb-4">
-        <ITextArea
-          name="description"
-          placeholder={community?.description}
-          value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.target.value)
-          }
-        />
-      </div>
-      <div className="pb-4">
-        <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-      </div>
-      <div className="pb-4">
-        <IButton
-          onClick={handleEditCommunity}
-          className="px-4 py-2"
-          text="Save"
-          bgColor="bg-regal-blue"
-          textColor="text-white"
-        />
-      </div>
+      </IPanel>
     </div>
   );
 }
