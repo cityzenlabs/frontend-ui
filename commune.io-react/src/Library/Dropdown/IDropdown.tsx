@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 
 interface IDropdownProps {
-  options: Array<{ value: string; label: string }>;
+  options: Array<{ value: any; label: any }>;
   placeholder?: string;
   onChange?: (value: string) => void;
   labelText: string;

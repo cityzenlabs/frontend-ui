@@ -1,14 +1,16 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import ILabel from "../../../../Library/Label/ILabel";
-import IInput from "../../../../Library/Input/IInput";
-import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
-import ITextArea from "../../../../Library/TextArea/ITextArea";
 import IGallery from "../../../../Library/Gallery/IGallery";
 import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useAuth } from "../../../../Context/AuthContext";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { useNavigate } from "react-router-dom";
+import IStepper from "../../../../Library/Stepper/IStepper";
+import IPanel from "../../../../Library/Panel/IPanel";
+import DetailForm from "../../Constants/DetailForm";
+import { Button } from "@mui/material";
+import RequirementForm from "../../Constants/RequirementForm";
+import PhotoForm from "../../Constants/PhotoForm";
 
 function CommunityCreate() {
   let navigate = useNavigate();
@@ -20,13 +22,9 @@ function CommunityCreate() {
   const [minAge, setMinAge] = useState<string>("");
   const [maxAge, setMaxAge] = useState<string>("");
   const [genderRequirements, setGenderRequirements] = useState("");
-  const [social, setSocial] = useState("");
-  const [intelligence, setIntelligence] = useState("");
-  const [nightLife, setNightLife] = useState("");
-  const [adventure, setAdventure] = useState("");
-  const [culture, setCulture] = useState("");
-  const [fitness, setFitness] = useState("");
   const [description, setDescription] = useState("");
+  const [activeStep, setActiveStep] = useState(1);
+  const steps = ["Details", "Requirements", "Photos"];
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -35,7 +33,63 @@ function CommunityCreate() {
     }
   };
 
+  const initialOptions = [
+    { label: "Social", value: "SOCIAL" },
+    { label: "Adventure", value: "ADVENTURE" },
+    { label: "Fitness", value: "FITNESS" },
+    { label: "Intelligence", value: "INTELLIGENCE" },
+    { label: "Culture", value: "CULTURE" },
+    { label: "Night Lift", value: "NIGHTLIFE" },
+  ];
+
+  const [dropdowns, setDropdowns] = useState([
+    { attribute: undefined, level: undefined },
+  ]);
+  const [attributeRequirements, setAttributeRequirements] = useState<any>({});
+
+  const handleAttributeChange = (index: any, selectedValue: any) => {
+    const newDropdowns = [...dropdowns];
+    newDropdowns[index].attribute = selectedValue;
+    setDropdowns(newDropdowns);
+  };
+
+  const handleLevelChange = (index: any, selectedValue: any) => {
+    const newDropdowns = [...dropdowns];
+    newDropdowns[index].level = selectedValue;
+
+    const newAttributeRequirements = { ...attributeRequirements };
+    const attribute = newDropdowns[index].attribute;
+
+    if (attribute) {
+      newAttributeRequirements[attribute] = parseInt(selectedValue, 10) || 0;
+    }
+
+    setAttributeRequirements(newAttributeRequirements);
+    setDropdowns(newDropdowns);
+  };
+
+  const addDropdown = () => {
+    const lastIndex = dropdowns.length - 1;
+    const selectedAttribute = dropdowns[lastIndex].attribute;
+    const selectedLevel = dropdowns[lastIndex].level;
+
+    if (selectedAttribute && selectedLevel) {
+      const newDropdowns = [...dropdowns];
+      newDropdowns.push({ attribute: undefined, level: undefined });
+      setDropdowns(newDropdowns);
+    }
+  };
+
+  const handleNext = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
   const handleCreateCommunity = async () => {
+    console.log(attributeRequirements);
     const community = {
       name: name,
       description: description,
@@ -44,14 +98,7 @@ function CommunityCreate() {
       minimumAge: parseInt(minAge),
       maximumAge: parseInt(maxAge),
       genderRequirements: genderRequirements,
-      attributeRequirements: {
-        SOCIAL: parseInt(social, 10) || 0,
-        INTELLIGENCE: parseInt(intelligence, 10) || 0,
-        ADVENTURE: parseInt(adventure, 10) || 0,
-        CULTURE: parseInt(culture, 10) || 0,
-        NIGHTLIFE: parseInt(nightLife, 10) || 0,
-        FITNESS: parseInt(fitness, 10) || 0,
-      },
+      attributeRequirements: attributeRequirements,
     };
 
     try {
@@ -76,176 +123,62 @@ function CommunityCreate() {
       <div className="pt-4 pb-4">
         <ILabel text="Create Communities"></ILabel>
       </div>
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInput
-          label="Community Name"
-          placeholder="Name"
-          name="name"
-          value={name}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setName(e.target.value)
-          }
-        ></IInput>
-      </div>
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInputGroup
-          label="Location"
-          inputs={[
-            {
-              name: "city",
-              placeholder: "City",
-              value: city,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setCity(e.target.value),
-            },
-            {
-              name: "state",
-              placeholder: "State",
-              value: state,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setState(e.target.value),
-            },
-          ]}
-        ></IInputGroup>
-      </div>
+      <IPanel>
+        <IStepper steps={steps} activeStep={activeStep} />
+        <div className="xl:pl-[14.5%] xl:pr-[14.5%] mt-10">
+          {activeStep === 1 && (
+            <DetailForm
+              name={name}
+              setName={setName}
+              city={city}
+              setCity={setCity}
+              state={state}
+              setState={setState}
+              description={description}
+              setDescription={setDescription}
+            />
+          )}
+          {activeStep === 2 && (
+            <RequirementForm
+              minAge={minAge}
+              setMinAge={setMinAge}
+              maxAge={maxAge}
+              setMaxAge={setMaxAge}
+              genderRequirements={genderRequirements}
+              setGenderRequirements={setGenderRequirements}
+              dropdowns={dropdowns}
+              availableOptions={initialOptions}
+              attributeRequirements={attributeRequirements}
+              onAttributeChange={handleAttributeChange}
+              onLevelChange={handleLevelChange}
+              onAddDropdown={addDropdown}
+            />
+          )}
 
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInputGroup
-          label="Age"
-          inputs={[
-            {
-              name: "min",
-              placeholder: "Min age",
-              value: minAge,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setMinAge(e.target.value),
-              numberOnly: true,
-            },
-            {
-              name: "Max Age",
-              placeholder: "Max age",
-              value: maxAge,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setMaxAge(e.target.value),
-              numberOnly: true,
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-full pb-4">
-        <IInputGroup
-          label="Attributes"
-          floatingLabel={true}
-          inputs={[
-            {
-              name: "Social",
-              placeholder: "Social",
-              displayLabel: "Social",
-              value: social,
-              numberOnly: true,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setSocial(e.target.value),
-            },
-            {
-              name: "Intelligence",
-              placeholder: "Intelligence",
-              displayLabel: "Intelligence",
-              numberOnly: true,
-              value: intelligence,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setIntelligence(e.target.value),
-            },
-            {
-              name: "Night Life",
-              placeholder: "Night Life",
-              displayLabel: "Night Life",
-              numberOnly: true,
-              value: nightLife,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setNightLife(e.target.value),
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-      <div className="xl:w-1/2 pb-4">
-        <IInputGroup
-          label=""
-          floatingLabel={true}
-          inputs={[
-            {
-              name: "Adventure",
-              placeholder: "Adventure",
-              displayLabel: "Adventure",
-              numberOnly: true,
-              value: adventure,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setAdventure(e.target.value),
-            },
-            {
-              name: "Culture",
-              placeholder: "Culture",
-              displayLabel: "Culture",
-              numberOnly: true,
-              value: culture,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setCulture(e.target.value),
-            },
-
-            {
-              name: "Fitness",
-              placeholder: "Fitness",
-              displayLabel: "Fitness",
-              numberOnly: true,
-              value: fitness,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setFitness(e.target.value),
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-
-      <div className="flex xl:w-1/2 lg:w-full pb-4">
-        <div className="mr-2 w-full">
-          <IDropdown
-            onChange={setGenderRequirements}
-            labelText="Gender Requirements"
-            options={[
-              { label: "Male", value: "MALE" },
-              { label: "Female", value: "FEMALE" },
-              { label: "Neutral", value: "NEUTRAL" },
-            ]}
-            value={genderRequirements}
-          ></IDropdown>
+          {activeStep === 3 && (
+            <PhotoForm
+              imageFiles={imageFiles}
+              handleImageChange={handleImageChange}
+            />
+          )}
         </div>
-      </div>
-
-      <div className="pb-4">
-        <div className="xl:w-1/2">
-          <ITextArea
-            name="description"
-            placeholder=""
-            value={description}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setDescription(e.target.value)
-            }
-          />
+        <div className="flex justify-center mt-4">
+          <Button
+            color="inherit"
+            disabled={activeStep === 1}
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+          <Button onClick={handleNext}>
+            {activeStep === steps.length ? (
+              <span onClick={handleCreateCommunity}>Create</span>
+            ) : (
+              "Next"
+            )}
+          </Button>
         </div>
-      </div>
-
-      <div className="pb-4">
-        <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-      </div>
-
-      <div className="pb-4">
-        <IButton
-          onClick={handleCreateCommunity}
-          className="px-4 py-2"
-          text="Create"
-          bgColor="bg-regal-blue"
-          textColor="text-white"
-        />
-      </div>
+      </IPanel>
     </div>
   );
 }
