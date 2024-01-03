@@ -111,23 +111,23 @@ const IUserLeaderBoard: React.FC<UserLeaderBoardProps> = ({
           </div>
         ))}
       </div>
-      <div className="rounded overflow-x-auto">
+      <div className="rounded overflow-x-auto bg-white ">
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th className="text-xs" style={thStyle}>
+              <th className="text-xs font-thin" style={thStyle}>
                 No.
               </th>
-              <th className="text-xs" style={thStyle}>
+              <th className="text-xs font-thin" style={thStyle}>
                 Name
               </th>
-              <th className="text-xs" style={thStyle}>
+              <th className="text-xs font-thin" style={thStyle}>
                 Highest Attribute
               </th>
-              <th className="text-xs" style={thStyle}>
+              <th className="text-xs font-thin" style={thStyle}>
                 Level
               </th>
-              <th className="text-xs" style={thStyle}>
+              <th className="text-xs font-thin" style={thStyle}>
                 Points
               </th>
             </tr>

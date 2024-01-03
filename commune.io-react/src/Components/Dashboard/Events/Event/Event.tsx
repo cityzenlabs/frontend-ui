@@ -3,7 +3,7 @@ import * as EventService from "../../../../Services/EventService/EventService";
 import ILabel from "../../../../Library/Label/ILabel";
 import IButton from "../../../../Library/Button/IButton";
 import IEventPanel from "../../../../Library/EventPanel/IEventPanel";
-import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
+import EventDetails from "../Reusable/EventDetails";
 import ICarousel from "../../../../Library/Carousel/ICarousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDash } from "../../../../Context/DashboardContext";

@@ -62,6 +62,9 @@ const TableRow = ({
       <td style={tdStyle} className="text-xs">
         {community.points}
       </td>
+      <td style={tdStyle} className="text-xs">
+        {community.members}
+      </td>
     </tr>
   );
 };
@@ -75,7 +78,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
   const navigate = useNavigate();
   return (
     <div>
-      <div className="xl:flex gap-2">
+      <div className="xl:flex gap-2 ">
         {firstThree?.map((community, index) => (
           <div key={community.id} className="mb-4 xl:w-full">
             <IPanel>
@@ -118,24 +121,27 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
           </div>
         ))}
       </div>
-      <div className="rounded overflow-x-auto ">
+      <div className="rounded overflow-x-auto bg-white">
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th style={thStyle} className="text-xs">
+              <th style={thStyle} className="text-xs font-thin ">
                 No.
               </th>
-              <th style={thStyle} className="text-xs">
+              <th style={thStyle} className="text-xs font-thin">
                 Name
               </th>
-              <th style={thStyle} className="text-xs">
+              <th style={thStyle} className="text-xs font-thin">
                 Organizer
               </th>
-              <th style={thStyle} className="text-xs">
+              <th style={thStyle} className="text-xs font-thin">
                 Attribute
               </th>
-              <th style={thStyle} className="text-xs">
+              <th style={thStyle} className="text-xs font-thin">
                 Points
+              </th>
+              <th style={thStyle} className="text-xs font-thin">
+                Members
               </th>
             </tr>
           </thead>

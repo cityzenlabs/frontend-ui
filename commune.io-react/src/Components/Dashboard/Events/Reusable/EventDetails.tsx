@@ -1,12 +1,12 @@
 import React from "react";
-import IPanel from "../../../../../../Library/Panel/IPanel";
-import ILabel from "../../../../../../Library/Label/ILabel";
+import IPanel from "../../../../Library/Panel/IPanel";
+import ILabel from "../../../../Library/Label/ILabel";
 import { CalendarIcon, MapIcon, SunIcon } from "@heroicons/react/outline";
 import { ArrowRightIcon, BadgeCheckIcon } from "@heroicons/react/solid";
 import { useNavigate } from "react-router-dom";
-import { attributeColors } from "../../../../Home/Constants/HomeConstats";
-import { getIconForAttribute } from "../../../../Constants/Constants";
-import IReputationBar from "../../../../../../Library/ReputationBar/IReputationBar";
+import { attributeColors } from "../../Home/Constants/HomeConstats";
+import { getIconForAttribute } from "../../Constants/Constants";
+import IReputationBar from "../../../../Library/ReputationBar/IReputationBar";
 
 function EventDetails({
   event,

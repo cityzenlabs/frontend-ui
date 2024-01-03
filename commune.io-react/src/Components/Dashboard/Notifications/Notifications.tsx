@@ -80,14 +80,6 @@ function NotificationsComponent() {
           </div>
         </div>
       </div>
-      {/*<div className="flex gap-2 pt-4 ml-[68px]">
-        <div>
-          <IButton text="Accept" onClick={() => console.log("")} />
-        </div>
-        <div>
-          <IButton text="Decline" onClick={() => console.log("")} />
-        </div>
-          </div>*/}
     </div>
   );
 

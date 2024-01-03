@@ -4,7 +4,7 @@ import * as UserService from "../../../../Services/UserService/UserService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ILabel from "../../../../Library/Label/ILabel";
 
-import EventDetails from "../Reusable/EventDetails/EventDetails/EventDetails";
+import EventDetails from "../Reusable/EventDetails";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import { useAuth } from "../../../../Context/AuthContext";
