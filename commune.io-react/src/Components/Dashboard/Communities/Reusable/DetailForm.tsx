@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
-import IInput from "../../../Library/Input/IInput";
-import IInputGroup from "../../../Library/InputGroup/IInputGroup";
-import ITextArea from "../../../Library/TextArea/ITextArea";
+import IInput from "../../../../Library/Input/IInput";
+import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
+import ITextArea from "../../../../Library/TextArea/ITextArea";
 
 function DetailForm({
   name,
@@ -13,6 +13,7 @@ function DetailForm({
   description,
   setDescription,
   community,
+  disabled,
 }: any) {
   return (
     <div>
@@ -33,16 +34,16 @@ function DetailForm({
           inputs={[
             {
               name: "city",
+              disabled: disabled,
               placeholder: community ? community?.city : "City",
-
               value: city,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setCity(e.target.value),
             },
             {
               name: "state",
+              disabled: disabled,
               placeholder: community ? community?.state : "State",
-
               value: state,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 setState(e.target.value),

@@ -69,7 +69,6 @@ const IInputGroup: React.FC<IInputGroupProps> = ({
             } relative`}
           >
             {floatingLabel ? (
-              // For floating label
               <>
                 <input
                   id={`input-${index}`}

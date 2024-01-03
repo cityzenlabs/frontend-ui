@@ -3,7 +3,6 @@ import { Tab } from "@headlessui/react";
 import EditProfile from "./EditProfile/EditProfile";
 import Security from "./Security/Security";
 import SecurityNotifications from "./Notifications/SecurityNotifications";
-import IContainer from "../../../Library/Container/IContainer";
 import ILabel from "../../../Library/Label/ILabel";
 import Subscriptions from "./Subscriptions/Subscriptions";
 

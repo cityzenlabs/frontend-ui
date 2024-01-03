@@ -1,5 +1,5 @@
 import React from "react";
-import IGallery from "../../../Library/Gallery/IGallery";
+import IGallery from "../../../../Library/Gallery/IGallery";
 
 function PhotoForm({ imageFiles, handleImageChange }: any) {
   return (

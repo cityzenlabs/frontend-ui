@@ -46,29 +46,10 @@ function CommunityHome() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full pb-4">
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">
-            {communityHome?.joinedCommunities.length}
-          </div>
-          <div className="text-xs pr-8">
-            JOINED <br />
-            COMMUNITIES
-          </div>
-        </IPanel>
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">
-            {" "}
-            {communityHome?.createdCommunities.length}
-          </div>
-          <div className="text-xs">
-            CREATED <br /> COMMUNITIES
-          </div>
-        </IPanel>
-      </div>
-
       <ICommunityPanel
-        title="Joined Communities"
+        title={
+          "Joined Communities (" + communityHome.joinedCommunities.length + ")"
+        }
         buttonLabel={"Show All"}
         height="600px"
         onButtonClick={() =>
@@ -87,7 +68,11 @@ function CommunityHome() {
       />
 
       <ICommunityPanel
-        title="Created Communities"
+        title={
+          "Created Communities (" +
+          communityHome.createdCommunities.length +
+          ")"
+        }
         buttonLabel={"Show All"}
         height="600px"
         onButtonClick={() =>

@@ -11,8 +11,8 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
 import ITab from "../../../../Library/Tab/ITab";
 import IPanel from "../../../../Library/Panel/IPanel";
-import PhotoForm from "../../Constants/PhotoForm";
-import DetailForm from "../../Constants/DetailForm";
+import PhotoForm from "../Reusable/PhotoForm";
+import DetailForm from "../Reusable/DetailForm";
 
 function CommunityDashboardEdit() {
   const accessToken = useAuth();
@@ -116,17 +116,18 @@ function CommunityDashboardEdit() {
               setState={setState}
               description={description}
               setDescription={setDescription}
+              disabled={true}
             />
           )}
-        </div>
-        <div className="pb-4 text-center">
-          <IButton
-            onClick={handleEditCommunity}
-            className="px-4 py-2 "
-            text="Save"
-            bgColor="bg-regal-blue"
-            textColor="text-white"
-          />
+          <div className="pb-4 ">
+            <IButton
+              onClick={handleEditCommunity}
+              className="px-4 py-2 "
+              text="Save"
+              bgColor="bg-regal-blue"
+              textColor="text-white"
+            />
+          </div>
         </div>
       </IPanel>
     </div>

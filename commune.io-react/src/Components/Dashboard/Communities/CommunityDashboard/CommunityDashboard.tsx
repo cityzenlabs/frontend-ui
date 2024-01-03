@@ -14,7 +14,7 @@ import IGraph from "../../../../Library/Graph/IGraph";
 import IButton from "../../../../Library/Button/IButton";
 import IMenuButton from "../../../../Library/MenuButton/IMenuButton";
 import * as UserService from "../../../../Services/UserService/UserService";
-import CommunityDetails from "../Reusable/CommunityDetails/CommunityDetails";
+import CommunityDetails from "../Reusable/CommunityDetails";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";

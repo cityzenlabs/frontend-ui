@@ -1,6 +1,6 @@
 import React from "react";
-import IPanel from "../../../../../Library/Panel/IPanel";
-import ILabel from "../../../../../Library/Label/ILabel";
+import IPanel from "../../../../Library/Panel/IPanel";
+import ILabel from "../../../../Library/Label/ILabel";
 import {
   BadgeCheckIcon,
   SunIcon,
@@ -8,11 +8,11 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/solid";
 
-import { attributeColors } from "../Constants/CommunityConstants";
+import { attributeColors } from "../../Constants/Constants";
 import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
-import { getIconForAttribute } from "../../../Constants/Constants";
-import IReputationBar from "../../../../../Library/ReputationBar/IReputationBar";
+import { getIconForAttribute } from "../../Constants/Constants";
+import IReputationBar from "../../../../Library/ReputationBar/IReputationBar";
 
 const CommunityDetails = ({
   community,

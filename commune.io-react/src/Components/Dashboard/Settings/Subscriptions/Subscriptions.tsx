@@ -22,15 +22,12 @@ const CheckoutForm = () => {
   const accessToken = useAuth();
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      console.log("Stripe.js has not loaded yet.");
       return;
     }
 
@@ -48,7 +45,7 @@ const CheckoutForm = () => {
       if (error) {
       } else {
         try {
-          const user = await SubscriptionService.updatePaymentMethod(
+          await SubscriptionService.updatePaymentMethod(
             accessToken.token,
             paymentMethod.id,
           );
@@ -138,7 +135,6 @@ const CheckoutForm = () => {
       >
         Subscribe
       </button>
-      {error && <div style={{ color: "red", marginTop: "20px" }}>{error}</div>}
     </form>
   );
 };
@@ -148,10 +144,7 @@ function Subscriptions({ token }: any) {
 
   const handleUserSubscription = async () => {
     try {
-      const user = await SubscriptionService.updateUserSubscription(
-        token,
-        tier,
-      );
+      await SubscriptionService.updateUserSubscription(token, tier);
     } catch (error) {}
   };
 

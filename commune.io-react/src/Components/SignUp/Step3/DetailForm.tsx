@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import IInput from "../../../Library/Input/IInput";
 
 interface DetailFormProps {
@@ -58,7 +58,7 @@ function DetailForm({ onNextStep, userData, updateUser }: DetailFormProps) {
           body: JSON.stringify(user),
         });
 
-        const createdUser = await response.json;
+        await response.json;
       } catch (error) {}
       onNextStep();
     } else {

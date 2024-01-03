@@ -5,7 +5,7 @@ function ITab({ tabValue, handleTabChange }: any) {
   return (
     <div>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <Tabs value={tabValue} onChange={handleTabChange} centered>
+        <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Details" />
           <Tab label="Photos" />
         </Tabs>

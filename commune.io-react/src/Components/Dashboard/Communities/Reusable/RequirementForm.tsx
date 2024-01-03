@@ -1,6 +1,6 @@
 import React from "react";
-import IInputGroup from "../../../Library/InputGroup/IInputGroup";
-import IDropdown from "../../../Library/Dropdown/IDropdown";
+import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
+import IDropdown from "../../../../Library/Dropdown/IDropdown";
 import { PlusIcon } from "@heroicons/react/outline";
 
 function RequirementForm({

@@ -2,10 +2,6 @@ import React from "react";
 import IListBox from "../../../Library/ListBox/IListBox";
 import IInput from "../../../Library/Input/IInput";
 
-interface GeneralInformationFormProps {
-  onNextStep: () => void;
-}
-
 function GeneralInformationForm({ onNextStep, userData, updateUser }: any) {
   const handleContinue = (): void => {
     onNextStep();

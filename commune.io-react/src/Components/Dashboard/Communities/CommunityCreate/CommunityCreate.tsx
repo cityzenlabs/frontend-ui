@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import ILabel from "../../../../Library/Label/ILabel";
-import IGallery from "../../../../Library/Gallery/IGallery";
-import IButton from "../../../../Library/Button/IButton";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import IStepper from "../../../../Library/Stepper/IStepper";
 import IPanel from "../../../../Library/Panel/IPanel";
-import DetailForm from "../../Constants/DetailForm";
+import DetailForm from "../Reusable/DetailForm";
 import { Button } from "@mui/material";
-import RequirementForm from "../../Constants/RequirementForm";
-import PhotoForm from "../../Constants/PhotoForm";
+import RequirementForm from "../Reusable/RequirementForm";
+import PhotoForm from "../Reusable/PhotoForm";
 
 function CommunityCreate() {
   let navigate = useNavigate();
@@ -89,7 +87,6 @@ function CommunityCreate() {
   };
 
   const handleCreateCommunity = async () => {
-    console.log(attributeRequirements);
     const community = {
       name: name,
       description: description,

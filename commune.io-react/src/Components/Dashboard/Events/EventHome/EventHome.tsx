@@ -14,7 +14,7 @@ function EventHome() {
   const navigate = useNavigate();
   const [eventHome, setEventHome] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<any>("");
+  const [activeTab, setActiveTab] = useState<any>("Joined");
   const [pendingEvents, setPendingEvents] = useState<any>();
   const [ongoingEvents, setOngoingEvents] = useState<any>();
   const [completedEvents, setCompletedEvents] = useState<any>();
@@ -69,22 +69,6 @@ function EventHome() {
         <div>
           <IToggleButton activeTab={activeTab} onToggle={handleToggle} />
         </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-6 xl:w-1/2 lg:w-full pb-4">
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">{eventHome?.joinedEvents.length}</div>
-          <div className="text-xs pr-8">
-            JOINED <br /> EVENTS
-          </div>
-        </IPanel>
-
-        <IPanel height="h-[112px]">
-          <div className="text-3xl">{eventHome?.createdEvents.length}</div>
-          <div className="text-xs pr-8">
-            CREATED <br /> EVENTS
-          </div>
-        </IPanel>
       </div>
 
       <IEventPanel
