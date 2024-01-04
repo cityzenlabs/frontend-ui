@@ -58,8 +58,6 @@ function CommunityDashboardEdit() {
       { stateKey: "description", original: community?.description },
     ];
 
-    console.log(fieldsToCheck);
-
     const updatedFields = fieldsToCheck.reduce((acc: any, field: any) => {
       const stateValues: any = {
         name,
@@ -107,6 +105,7 @@ function CommunityDashboardEdit() {
             <PhotoForm
               imageFiles={imageFiles}
               handleImageChange={handleImageChange}
+              picture={community?.photo}
             />
           )}
           {tabValue === 0 && (

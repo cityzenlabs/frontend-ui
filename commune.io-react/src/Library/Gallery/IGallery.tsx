@@ -1,8 +1,9 @@
 import React from "react";
 
 function IGallery({ imageFiles, onImageChange, picture }: any) {
-  // Determine whether to show the existing picture or the uploaded images
-  const imagesToShow = imageFiles.length > 0 ? imageFiles : [picture];
+  // If there are uploaded images, use them; otherwise, use the existing picture if it exists
+  const imagesToShow =
+    imageFiles.length > 0 ? imageFiles : picture ? [picture] : [];
 
   return (
     <div>
