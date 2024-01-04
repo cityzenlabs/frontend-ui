@@ -1,29 +1,27 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ILabel from "../../../../Library/Label/ILabel";
-import IInput from "../../../../Library/Input/IInput";
-import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
-import * as EventService from "../../../../Services/EventService/EventService";
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
-import { times } from "../EventCreate/EventCreateConstants";
-import ITextArea from "../../../../Library/TextArea/ITextArea";
-import IGallery from "../../../../Library/Gallery/IGallery";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
-import BasicDateTimePicker from "../../../../Library/DateTimePicker/DateTimePicker";
+import IPanel from "../../../../Library/Panel/IPanel";
+import ITab from "../../../../Library/Tab/ITab";
+import EventPhotoForm from "../Reusable/EventPhotoForm";
+import EventDetailForm from "../Reusable/EventDetailForm";
+import IButton from "../../../../Library/Button/IButton";
+import EventLocationTimeForm from "../Reusable/EventLocationTimeForm";
+import { useDash } from "../../../../Context/DashboardContext";
 
 function EventDashboardEdit() {
   const { eventId } = useParams();
+  const { user } = useDash();
   const accessToken = useAuth();
   const [event, setEvent] = useState<any>();
   const [name, setName] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-  const [type, setType] = useState<string>("");
   const [description, setDescription] = useState("");
+
+  const [tabValue, setTabValue] = React.useState(0);
 
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
@@ -33,6 +31,12 @@ function EventDashboardEdit() {
       setImageFiles([selectedImageFiles[0]]);
     }
   };
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
+  const handleEditEvent = () => {};
 
   useEffect(() => {
     if (location.state?.event) {
@@ -47,76 +51,47 @@ function EventDashboardEdit() {
 
   return (
     <div>
-      <div className="xl:flex lg:flex items-center justify-between pb-4 pt-4">
-        <div className="flex items-center">
-          <ILabel text="Edit Event" />
-        </div>
+      <div className="pt-4 pb-4">
+        <ILabel text="Edit Event" />
       </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInput
-          label="Event Name"
-          placeholder={event?.name}
-          name="name"
-          value={name}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setName(e.target.value)
-          }
-        ></IInput>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInputGroup
-          label="Location"
-          inputs={[
-            {
-              name: "city",
-              placeholder: event?.city,
-              value: city,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setCity(e.target.value),
-              disabled: true,
-            },
-            {
-              name: "state",
-              placeholder: event?.state,
-              value: state,
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                setState(e.target.value),
-              disabled: true,
-            },
-          ]}
-        ></IInputGroup>
-      </div>
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <IInput
-          label="Address"
-          placeholder={event?.address}
-          name="name"
-          value={address}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setAddress(e.target.value)
-          }
-        ></IInput>
-      </div>
-      <BasicDateTimePicker />
-      <BasicDateTimePicker />
-
-      <div className="xl:w-1/2 lg:w-1/2 pb-4">
-        <ITextArea
-          name="description"
-          placeholder={event?.description}
-          value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.target.value)
-          }
+      <IPanel>
+        <ITab
+          tabValue={tabValue}
+          handleTabChange={handleTabChange}
+          tabs={["Details", "Location & Time", "Photos"]}
         />
-      </div>
-
-      <div className="pb-4">
-        <IGallery imageFiles={imageFiles} onImageChange={handleImageChange} />
-      </div>
+        <div className="xl:pl-[14.5%] xl:pr-[14.5%] mt-10">
+          {tabValue === 0 && (
+            <EventDetailForm
+              name={name}
+              setName={setName}
+              description={description}
+              setDescription={setDescription}
+              isEdit={true}
+              event={event}
+            />
+          )}
+          {tabValue === 1 && (
+            <EventLocationTimeForm event={event} user={user} />
+          )}
+          {tabValue === 2 && (
+            <EventPhotoForm
+              imageFiles={imageFiles}
+              handleImageChange={handleImageChange}
+              picture={event?.photo}
+            />
+          )}
+          <div className="pb-4">
+            <IButton
+              onClick={handleEditEvent}
+              className="px-4 py-2 "
+              text="Save"
+              bgColor="bg-regal-blue"
+              textColor="text-white"
+            />
+          </div>
+        </div>
+      </IPanel>
     </div>
   );
 }

@@ -1,11 +1,9 @@
 import React from "react";
 
-interface IGalleryProps {
-  imageFiles: File[];
-  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+function IGallery({ imageFiles, onImageChange, picture }: any) {
+  // Determine whether to show the existing picture or the uploaded images
+  const imagesToShow = imageFiles.length > 0 ? imageFiles : [picture];
 
-function IGallery({ imageFiles, onImageChange }: IGalleryProps) {
   return (
     <div>
       <div className="flex w-full justify-center">
@@ -22,8 +20,10 @@ function IGallery({ imageFiles, onImageChange }: IGalleryProps) {
             <div>Add Image</div>
           </label>
         </div>
-        {imageFiles.map((imageFile, index) => {
-          const imageUrl = URL.createObjectURL(imageFile);
+
+        {imagesToShow.map((image: any, index: any) => {
+          const imageUrl =
+            image instanceof File ? URL.createObjectURL(image) : image;
           return (
             <div
               key={index}
@@ -33,7 +33,9 @@ function IGallery({ imageFiles, onImageChange }: IGalleryProps) {
                 src={imageUrl}
                 alt={`Uploaded content ${index}`}
                 className="w-full h-full object-cover rounded"
-                onLoad={() => URL.revokeObjectURL(imageUrl)} // Revoke the object URL after the image has loaded
+                onLoad={() =>
+                  image instanceof File && URL.revokeObjectURL(imageUrl)
+                }
               />
             </div>
           );

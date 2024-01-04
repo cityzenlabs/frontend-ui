@@ -97,7 +97,11 @@ function CommunityDashboardEdit() {
         <ILabel text="Edit Community" />
       </div>
       <IPanel>
-        <ITab tabValue={tabValue} handleTabChange={handleTabChange} />
+        <ITab
+          tabValue={tabValue}
+          handleTabChange={handleTabChange}
+          tabs={["Details", "Photos"]}
+        />
         <div className="xl:pl-[14.5%] xl:pr-[14.5%] mt-10">
           {tabValue === 1 && (
             <PhotoForm

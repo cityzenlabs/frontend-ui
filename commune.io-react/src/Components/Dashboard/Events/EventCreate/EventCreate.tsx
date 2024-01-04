@@ -1,21 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
+import React, { useEffect, useState } from "react";
 import ILabel from "../../../../Library/Label/ILabel";
-import IInput from "../../../../Library/Input/IInput";
-import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
-import ITextArea from "../../../../Library/TextArea/ITextArea";
-import IGallery from "../../../../Library/Gallery/IGallery";
-import IButton from "../../../../Library/Button/IButton";
 import * as EventService from "../../../../Services/EventService/EventService";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
-import IDropdown from "../../../../Library/Dropdown/IDropdown";
-
-import { times } from "./EventCreateConstants";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
 import { CategoryKey, EventCreateMapping } from "./EventCreateMapping";
-import IDatePicker from "../../../../Library/DatePicker/IDatePicker";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 import IPanel from "../../../../Library/Panel/IPanel";
 import IStepper from "../../../../Library/Stepper/IStepper";
@@ -23,11 +13,12 @@ import EventDetailForm from "../Reusable/EventDetailForm";
 import { Button } from "@mui/material";
 import EventLocationTimeForm from "../Reusable/EventLocationTimeForm";
 import EventPhotoForm from "../Reusable/EventPhotoForm";
+import moment from "moment";
 
 function EventCreate({}: any) {
   let navigate = useNavigate();
   const accessToken = useAuth();
-  const { user } = useDash();
+  const { user, joinEvent } = useDash();
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -37,8 +28,6 @@ function EventCreate({}: any) {
   const [description, setDescription] = useState<string>("");
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [type, setType] = useState<any>();
-  const [startDate, setStartDate] = useState<any>();
-  const [endDate, setEndDate] = useState<any>();
   const [community, setCommunity] = useState<any>("");
   const [category, setCategory] = useState<any>();
   const [attribute, setAttribute] = useState<any>();
@@ -97,34 +86,15 @@ function EventCreate({}: any) {
   };
 
   const handleCreateEvent = async () => {
-    const combineDateTime = (date: Date, time: string) => {
-      const [hours, minutes] = time.split(":").map(Number);
-      date.setHours(hours, minutes, 0, 0);
-      return (
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0") +
-        "T" +
-        String(date.getHours()).padStart(2, "0") +
-        ":" +
-        String(date.getMinutes()).padStart(2, "0") +
-        ":" +
-        String(date.getSeconds()).padStart(2, "0")
-      );
-    };
-
-    const formattedStartTime = combineDateTime(new Date(startDate), startTime);
-    const formattedEndTime = combineDateTime(new Date(endDate), endTime);
+    setLoading(true);
     const event = {
       name: name,
       description: description,
       city: user.city,
       state: user.state,
       address: address,
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
+      startTime: moment(startTime).format("YYYY-MM-DDTHH:mm:ss"),
+      endTime: moment(endTime).format("YYYY-MM-DDTHH:mm:ss"),
       type: type,
       category: category,
       attribute: attribute,
@@ -133,8 +103,10 @@ function EventCreate({}: any) {
 
     try {
       const result = await EventService.createEvent(event, accessToken.token);
+
       if (result) {
         navigate(`/event/manage/${result.id}`);
+        joinEvent(result.id);
         if (imageFiles.length > 0) {
           await EventService.updateEventPicture(
             accessToken.token,
@@ -143,7 +115,10 @@ function EventCreate({}: any) {
           );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -184,6 +159,10 @@ function EventCreate({}: any) {
               setState={setState}
               address={address}
               setAddress={setAddress}
+              startTime={startTime}
+              endTime={endTime}
+              setStartTime={setStartTime}
+              setEndTime={setEndTime}
             />
           )}
 

@@ -17,13 +17,15 @@ function EventDetailForm({
   categoryOptions,
   category,
   handleCategoryChange,
+  isEdit,
+  event,
 }: any) {
   return (
     <div>
       <div className="pb-4">
         <IInput
           label="Event Name"
-          placeholder=""
+          placeholder={event ? event?.name : ""}
           name="name"
           value={name}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -31,38 +33,44 @@ function EventDetailForm({
           }
         ></IInput>
       </div>
+      {!isEdit && (
+        <div>
+          <div className="pb-4">
+            <IDropdown
+              labelText="Community"
+              options={joinedCommunities}
+              onChange={(newValue) => setCommunity(newValue)}
+              value={community}
+            ></IDropdown>
+          </div>
+          <div className="pb-4">
+            <IDropdown
+              labelText="Type"
+              options={[
+                { value: "SOCIAL", label: "Social" },
+                { value: "HOSTED", label: "Hosted" },
+              ]}
+              value={type}
+              onChange={setType}
+            />
+          </div>
+          <div className="pb-4">
+            <IDropdown
+              labelText="Category"
+              options={categoryOptions}
+              onChange={(newValue) =>
+                handleCategoryChange(newValue as CategoryKey)
+              }
+              value={category}
+            ></IDropdown>
+          </div>
+        </div>
+      )}
 
-      <div className="pb-4">
-        <IDropdown
-          labelText="Community"
-          options={joinedCommunities}
-          onChange={(newValue) => setCommunity(newValue)}
-          value={community}
-        ></IDropdown>
-      </div>
-      <div className="pb-4">
-        <IDropdown
-          labelText="Type"
-          options={[
-            { value: "SOCIAL", label: "Social" },
-            { value: "HOSTED", label: "Hosted" },
-          ]}
-          value={type}
-          onChange={setType}
-        />
-      </div>
-      <div className="pb-4">
-        <IDropdown
-          labelText="Category"
-          options={categoryOptions}
-          onChange={(newValue) => handleCategoryChange(newValue as CategoryKey)}
-          value={category}
-        ></IDropdown>
-      </div>
       <div className="pb-4">
         <ITextArea
           name="description"
-          placeholder="Enter description here..."
+          placeholder={event ? event?.description : ""}
           value={description}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setDescription(e.target.value)

@@ -2,6 +2,7 @@ import React, { ChangeEvent } from "react";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import IInput from "../../../../Library/Input/IInput";
 import IDateTimePicker from "../../../../Library/DateTimePicker/DateTimePicker";
+import moment from "moment";
 
 function EventLocationTimeForm({
   user,
@@ -11,6 +12,11 @@ function EventLocationTimeForm({
   setState,
   address,
   setAddress,
+  startTime,
+  endTime,
+  setStartTime,
+  setEndTime,
+  event,
 }: any) {
   return (
     <div>
@@ -40,7 +46,7 @@ function EventLocationTimeForm({
       <div className="pb-4">
         <IInput
           label="Address"
-          placeholder=""
+          placeholder={event ? event?.address : ""}
           name="name"
           value={address}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -48,13 +54,30 @@ function EventLocationTimeForm({
           }
         ></IInput>
       </div>
+
       <div className="pb-4">
         <div className="xl:flex w-full gap-2">
           <div className="flex-grow pb-4">
-            <IDateTimePicker label="Start Date" />
+            <IDateTimePicker
+              label="Start Date"
+              value={startTime}
+              onChange={(newDate: any) => setStartTime(newDate)}
+              placeholder={
+                event
+                  ? moment(event.startTime).format("MM/DD/YYYY hh:mm A")
+                  : ""
+              }
+            />
           </div>
           <div className="flex-grow">
-            <IDateTimePicker label="End Date" />
+            <IDateTimePicker
+              label="End Date"
+              value={endTime}
+              onChange={(newDate: any) => setEndTime(newDate)}
+              placeholder={
+                event ? moment(event.endTime).format("MM/DD/YYYY hh:mm A") : ""
+              }
+            />
           </div>
         </div>
       </div>
