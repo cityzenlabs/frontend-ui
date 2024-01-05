@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
 import ILabel from "../../../../Library/Label/ILabel";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 import { UsersIcon } from "@heroicons/react/outline";
-import { useDash } from "../../../../Context/DashboardContext";
+import { getAttributeColor } from "../../../../Constants/Constants";
 
-function Communities({
-  onCommunityClick,
-  title,
-  buttonLabel,
-  onButtonClick,
-  titleColor,
-}: any) {
+function Communities() {
   const location = useLocation();
   const navigate = useNavigate();
   const { kind }: any = useParams();
-  const { user } = useDash();
   const [communities, setCommunities] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -56,11 +48,30 @@ function Communities({
                     />
                   </div>
                   <div className="ml-4 mt-1 text-[10px]">
-                    <span className="border rounded-full py-1 px-3 font-thin text-white bg-black">
+                    <span className=" rounded-full py-1 px-3 font-thin text-white bg-black">
                       {community?.private ? "PRIVATE" : "PUBLIC"}
                     </span>
+                    <span
+                      className=" ml-2 rounded-full py-1 px-3 font-thin text-white "
+                      style={{
+                        backgroundColor: getAttributeColor(
+                          community?.attribute,
+                          0.2,
+                        ),
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: getAttributeColor(community?.attribute),
+                        }}
+                      >
+                        {community?.attribute}
+                      </span>
+                    </span>
                     <div className="mt-4">
-                      <div className="text-xs font-thin mb-1">{user?.city}</div>
+                      <div className="text-xs font-thin mb-1">
+                        {community?.city}, {community?.state}
+                      </div>
                       <div className="text-lg mb-1">{community?.name}</div>
                       <div
                         className="text-xs font-thin xl:w-[300px] lg:w-[200px] md:w-[150px] sm:w-[200px] w-[200px] mb-1"
@@ -72,17 +83,9 @@ function Communities({
                           overflow: "hidden",
                         }}
                       >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit
-                        anim id est laborum.
+                        {community?.description}
                       </div>
-                      <div className="text-xs font-thin">
+                      <div className="text-[11px] font-md mt-2">
                         Reputation: {community?.reputation}
                       </div>
                     </div>
@@ -90,7 +93,7 @@ function Communities({
                 </div>
 
                 <div
-                  className="border bg-black px-2 rounded-full flex items-center font-thin"
+                  className=" bg-black px-2 rounded-full flex items-center font-thin"
                   style={{ height: "fit-content" }}
                 >
                   <div className="text-sm mr-1 text-white">

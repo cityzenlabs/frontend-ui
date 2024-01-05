@@ -16,12 +16,8 @@ function IDropdown({
   labelText,
   value,
 }: IDropdownProps) {
-  // Initialize the state with the first option's value or a default value
   const [selectedValue, setSelectedValue] = useState<string>(value);
 
-  // Effect to update the selected value when options change
-
-  // Handle value change
   const handleValueChange = (value: string) => {
     setSelectedValue(value);
     if (onChange) {
@@ -47,7 +43,7 @@ function IDropdown({
                 minHeight: "40px",
                 display: "flex",
                 alignItems: "center",
-              }} // Set a minimum height and use flexbox for centering
+              }}
             >
               {options?.find((option) => option.value === selectedValue)
                 ?.label ||

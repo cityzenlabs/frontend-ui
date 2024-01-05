@@ -171,7 +171,7 @@ function Leaderboard() {
             <UserLeaderBoard
               users={rest}
               onRowClick={(userId) => navigate(`/profile/${userId}`)}
-              picture={profilePicture}
+              photo={profilePicture}
               page={page}
               firstThree={firstThree}
             />

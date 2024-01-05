@@ -9,9 +9,11 @@ import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
 import ISpinner from "../../../Library/Spinner/ISpinner";
+import { useDash } from "../../../Context/DashboardContext";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
+  const { user } = useDash();
   const navigate = useNavigate();
   const { isMobile, isLargeScreen } = useScreenSize();
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +23,8 @@ function CommunityDiscovery() {
     try {
       const data = await CommunityService.getCommunityDiscovery(
         accessToken.token,
+        user?.city,
+        user?.topAttribute,
       );
       if (data) {
         setCommunityDiscovery(data);
@@ -53,7 +57,7 @@ function CommunityDiscovery() {
               className="px-6 mr-2"
             />
             <IButton
-              text="New +"
+              text="Create +"
               onClick={() => navigate("/communities/create")}
               bgColor="bg-regal-blue"
               textColor="text-white"
@@ -69,7 +73,7 @@ function CommunityDiscovery() {
                   action: () => navigate("/communities/home"),
                 },
                 {
-                  label: "New +",
+                  label: "Create +",
                   action: () => navigate("/communities/create"),
                 },
               ]}
@@ -79,7 +83,9 @@ function CommunityDiscovery() {
 
         <ICommunityPanel
           title="Trending"
-          buttonLabel={"Show All"}
+          buttonLabel={
+            communityDiscovery?.trendingCommunities?.length ? "Show All" : ""
+          }
           height="600px"
           onButtonClick={() =>
             navigate(
@@ -99,7 +105,9 @@ function CommunityDiscovery() {
 
         <ICommunityPanel
           title="New"
-          buttonLabel={"Show All"}
+          buttonLabel={
+            communityDiscovery?.newCommunities?.length ? "Show All" : ""
+          }
           height="600px"
           onButtonClick={() =>
             navigate(`/communities/${encodeURIComponent("New Communities")}`, {
@@ -116,7 +124,9 @@ function CommunityDiscovery() {
 
         <ICommunityPanel
           title="Recommended"
-          buttonLabel={"Show All"}
+          buttonLabel={
+            communityDiscovery?.recommendedCommunities?.length ? "Show All" : ""
+          }
           height="600px"
           onButtonClick={() =>
             navigate(

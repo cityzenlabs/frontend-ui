@@ -102,7 +102,9 @@ function Home() {
         <div className="xl:w-3/5 w-full pb-4">
           <IPanel
             title="Level up with these events"
-            buttonLabel="Show All"
+            buttonLabel={
+              userHome?.recommendedCommunities?.length ? "Show All" : ""
+            }
             height="h-[471px]"
           >
             <div className="pt-2">
@@ -188,7 +190,9 @@ function Home() {
           communities={userHome?.recommendedCommunities}
           title="Recommended Communities"
           height="600px"
-          buttonLabel={"Show All"}
+          buttonLabel={
+            userHome?.recommendedCommunities?.length ? "Show All" : ""
+          }
           onButtonClick={() =>
             navigate(
               `/communities/${encodeURIComponent("Recommended Communities")}`,

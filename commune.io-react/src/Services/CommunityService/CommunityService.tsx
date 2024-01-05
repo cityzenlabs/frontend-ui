@@ -40,15 +40,22 @@ export const getCommunityDashboard = async (communityId: any, token: any) => {
   }
 };
 
-export const getCommunityDiscovery = async (token: any) => {
+export const getCommunityDiscovery = async (
+  token: any,
+  city: any,
+  attribute: any,
+) => {
   try {
-    const response = await fetch(`http://localhost:8080/community/discovery`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `http://localhost:8080/community/discovery?city=${city}&attribute=${attribute}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     if (response.ok) {
       return response.json();
     } else {
@@ -258,6 +265,32 @@ export const getCommunityPhotoGallery = async (token: any, id: any) => {
   try {
     const response = await fetch(
       `http://localhost:8080/community/${id}/gallery`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCommunityDiscoveryShowAll = async (
+  token: any,
+  type: any,
+  city: any,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/community/discovery/${type}?city=${city}`,
       {
         method: "GET",
         headers: {

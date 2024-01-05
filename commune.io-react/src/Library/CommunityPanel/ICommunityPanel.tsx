@@ -1,5 +1,10 @@
 import { CameraIcon } from "@heroicons/react/outline";
 import React from "react";
+import { UserGroupIcon } from "@heroicons/react/outline";
+import {
+  capitalizeFirstLetter,
+  getAttributeColor,
+} from "../../Constants/Constants";
 
 interface ICommunityPanelProps {
   communities: any[];
@@ -74,48 +79,55 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
                 <span className=" absolute text-[10px] top-2 right-2  bg-[#999c9c]  bg-opacity-80  rounded-full  px-3 font-thin text-white  ">
                   {community?.private ? (
                     <>
-                      <svg
-                        className="h-3 w-3 mr-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11V7a5 5 0 00-10 0v4m4 5v6m4-6v6m-4 0H5a2 2 0 01-2-2v-7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-3m-4 0h4"
-                        />
-                      </svg>
-                      PRIVATE
+                      <div className="flex">
+                        <svg
+                          className="h-3 w-3 mr-1 "
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 11V7a5 5 0 00-10 0v4m4 5v6m4-6v6m-4 0H5a2 2 0 01-2-2v-7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-3m-4 0h4"
+                          />
+                        </svg>
+                        <div>PRIVATE</div>
+                      </div>
                     </>
                   ) : (
-                    "PUBLIC"
+                    <>PUBLIC</>
                   )}
                 </span>
               </div>
 
-              <div className="px-2 pt-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium truncate">
+              <div className="px-2 pt-2 pb-1 flex items-center justify-between">
+                <h3 className="text-sm font-medium flex-grow truncate">
                   {community?.name}
                 </h3>
-                {/* Additional content or icons */}
+                <div className="flex items-center ml-1">
+                  <span className="text-xs text-[#7E858B] font-thin truncate flex-grow">
+                    {community?.memberCount}
+                  </span>
+                  <UserGroupIcon
+                    className="h-4 w-4 ml-1 flex-shrink-0 text-[#7E858B]"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
-              <div className="px-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  Reputation {community?.reputation}
-                </div>
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  Public
+              <div className="px-2 pb-1 flex items-center justify-between">
+                <div
+                  className="text-xs font-medium text-[#7E858B] truncate flex-grow"
+                  style={{ color: getAttributeColor(community?.attribute) }}
+                >
+                  {capitalizeFirstLetter(community?.attribute)}
                 </div>
               </div>
-              <div className="px-2 pb-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {community?.attribute}
-                </div>
-                <div className="text-xs text-[#7E858B] font-medium truncate flex">
-                  {community?.memberCount} Members
+              <div className="px-2 pb-1 flex items-center justify-between">
+                <div className="text-xs font-medium text-[#7E858B] font-thin truncate flex-grow">
+                  Reputation: {community?.reputation}
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
 export const transformMembersData = (analytics: any) => {
+  console.log(analytics);
   const dataPoints: any = [];
   const categories: any = [];
 

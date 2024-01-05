@@ -15,9 +15,36 @@ function RequirementForm({
   onAttributeChange,
   onLevelChange,
   onAddDropdown,
+  privacy,
+  setPrivacy,
 }: any) {
   return (
     <div>
+      <div className="flex gap-2">
+        <div className="w-1/2 pb-4">
+          <IDropdown
+            options={[
+              { label: "Private", value: true },
+              { label: "Public", value: false },
+            ]}
+            labelText="Privacy"
+            value={privacy}
+            onChange={setPrivacy}
+          />
+        </div>
+        <div className=" w-1/2 pb-4">
+          <IDropdown
+            onChange={setGenderRequirements}
+            labelText="Gender"
+            options={[
+              { label: "Male", value: "MALE" },
+              { label: "Female", value: "FEMALE" },
+              { label: "Neutral", value: "NEUTRAL" },
+            ]}
+            value={genderRequirements}
+          ></IDropdown>
+        </div>
+      </div>
       <div className="pb-4">
         {" "}
         <IInputGroup
@@ -42,18 +69,7 @@ function RequirementForm({
           ]}
         ></IInputGroup>
       </div>
-      <div className="pb-4">
-        <IDropdown
-          onChange={setGenderRequirements}
-          labelText="Gender Requirements"
-          options={[
-            { label: "Male", value: "MALE" },
-            { label: "Female", value: "FEMALE" },
-            { label: "Neutral", value: "NEUTRAL" },
-          ]}
-          value={genderRequirements}
-        ></IDropdown>
-      </div>
+
       <div className="pb-4">
         {dropdowns.map((dropdown: any, index: any) => {
           const usedAttributes = dropdowns
@@ -75,6 +91,7 @@ function RequirementForm({
               <div className="w-1/2">
                 <IDropdown
                   options={[
+                    { label: "0", value: 0 },
                     { label: "1", value: 1 },
                     { label: "2", value: 2 },
                     { label: "3", value: 3 },

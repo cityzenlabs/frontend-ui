@@ -23,13 +23,9 @@ function IAttributeBar({
 
   return (
     <div className={`${widthClass} `}>
-      <div style={{ color: color }}>
-        {" "}
-        {/* Use inline style for color */}
-        {attributeKey}
-      </div>
+      <div style={{ color: color }}>{attributeKey}</div>
       <div className="text-xs text-[#7E858B]">
-        {`LEVEL ${attributeValue.level} - ${attributeValue.points}/100 POINTS`}
+        {`LEVEL ${attributeValue.level} - ${attributeValue.points}/100 `}
       </div>
       <div
         style={{
@@ -38,7 +34,6 @@ function IAttributeBar({
           height: "4px",
         }}
       >
-        {/* Full progress bar */}
         <div
           style={{
             position: "absolute",
@@ -49,7 +44,6 @@ function IAttributeBar({
           }}
         ></div>
 
-        {/* Filled portion of the progress bar */}
         <div
           style={{
             position: "absolute",

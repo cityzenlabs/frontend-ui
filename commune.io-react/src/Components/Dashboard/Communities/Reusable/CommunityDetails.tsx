@@ -24,12 +24,12 @@ const CommunityDetails = ({
   let navigate = useNavigate();
 
   const getColorByGenderRequirements = () => {
-    switch (community?.genderRequirements) {
+    switch (community?.requirements?.genderRequirements) {
       case "MALE":
         return "#68BEF1";
       case "FEMALE":
         return "#40B87E";
-      case "NEUTRAL":
+      case "NONE":
         return "#4BCEC9";
       default:
         return "";
@@ -68,7 +68,11 @@ const CommunityDetails = ({
                 aria-hidden="true"
                 style={{ color: getColorByGenderRequirements() }}
               />
-              <div>{community?.minimumAge + "-" + community?.maximumAge}</div>
+              <div>
+                {community?.requirements.minimumAge +
+                  "-" +
+                  community?.requirements.maximumAge}
+              </div>
             </div>
             <div className="mt-5 flex">
               <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
@@ -132,9 +136,12 @@ const CommunityDetails = ({
           <div>
             <div className="font-md text-xs pt-2">REQUIREMENTS</div>
             <div className="grid grid-cols-2 gap-5 py-6">
-              {community?.attributeRequirements &&
+              {community?.requirements?.attributeRequirements &&
                 Object.entries(
-                  community.attributeRequirements as [string, number][],
+                  community.requirements?.attributeRequirements as [
+                    string,
+                    number,
+                  ][],
                 ).map(([attribute, level], index) => {
                   const color = attributeColors[index % attributeColors.length];
                   return (

@@ -53,7 +53,7 @@ function EventDiscovery() {
             className="px-6 mr-2"
           />
           <IButton
-            text="New +"
+            text="Create +"
             onClick={() => navigate("/events/create")}
             bgColor="bg-regal-blue"
             textColor="text-white"
@@ -68,7 +68,7 @@ function EventDiscovery() {
                 action: () => navigate("/events/home"),
               },
               {
-                label: "Created",
+                label: "Create +",
                 action: () => navigate("/events/create"),
               },
             ]}
@@ -78,7 +78,7 @@ function EventDiscovery() {
 
       <IEventPanel
         title="Trending"
-        buttonLabel={"Show All"}
+        buttonLabel={eventDiscovery?.trendingEvents?.length ? "Show All" : ""}
         height="600px"
         events={eventDiscovery?.trendingEvents}
         onEventClick={(eventName, eventId) => {
@@ -95,7 +95,7 @@ function EventDiscovery() {
 
       <IEventPanel
         title="Upcoming"
-        buttonLabel={"Show All"}
+        buttonLabel={eventDiscovery?.upcomingEvents?.length ? "Show All" : ""}
         height="600px"
         onButtonClick={() =>
           navigate(`/events/${encodeURIComponent("Upcoming Events")}`, {
@@ -112,7 +112,9 @@ function EventDiscovery() {
 
       <IEventPanel
         title="Recommended"
-        buttonLabel={"Show All"}
+        buttonLabel={
+          eventDiscovery?.recommendedEvents?.length ? "Show All" : ""
+        }
         height="600px"
         onButtonClick={() =>
           navigate(`/events/${encodeURIComponent("Recommended Events")}`, {

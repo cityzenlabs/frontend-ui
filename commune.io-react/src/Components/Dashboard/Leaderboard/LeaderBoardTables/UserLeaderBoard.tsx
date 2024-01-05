@@ -6,10 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   gender: string;
-  picture: string;
+  photo: string;
   age: number;
   level: number;
   points: number;
@@ -21,7 +20,7 @@ interface UserLeaderBoardProps {
   onRowClick: (userId: string) => void;
   page: number;
   firstThree: User[];
-  picture: string;
+  photo: string;
 }
 
 const TableRow = ({
@@ -44,12 +43,8 @@ const TableRow = ({
       <td style={tdStyle}>{4 + (page - 1) * 7 + index}</td>
       <td style={tdStyle}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img
-            src={user.picture}
-            alt={`${user.firstName} ${user.lastName}`}
-            style={imgStyle}
-          />
-          <span className="text-xs">{`${user.firstName} ${user.lastName}`}</span>
+          <img src={user?.photo} alt={""} style={imgStyle} />
+          <span className="text-xs">{`${user.name}`}</span>
         </div>
       </td>
       <td className="text-xs" style={tdStyle}>
@@ -82,16 +77,14 @@ const IUserLeaderBoard: React.FC<UserLeaderBoardProps> = ({
               <div className="flex items-center ">
                 <div className="pb-2">
                   <img
-                    src={user?.picture}
+                    src={user?.photo}
                     alt={``}
                     style={{ borderRadius: "32px", objectFit: "cover" }}
                     className="w-[64px] h-[64px] mr-2 mb-1"
                   />
                 </div>
                 <div>
-                  <div className="text-md">
-                    {user?.firstName + " " + user?.lastName}{" "}
-                  </div>
+                  <div className="text-md">{user?.name} </div>
                 </div>
               </div>
               <div className="flex ">

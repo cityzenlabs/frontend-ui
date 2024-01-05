@@ -93,15 +93,7 @@ function EventDashboard() {
             <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
           </div>
         </IPanel>
-        <IPanel
-          height="h-[60px]"
-          //onPanelClick={() => setShowDashboardEvents("Pending Events")}
-        >
-          <div className="flex justify-between items-center">
-            {"Analytics"}
-            <ArrowRightIcon className="h-6 w-6" aria-hidden="true" />
-          </div>
-        </IPanel>
+
         <IPanel
           height="h-[60px]"
           //onPanelClick={() => setShowDashboardEvents("Completed Events")}

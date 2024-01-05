@@ -22,7 +22,9 @@ function CommunityCreate() {
   const [genderRequirements, setGenderRequirements] = useState("");
   const [description, setDescription] = useState("");
   const [activeStep, setActiveStep] = useState(1);
+  const [attribute, setAttribute] = useState<any>("");
   const steps = ["Details", "Requirements", "Photos"];
+  const [privacy, setPrivacy] = useState<any>();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImageFiles = e.target.files;
@@ -92,10 +94,14 @@ function CommunityCreate() {
       description: description,
       city: city,
       state: state,
-      minimumAge: parseInt(minAge),
-      maximumAge: parseInt(maxAge),
-      genderRequirements: genderRequirements,
-      attributeRequirements: attributeRequirements,
+      attribute: attribute,
+      requirements: {
+        private: privacy,
+        genderRequirements: genderRequirements,
+        attributeRequirements: attributeRequirements,
+        minimumAge: parseInt(minAge),
+        maximumAge: parseInt(maxAge),
+      },
     };
 
     try {
@@ -133,6 +139,8 @@ function CommunityCreate() {
               setState={setState}
               description={description}
               setDescription={setDescription}
+              attribute={attribute}
+              setAttribute={setAttribute}
             />
           )}
           {activeStep === 2 && (
@@ -149,6 +157,8 @@ function CommunityCreate() {
               onAttributeChange={handleAttributeChange}
               onLevelChange={handleLevelChange}
               onAddDropdown={addDropdown}
+              privacy={privacy}
+              setPrivacy={setPrivacy}
             />
           )}
 

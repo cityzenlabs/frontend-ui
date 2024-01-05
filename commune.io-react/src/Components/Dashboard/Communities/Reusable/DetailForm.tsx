@@ -2,6 +2,7 @@ import React, { ChangeEvent } from "react";
 import IInput from "../../../../Library/Input/IInput";
 import IInputGroup from "../../../../Library/InputGroup/IInputGroup";
 import ITextArea from "../../../../Library/TextArea/ITextArea";
+import IDropdown from "../../../../Library/Dropdown/IDropdown";
 
 function DetailForm({
   name,
@@ -14,10 +15,12 @@ function DetailForm({
   setDescription,
   community,
   disabled,
+  attribute,
+  setAttribute,
 }: any) {
   return (
     <div>
-      <div className="pb-4">
+      <div className="w-full pb-4">
         <IInput
           label="Community Name"
           placeholder={community ? community?.name : "Name"}
@@ -28,6 +31,24 @@ function DetailForm({
           }
         ></IInput>
       </div>
+
+      <div className=" pb-4">
+        <IDropdown
+          options={[
+            { label: "Fitness", value: "FITNESS" },
+            { label: "Social", value: "SOCIAL" },
+            { label: "Culture", value: "CULTURE" },
+            { label: "Intelligence", value: "INTELLIGENCE" },
+            { label: "Adventure", value: "ADVENTURE" },
+            { label: "NightLife", value: "NIGHTLIFE" },
+          ]}
+          labelText="Type"
+          value={attribute}
+          onChange={setAttribute}
+          placeholder="Attribute"
+        />
+      </div>
+
       <div className="pb-4">
         <IInputGroup
           label="Location"

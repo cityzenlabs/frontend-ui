@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import IContainer from "../../../../Library/Container/IContainer";
-import IPanel from "../../../../Library/Panel/IPanel";
 import ILabel from "../../../../Library/Label/ILabel";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import ICommunityPanel from "../../../../Library/CommunityPanel/ICommunityPanel";
@@ -48,7 +46,9 @@ function CommunityHome() {
 
       <ICommunityPanel
         title={
-          "Joined Communities (" + communityHome.joinedCommunities.length + ")"
+          "Joined Communities (" +
+          communityHome?.joinedCommunities?.length +
+          ")"
         }
         buttonLabel={"Show All"}
         height="600px"
@@ -70,7 +70,7 @@ function CommunityHome() {
       <ICommunityPanel
         title={
           "Created Communities (" +
-          communityHome.createdCommunities.length +
+          communityHome?.createdCommunities?.length +
           ")"
         }
         buttonLabel={"Show All"}

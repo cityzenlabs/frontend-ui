@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 interface Community {
   id: string;
   name: string;
-  picture: string;
-  organizerFirstName: string;
-  organizerLastName: string;
+  photo: string;
+  organizerName: string;
   members: number;
   points: number;
   attribute: string;
@@ -45,17 +44,14 @@ const TableRow = ({
       <td style={tdStyle}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <img
-            src={community.picture}
+            src={community?.photo}
             alt={`${community.name}`}
             style={imgStyle}
           />
           <span className="text-xs">{community.name}</span>
         </div>
       </td>
-      <td
-        style={tdStyle}
-        className="text-xs"
-      >{`${community.organizerFirstName} ${community.organizerLastName}`}</td>
+
       <td style={tdStyle} className="text-xs">
         {community.attribute}
       </td>
@@ -91,7 +87,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
                   }
                 >
                   <img
-                    src={community?.picture}
+                    src={community?.photo}
                     alt={``}
                     style={{ borderRadius: "32px", objectFit: "cover" }}
                     className="w-[64px] h-[64px] mr-2 mb-1"
@@ -100,7 +96,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
                 <div>
                   <div className="text-md">{community?.name}</div>
                   <div className="text-xs text-[#7E858B]">
-                    {`${community?.organizerFirstName} ${community?.organizerLastName}`}
+                    {`${community?.organizerName}`}
                   </div>
                 </div>
               </div>
@@ -131,9 +127,7 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
               <th style={thStyle} className="text-xs font-thin">
                 Name
               </th>
-              <th style={thStyle} className="text-xs font-thin">
-                Organizer
-              </th>
+
               <th style={thStyle} className="text-xs font-thin">
                 Attribute
               </th>
