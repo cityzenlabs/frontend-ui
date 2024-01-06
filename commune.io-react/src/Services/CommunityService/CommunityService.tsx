@@ -283,14 +283,10 @@ export const getCommunityPhotoGallery = async (token: any, id: any) => {
   }
 };
 
-export const getCommunityDiscoveryShowAll = async (
-  token: any,
-  type: any,
-  city: any,
-) => {
+export const getCommunityDiscoveryShowAll = async (token: any, url: any) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/community/discovery/${type}?city=${city}`,
+      `http://localhost:8080/community/discovery/${url}`,
       {
         method: "GET",
         headers: {

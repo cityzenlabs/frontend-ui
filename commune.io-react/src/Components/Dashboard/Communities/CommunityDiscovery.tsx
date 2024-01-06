@@ -92,7 +92,7 @@ function CommunityDiscovery() {
               `/communities/${encodeURIComponent("Trending Communities")}`,
               {
                 state: {
-                  communities: communityDiscovery?.trendingCommunities,
+                  type: "trending",
                 },
               },
             )
@@ -112,7 +112,7 @@ function CommunityDiscovery() {
           onButtonClick={() =>
             navigate(`/communities/${encodeURIComponent("New Communities")}`, {
               state: {
-                communities: communityDiscovery?.newCommunities,
+                type: "new",
               },
             })
           }
@@ -133,7 +133,7 @@ function CommunityDiscovery() {
               `/communities/${encodeURIComponent("Recommended Communities")}`,
               {
                 state: {
-                  communities: communityDiscovery?.recommendedCommunities,
+                  type: "recommended",
                 },
               },
             )
