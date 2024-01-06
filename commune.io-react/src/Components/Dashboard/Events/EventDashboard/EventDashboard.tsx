@@ -83,7 +83,7 @@ function EventDashboard() {
         </div>
       </div>
 
-      <div className="grid xl:grid-cols-3 gap-5 xl:w-4/5 lg:w-full pb-4">
+      <div className="grid xl:grid-cols-3 gap-2 xl:w-4/5 lg:w-full pb-4">
         <IPanel
           height="h-[60px]"
           //onPanelClick={() => setShowDashboardEvents("Ongoing Events")}

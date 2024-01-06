@@ -13,14 +13,15 @@ import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { getIconForAttribute } from "../../Constants/Constants";
 import IReputationBar from "../../../../Library/ReputationBar/IReputationBar";
+import { getAttributeColor } from "../../../../Constants/Constants";
 
 const CommunityDetails = ({
   community,
-  organizer,
   communityId,
   membersList,
   organizerId,
 }: any) => {
+  console.log(community);
   let navigate = useNavigate();
 
   const getColorByGenderRequirements = () => {
@@ -45,43 +46,59 @@ const CommunityDetails = ({
               <div className="flex justify-between">
                 <div className="flex">
                   <ILabel text={community.name} className="mr-2"></ILabel>
-                  <BadgeCheckIcon
-                    className="h-6 w-6"
-                    aria-hidden="true"
-                    style={{ color: "#40B87E" }}
-                  />
                 </div>
 
                 <div className="flex">
                   <div className="mr-2">{community.communityPoints}</div>
-                  <SunIcon
-                    className="h-6 w-6"
-                    aria-hidden="true"
-                    style={{ color: getColorByGenderRequirements() }}
-                  />
                 </div>
               </div>
             )}
-            <div className="mt-5 flex">
-              <UserGroupIcon
-                className="h-6 w-6 mr-2"
-                aria-hidden="true"
-                style={{ color: getColorByGenderRequirements() }}
-              />
-              <div>
-                {community?.requirements.minimumAge +
-                  "-" +
-                  community?.requirements.maximumAge}
-              </div>
+            <div className="mt-2 flex text-[10px]">
+              <span className=" rounded-full py-1 px-3 font-thin text-white bg-black">
+                {community?.private ? "PRIVATE" : "PUBLIC"}
+              </span>
+              <span
+                className=" ml-2 rounded-full py-1 px-3 font-thin text-white "
+                style={{
+                  backgroundColor: getAttributeColor(community?.attribute, 0.2),
+                }}
+              >
+                <span
+                  style={{
+                    color: getAttributeColor(community?.attribute),
+                  }}
+                >
+                  {community?.attribute}
+                </span>
+              </span>
             </div>
             <div className="mt-5 flex">
-              <MapIcon className="h-6 w-6 mr-2" aria-hidden="true" />
-              <div className="text-[#7E858B]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                />
+              </svg>
+
+              <div className="text-[#7E858B] text-sm">
                 {community?.city + ", " + community?.state}
               </div>
             </div>
 
-            <div className="mt-5 mb-2 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439]">
+            <div className="mt-5 mb-2 overflow-y-auto whitespace-pre-wrap flex-grow text-[#323439] font-thin">
               {community?.description}
             </div>
           </div>
@@ -93,17 +110,17 @@ const CommunityDetails = ({
           <div className="flex items-center ">
             <div onClick={() => navigate(`/profile/${organizerId}`)}>
               <img
-                src={organizer?.photo}
+                src={community?.organizer?.photo}
                 alt={``}
                 style={{ borderRadius: "15px", objectFit: "cover" }}
                 className="w-[30px] h-[30px] mr-2 mb-1"
               />
             </div>
-            <div className="text-md">{organizer?.name}</div>
+            <div className="text-md">{community?.organizer?.name}</div>
           </div>
           <div className="text-[#7E858B] text-sm mb-6">
             <IReputationBar
-              reputation={organizer?.reputation}
+              reputation={community?.organizer?.reputation}
               color="regal-blue"
             />
           </div>
@@ -132,16 +149,13 @@ const CommunityDetails = ({
           </div>
         </IPanel>
 
-        <IPanel height="h-[270px]">
+        <IPanel height="h-[255px]">
           <div>
             <div className="font-md text-xs pt-2">REQUIREMENTS</div>
             <div className="grid grid-cols-2 gap-5 py-6">
-              {community?.requirements?.attributeRequirements &&
+              {community?.requirements?.attributes &&
                 Object.entries(
-                  community.requirements?.attributeRequirements as [
-                    string,
-                    number,
-                  ][],
+                  community.requirements?.attributes as [string, number][],
                 ).map(([attribute, level], index) => {
                   const color = attributeColors[index % attributeColors.length];
                   return (

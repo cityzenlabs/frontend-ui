@@ -10,6 +10,7 @@ import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import { useDash } from "../../../Context/DashboardContext";
+import ISearch from "../../../Library/Search/ISearch";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
@@ -51,6 +52,7 @@ function CommunityDiscovery() {
         <div className="flex justify-between pt-4 pb-4">
           <ILabel text="Discover Communities" />
           <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
+            <ISearch />
             <IButton
               text="Home"
               onClick={() => navigate("/communities/home")}

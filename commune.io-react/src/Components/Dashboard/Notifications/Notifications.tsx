@@ -74,7 +74,10 @@ function NotificationsComponent() {
           />
         </div>
         <div>
-          <div>{msg.message}</div>
+          <div
+            className="font-thin"
+            dangerouslySetInnerHTML={{ __html: msg.message }}
+          />
           <div className="text-sm text-[#7E858B] font-light">
             {moment(msg.timestamp).fromNow()}
           </div>
