@@ -107,9 +107,9 @@ function Communities() {
       <div>
         <div className="xl:w-3/4 w-full">
           <div>
-            {communities?.map((community: any) => (
+            {communities?.map((community: any, index) => (
               <div
-                key={community?.communityId}
+                key={index}
                 className="pb-4 flex justify-between"
                 onClick={() =>
                   navigate(`/community/${community?.name}/${community?.id}`)

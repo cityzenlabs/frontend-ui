@@ -9,10 +9,12 @@ import DetailForm from "../Reusable/DetailForm";
 import { Button } from "@mui/material";
 import RequirementForm from "../Reusable/RequirementForm";
 import PhotoForm from "../Reusable/PhotoForm";
+import { useDash } from "../../../../Context/DashboardContext";
 
 function CommunityCreate() {
   let navigate = useNavigate();
   const accessToken = useAuth();
+  const { user } = useDash();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -73,7 +75,7 @@ function CommunityCreate() {
     const selectedAttribute = dropdowns[lastIndex].attribute;
     const selectedLevel = dropdowns[lastIndex].level;
 
-    if (selectedAttribute && selectedLevel) {
+    if (selectedAttribute !== undefined && selectedLevel !== undefined) {
       const newDropdowns = [...dropdowns];
       newDropdowns.push({ attribute: undefined, level: undefined });
       setDropdowns(newDropdowns);
@@ -159,6 +161,7 @@ function CommunityCreate() {
               onAddDropdown={addDropdown}
               privacy={privacy}
               setPrivacy={setPrivacy}
+              user={user}
             />
           )}
 

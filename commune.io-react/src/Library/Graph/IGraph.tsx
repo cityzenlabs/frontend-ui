@@ -8,7 +8,7 @@ const IGraph = ({ data, categories, title }: any) => {
     datasets: [
       {
         label: title,
-        data: data.data,
+        data: data[0].data,
         fill: false,
         backgroundColor: "rgb(80,129,255)",
         borderColor: "rgba(80,129,255, 0.2)",

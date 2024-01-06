@@ -17,7 +17,19 @@ function RequirementForm({
   onAddDropdown,
   privacy,
   setPrivacy,
+  user,
 }: any) {
+  const getLevelOptions = (selectedAttribute: any) => {
+    let levelOptions = [];
+    const userLevel = user?.attributes[selectedAttribute]?.level;
+
+    for (let i = 0; i <= userLevel; i++) {
+      levelOptions.push({ label: String(i), value: i });
+    }
+
+    return levelOptions;
+  };
+
   return (
     <div>
       <div className="flex gap-2">
@@ -32,7 +44,7 @@ function RequirementForm({
             onChange={setPrivacy}
           />
         </div>
-        <div className=" w-1/2 pb-4">
+        <div className="w-1/2 pb-4">
           <IDropdown
             onChange={setGenderRequirements}
             labelText="Gender"
@@ -42,11 +54,10 @@ function RequirementForm({
               { label: "Neutral", value: "NEUTRAL" },
             ]}
             value={genderRequirements}
-          ></IDropdown>
+          />
         </div>
       </div>
       <div className="pb-4">
-        {" "}
         <IInputGroup
           label="Age"
           inputs={[
@@ -67,14 +78,18 @@ function RequirementForm({
               numberOnly: true,
             },
           ]}
-        ></IInputGroup>
+        />
       </div>
 
       <div className="pb-4">
         {dropdowns.map((dropdown: any, index: any) => {
           const usedAttributes = dropdowns
-            .filter((_: any, i: any) => i < index) // Get attributes from previous dropdowns
+            .filter((_: any, i: any) => i < index)
             .map((item: any) => item.attribute);
+
+          const levelOptions = dropdown.attribute
+            ? getLevelOptions(dropdown.attribute)
+            : [{ label: "Select Attribute First", value: "" }];
 
           return (
             <div key={index} className="pb-4 flex justify-between gap-2">
@@ -90,19 +105,7 @@ function RequirementForm({
               </div>
               <div className="w-1/2">
                 <IDropdown
-                  options={[
-                    { label: "0", value: 0 },
-                    { label: "1", value: 1 },
-                    { label: "2", value: 2 },
-                    { label: "3", value: 3 },
-                    { label: "4", value: 4 },
-                    { label: "5", value: 5 },
-                    { label: "6", value: 6 },
-                    { label: "7", value: 7 },
-                    { label: "8", value: 8 },
-                    { label: "9", value: 9 },
-                    { label: "10", value: 10 },
-                  ]}
+                  options={levelOptions}
                   labelText="Level"
                   value={dropdown.level || ""}
                   onChange={(value) => onLevelChange(index, value)}

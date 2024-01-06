@@ -55,9 +55,9 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-1 pb-4">
-          {communities?.slice(0, 4).map((community) => (
+          {communities?.slice(0, 4).map((community, index) => (
             <div
-              key={community?.communityId}
+              key={index}
               className="rounded-lg shadow-md flex flex-col"
               onClick={() =>
                 onCommunityClick &&

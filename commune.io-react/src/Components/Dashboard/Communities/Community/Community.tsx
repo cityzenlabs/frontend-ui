@@ -35,6 +35,7 @@ function Community() {
         accessToken.token,
       );
       if (communityPage) {
+        console.log(communityPage);
         setCommunity(communityPage?.community);
         setOrganizerId(communityPage?.community?.organizerId);
         setOrganizer(communityPage?.organizer);
@@ -44,6 +45,8 @@ function Community() {
       }
     } catch (error) {}
   };
+
+  console.log(user);
 
   useEffect(() => {
     const fetchData = async () => {
