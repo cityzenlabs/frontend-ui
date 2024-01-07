@@ -76,7 +76,7 @@ const ICommunityPanel: React.FC<ICommunityPanelProps> = ({
                     <CameraIcon className="w-20 h-20 text-gray-500" />
                   </div>
                 )}
-                <span className=" absolute text-[10px] top-2 right-2  bg-[#999c9c]  bg-opacity-80  rounded-full  px-3 font-thin text-white  ">
+                <span className="absolute text-[10px] top-2 right-2 bg-[#9FA3A6] bg-opacity-80 rounded-full px-3 font-thin text-white ">
                   {community?.privacy === "PRIVATE" ? (
                     <>
                       <div className="flex">
