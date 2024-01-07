@@ -7,7 +7,11 @@ import { useDash } from "../../../Context/DashboardContext";
 import { useNavigate } from "react-router-dom";
 import IEventPanel from "../../../Library/EventPanel/IEventPanel";
 import ISpinner from "../../../Library/Spinner/ISpinner";
-import { formatDate, getIconForAttribute } from "../Constants/Constants";
+import {
+  formatDate,
+  getAttributeColor,
+  getIconForAttribute,
+} from "../../../Constants/Constants";
 import ILabel from "../../../Library/Label/ILabel";
 import * as UserService from "../../../Services/UserService/UserService";
 import { useAuth } from "../../../Context/AuthContext";
@@ -76,19 +80,14 @@ function Home() {
                       <IAttributeBar
                         attributeKey={attributeKey}
                         attributeValue={attributeValue as any}
-                        color={attributeColors[index % attributeColors.length]}
+                        color={getAttributeColor(attributeKey) as any}
                       />
                       <div
                         className="ml-auto border py-3 px-3 rounded"
                         style={{
-                          color:
-                            attributeColors[index % attributeColors.length],
-                          borderColor: `${
-                            attributeColors[index % attributeColors.length]
-                          }20`,
-                          backgroundColor: `${
-                            attributeColors[index % attributeColors.length]
-                          }20`,
+                          color: getAttributeColor(attributeKey),
+                          borderColor: getAttributeColor(attributeKey, 0.2),
+                          backgroundColor: getAttributeColor(attributeKey, 0.2),
                         }}
                       >
                         {getIconForAttribute(attributeKey)}

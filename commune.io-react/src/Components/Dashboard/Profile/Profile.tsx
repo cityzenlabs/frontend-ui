@@ -10,7 +10,10 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 import ILabel from "../../../Library/Label/ILabel";
-import { getIconForAttribute } from "../Constants/Constants";
+import {
+  getAttributeColor,
+  getIconForAttribute,
+} from "../../../Constants/Constants";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import IReputationBar from "../../../Library/ReputationBar/IReputationBar";
 
@@ -110,18 +113,14 @@ function Profile() {
                     <IAttributeBar
                       attributeKey={attributeKey}
                       attributeValue={attributeValue as any}
-                      color={attributeColors[index % attributeColors.length]}
+                      color={getAttributeColor(attributeKey) as any}
                     />
                     <div
                       className="ml-auto border py-3 px-3 rounded"
                       style={{
-                        color: attributeColors[index % attributeColors.length],
-                        borderColor: `${
-                          attributeColors[index % attributeColors.length]
-                        }20`,
-                        backgroundColor: `${
-                          attributeColors[index % attributeColors.length]
-                        }20`,
+                        color: getAttributeColor(attributeKey),
+                        borderColor: getAttributeColor(attributeKey, 0.2),
+                        backgroundColor: getAttributeColor(attributeKey, 0.2),
                       }}
                     >
                       {getIconForAttribute(attributeKey)}

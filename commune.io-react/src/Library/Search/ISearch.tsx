@@ -70,8 +70,6 @@ function ISearch() {
         </button>
         {showFilters && (
           <div className="absolute right-0 mt-2 px-4 pt-4 pb-2 bg-white border border-gray-300 rounded-lg shadow-lg z-50 w-[205px]">
-            {" "}
-            {/* Adjusted padding */}
             <div className="text-xs font-medium text-gray-900 mb-3">
               ATTRIBUTE
             </div>

@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
 import ILabel from "../../../../Library/Label/ILabel";
 import { useDash } from "../../../../Context/DashboardContext";
-import { formatDate } from "../../Constants/Constants";
+import { formatDate } from "../../../../Constants/Constants";
 
 function Events({
   showAll,

@@ -1,17 +1,10 @@
 import React from "react";
 import IPanel from "../../../../Library/Panel/IPanel";
 import ILabel from "../../../../Library/Label/ILabel";
-import {
-  BadgeCheckIcon,
-  SunIcon,
-  UserGroupIcon,
-  ArrowRightIcon,
-} from "@heroicons/react/solid";
+import { ArrowRightIcon } from "@heroicons/react/solid";
 
-import { attributeColors } from "../../Constants/Constants";
-import { MapIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
-import { getIconForAttribute } from "../../Constants/Constants";
+import { getIconForAttribute } from "../../../../Constants/Constants";
 import IReputationBar from "../../../../Library/ReputationBar/IReputationBar";
 import { getAttributeColor } from "../../../../Constants/Constants";
 
@@ -21,21 +14,7 @@ const CommunityDetails = ({
   membersList,
   organizerId,
 }: any) => {
-  console.log(community);
   let navigate = useNavigate();
-
-  const getColorByGenderRequirements = () => {
-    switch (community?.requirements?.genderRequirements) {
-      case "MALE":
-        return "#68BEF1";
-      case "FEMALE":
-        return "#40B87E";
-      case "NONE":
-        return "#4BCEC9";
-      default:
-        return "";
-    }
-  };
 
   return (
     <div className="grid grid-cols-3 xl:grid-cols-3 gap-5">
@@ -55,7 +34,9 @@ const CommunityDetails = ({
             )}
             <div className="mt-2 flex text-[10px]">
               <span className=" rounded-full py-1 px-3 font-thin text-white bg-black">
-                {community?.private ? "PRIVATE" : "PUBLIC"}
+                {community?.requirements?.privacy === "PRIVATE"
+                  ? "PRIVATE"
+                  : "PUBLIC"}
               </span>
               <span
                 className=" ml-2 rounded-full py-1 px-3 font-thin text-white "
@@ -157,7 +138,7 @@ const CommunityDetails = ({
                 Object.entries(
                   community.requirements?.attributes as [string, number][],
                 ).map(([attribute, level], index) => {
-                  const color = attributeColors[index % attributeColors.length];
+                  const color = getAttributeColor(attribute);
                   return (
                     <div
                       key={attribute}
@@ -176,14 +157,9 @@ const CommunityDetails = ({
                       </div>
                       <div
                         style={{
-                          color:
-                            attributeColors[index % attributeColors.length],
-                          borderColor: `${
-                            attributeColors[index % attributeColors.length]
-                          }20`,
-                          backgroundColor: `${
-                            attributeColors[index % attributeColors.length]
-                          }20`,
+                          color: getAttributeColor(attribute),
+                          borderColor: getAttributeColor(attribute, 0.2),
+                          backgroundColor: getAttributeColor(attribute, 0.2),
                         }}
                         className="border px-2 py-2 rounded"
                       >

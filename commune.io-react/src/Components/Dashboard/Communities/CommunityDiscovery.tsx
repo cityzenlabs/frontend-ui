@@ -11,6 +11,7 @@ import { useScreenSize } from "../../../Context/ScreenContext";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import { useDash } from "../../../Context/DashboardContext";
 import ISearch from "../../../Library/Search/ISearch";
+import Communities from "./Communities/Communities";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
