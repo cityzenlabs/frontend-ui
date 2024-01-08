@@ -12,6 +12,7 @@ import ISpinner from "../../../Library/Spinner/ISpinner";
 import { useDash } from "../../../Context/DashboardContext";
 import ISearch from "../../../Library/Search/ISearch";
 import Communities from "./Communities/Communities";
+import ShowAllCommunities from "./Reusable/ShowAllCommunities";
 
 function CommunityDiscovery() {
   const accessToken = useAuth();
@@ -20,6 +21,13 @@ function CommunityDiscovery() {
   const { isMobile, isLargeScreen } = useScreenSize();
   const [isLoading, setIsLoading] = useState(true);
   const [communityDiscovery, setCommunityDiscovery] = useState<any>();
+  const [showFilteredResults, setShowFilteredResults] = useState<any>();
+  const [filteredCommunities, setFilteredCommunities] = useState<any>();
+  const [searchTerm, setSearchTerm] = useState<any>();
+  const [selectedPrivacy, setSelectedPrivacy] = useState<any>();
+  const [selectedAttribute, setSelectedAttribute] = useState<any>();
+
+  const [page, setPage] = useState(1);
 
   const fetchCommunityDiscovery = async () => {
     try {
@@ -31,6 +39,41 @@ function CommunityDiscovery() {
       if (data) {
         setCommunityDiscovery(data);
       }
+    } catch (error) {}
+  };
+
+  const fetchMoreCommunities = async (page: any) => {
+    const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=${page}`;
+    try {
+      const data = await CommunityService.getCommunityDiscoverySearch(
+        accessToken.token,
+        searchUrl,
+      );
+      return data; // Should return an array of communities
+    } catch (error) {
+      console.error("Error fetching more communities:", error);
+      return []; // Return empty array in case of error
+    }
+  };
+
+  const handleSearch = async (
+    searchTerm: string,
+    selectedPrivacy: any,
+    selectedAttribute: any,
+  ) => {
+    setSearchTerm(searchTerm);
+    setSelectedPrivacy(selectedPrivacy);
+    setSelectedAttribute(selectedAttribute);
+    setPage(1);
+    const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=1`;
+    try {
+      const filteredCommunities =
+        await CommunityService.getCommunityDiscoverySearch(
+          accessToken.token,
+          searchUrl,
+        );
+      setFilteredCommunities(filteredCommunities);
+      setShowFilteredResults(true);
     } catch (error) {}
   };
 
@@ -53,7 +96,7 @@ function CommunityDiscovery() {
         <div className="flex justify-between pt-4 pb-4">
           <ILabel text="Discover Communities" />
           <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
-            <ISearch />
+            <ISearch handleSearch={handleSearch} />
             <IButton
               text="Home"
               onClick={() => navigate("/communities/home")}
@@ -83,69 +126,89 @@ function CommunityDiscovery() {
             />
           )}
         </div>
+        {!showFilteredResults && (
+          <div>
+            <ICommunityPanel
+              title="Trending"
+              buttonLabel={
+                communityDiscovery?.trendingCommunities?.length
+                  ? "Show All"
+                  : ""
+              }
+              height="600px"
+              onButtonClick={() =>
+                navigate(
+                  `/communities/${encodeURIComponent("Trending Communities")}`,
+                  {
+                    state: {
+                      type: "trending",
+                    },
+                  },
+                )
+              }
+              communities={communityDiscovery?.trendingCommunities}
+              onCommunityClick={(communityName, communityId) => {
+                navigate(`/community/${communityName}/${communityId}`);
+              }}
+            />
+            <ICommunityPanel
+              title="New"
+              buttonLabel={
+                communityDiscovery?.newCommunities?.length ? "Show All" : ""
+              }
+              height="600px"
+              onButtonClick={() =>
+                navigate(
+                  `/communities/${encodeURIComponent("New Communities")}`,
+                  {
+                    state: {
+                      type: "new",
+                    },
+                  },
+                )
+              }
+              communities={communityDiscovery?.newCommunities}
+              onCommunityClick={(communityName, communityId) => {
+                navigate(`/community/${communityName}/${communityId}`);
+              }}
+            />
 
-        <ICommunityPanel
-          title="Trending"
-          buttonLabel={
-            communityDiscovery?.trendingCommunities?.length ? "Show All" : ""
-          }
-          height="600px"
-          onButtonClick={() =>
-            navigate(
-              `/communities/${encodeURIComponent("Trending Communities")}`,
-              {
-                state: {
-                  type: "trending",
-                },
-              },
-            )
-          }
-          communities={communityDiscovery?.trendingCommunities}
-          onCommunityClick={(communityName, communityId) => {
-            navigate(`/community/${communityName}/${communityId}`);
-          }}
-        />
+            <ICommunityPanel
+              title="Recommended"
+              buttonLabel={
+                communityDiscovery?.recommendedCommunities?.length
+                  ? "Show All"
+                  : ""
+              }
+              height="600px"
+              onButtonClick={() =>
+                navigate(
+                  `/communities/${encodeURIComponent(
+                    "Recommended Communities",
+                  )}`,
+                  {
+                    state: {
+                      type: "recommended",
+                    },
+                  },
+                )
+              }
+              communities={communityDiscovery?.recommendedCommunities}
+              onCommunityClick={(communityName, communityId) => {
+                navigate(`/community/${communityName}/${communityId}`);
+              }}
+            />
+          </div>
+        )}
 
-        <ICommunityPanel
-          title="New"
-          buttonLabel={
-            communityDiscovery?.newCommunities?.length ? "Show All" : ""
-          }
-          height="600px"
-          onButtonClick={() =>
-            navigate(`/communities/${encodeURIComponent("New Communities")}`, {
-              state: {
-                type: "new",
-              },
-            })
-          }
-          communities={communityDiscovery?.newCommunities}
-          onCommunityClick={(communityName, communityId) => {
-            navigate(`/community/${communityName}/${communityId}`);
-          }}
-        />
-
-        <ICommunityPanel
-          title="Recommended"
-          buttonLabel={
-            communityDiscovery?.recommendedCommunities?.length ? "Show All" : ""
-          }
-          height="600px"
-          onButtonClick={() =>
-            navigate(
-              `/communities/${encodeURIComponent("Recommended Communities")}`,
-              {
-                state: {
-                  type: "recommended",
-                },
-              },
-            )
-          }
-          communities={communityDiscovery?.recommendedCommunities}
-          onCommunityClick={(communityName, communityId) => {
-            navigate(`/community/${communityName}/${communityId}`);
-          }}
-        />
+        {showFilteredResults && (
+          <ShowAllCommunities
+            initialCommunities={filteredCommunities}
+            fetchCommunitiesFunction={fetchMoreCommunities}
+            initialPage={page}
+            pageSize={12}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { FilterIcon } from "@heroicons/react/outline"; // Ensure you import FilterIcon from heroicons
+import { FilterIcon } from "@heroicons/react/outline";
 
-function ISearch() {
+function ISearch({ handleSearch }: any) {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedAttribute, setSelectedAttribute] = useState<any>("");
   const [selectedPrivacy, setSelectedPrivacy] = useState<any>("");
+  const [searchTerm, setSearchTerm] = useState<any>("");
 
   const toggleFilters = () => setShowFilters(!showFilters);
 
@@ -30,8 +31,18 @@ function ISearch() {
     setSelectedPrivacy(privacy);
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSearch(
+      searchTerm,
+      selectedPrivacy.toUpperCase(),
+      selectedAttribute.toUpperCase(),
+    );
+    setShowFilters(false);
+  };
+
   return (
-    <div className="flex">
+    <form onSubmit={handleSubmit} className="flex">
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -53,6 +64,7 @@ function ISearch() {
               strokeWidth="2"
               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
+            ;
           </svg>
         </div>
         <input
@@ -60,6 +72,8 @@ function ISearch() {
           id="default-search"
           className="block w-full pl-10 pr-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           required
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
         />
         <button
           type="button"
@@ -76,6 +90,7 @@ function ISearch() {
             <div className="flex flex-wrap gap-2 mb-3">
               {attributes.map((attribute) => (
                 <button
+                  type="button"
                   key={attribute}
                   className={`py-1 px-3 min-w-max rounded-lg text-xs font-medium focus:outline-none transition-colors whitespace-nowrap ${
                     selectedAttribute === attribute
@@ -94,6 +109,7 @@ function ISearch() {
             <div className="flex gap-3 mb-2">
               {privacies.map((privacy) => (
                 <button
+                  type="button"
                   key={privacy}
                   className={`py-1 px-2 rounded-lg text-xs font-medium focus:outline-none transition-colors ${
                     selectedPrivacy === privacy
@@ -109,7 +125,7 @@ function ISearch() {
           </div>
         )}
       </div>
-    </div>
+    </form>
   );
 }
 

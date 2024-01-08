@@ -304,3 +304,25 @@ export const getCommunityDiscoveryShowAll = async (token: any, url: any) => {
     throw error;
   }
 };
+
+export const getCommunityDiscoverySearch = async (token: any, url: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/community/discovery/${url}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};

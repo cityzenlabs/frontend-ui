@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import debounce from "lodash/debounce"; // Ensure lodash/debounce is correctly imported
+import { useLocation, useParams } from "react-router-dom";
 import ILabel from "../../../../Library/Label/ILabel";
 import ISpinner from "../../../../Library/Spinner/ISpinner";
-import { UsersIcon } from "@heroicons/react/outline";
-import { getAttributeColor } from "../../../../Constants/Constants";
 import * as CommunityService from "../../../../Services/CommunityService/CommunityService";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useDash } from "../../../../Context/DashboardContext";
@@ -17,89 +14,70 @@ function Communities() {
   const { kind } = useParams();
   const [communities, setCommunities] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const getUrlForShowAll = useCallback(() => {
-    switch (location.state?.type) {
-      case "trending":
-        return `trending?city=${user?.city}&page=${page}`;
-      case "new":
-        return `new?city=${user?.city}&page=${page}`;
-      case "recommended":
-        return `recommended?city=${user?.city}&attribute=${user?.topAttribute}&page=${page}`;
-      default:
-        return null;
-    }
-  }, [location.state?.type, user?.city, user?.topAttribute, page]);
+  const fetchCommunitiesFunction = useCallback(
+    async (page: any) => {
+      let url: any = "";
+      switch (location.state?.type) {
+        case "trending":
+          url = `trending?city=${user?.city}&page=${page}`;
+          break;
+        case "new":
+          url = `new?city=${user?.city}&page=${page}`;
+          break;
+        case "recommended":
+          url = `recommended?city=${user?.city}&attribute=${user?.topAttribute}&page=${page}`;
+          break;
+        default:
+          url = null;
+      }
 
-  const fetchCommunities = useCallback(async () => {
-    if (location.state?.communities) {
+      if (url) {
+        try {
+          const data = await CommunityService.getCommunityDiscoveryShowAll(
+            accessToken.token,
+            url,
+          );
+          return data;
+        } catch (error) {
+          console.error("Error fetching communities:", error);
+          return [];
+        }
+      } else {
+        return [];
+      }
+    },
+    [accessToken.token, location.state?.type, user?.city, user?.topAttribute],
+  );
+
+  useEffect(() => {
+    if (location.state.communities) {
       setCommunities(location.state.communities);
       setIsLoading(false);
-      setHasMore(false);
-    } else if (!isLoading && hasMore) {
-      setIsLoading(true);
-      try {
-        const data = await CommunityService.getCommunityDiscoveryShowAll(
-          accessToken.token,
-          getUrlForShowAll(),
-        );
+    } else {
+      fetchCommunitiesFunction(1).then((data) => {
         if (Array.isArray(data)) {
-          setCommunities((prevCommunities) => [...prevCommunities, ...data]);
-          if (data.length < 12) {
-            setHasMore(false);
-          }
+          setCommunities(data);
         }
-      } catch (error) {
-      } finally {
         setIsLoading(false);
-      }
+      });
     }
-  }, [
-    location.state?.communities,
-    accessToken.token,
-    getUrlForShowAll,
-    isLoading,
-    hasMore,
-  ]);
-
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight &&
-      !isLoading &&
-      hasMore
-    ) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [isLoading, hasMore]);
-
-  useEffect(() => {
-    const debouncedHandleScroll = debounce(handleScroll, 100);
-    window.addEventListener("scroll", debouncedHandleScroll);
-    return () => {
-      window.removeEventListener("scroll", debouncedHandleScroll);
-    };
-  }, [handleScroll]);
-
-  useEffect(() => {
-    fetchCommunities();
-    setIsLoading(false);
-  }, [page, fetchCommunities]);
+  }, [fetchCommunitiesFunction]);
 
   if (isLoading) {
     return <ISpinner />;
   }
+
   return (
     <div>
       <div className="pt-4 pb-4 flex justify-between xl:w-3/4 w-full ">
         <ILabel text={kind || ""}></ILabel>
       </div>
-
-      <div>
-        <ShowAllCommunities communities={communities} />
-      </div>
+      <ShowAllCommunities
+        initialCommunities={communities}
+        fetchCommunitiesFunction={fetchCommunitiesFunction}
+        kind={kind}
+      />
     </div>
   );
 }
