@@ -45,7 +45,7 @@ export const getEventHome = async (token: any) => {
 
 export const getEvent = async (token: any, id: any) => {
   try {
-    const response = await fetch(`http://localhost:8080/event/${id}`, {
+    const response = await fetch(`http://localhost:8080/event/${id}/page`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -230,6 +230,50 @@ export const getEventPicture = async (token: any, id: any) => {
     });
     if (response.ok) {
       return response.text();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getEventDiscoveryShowAll = async (token: any, url: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/event/discovery/${url}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getEventDiscoverySearch = async (token: any, url: any) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/event/discovery/${url}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return response.json();
     } else {
       return response;
     }

@@ -63,11 +63,11 @@ function ShowAllCommunities({
 
   return (
     <div>
-      <div className="xl:w-3/4 w-full">
+      <div className="xl:w-3/4 w-full pb-4">
         {communities.map((community: any, index: any) => (
           <div
             key={index}
-            className="pb-4 flex justify-between bg-white p-4 rounded mb-1"
+            className="mb-4 flex justify-between bg-white p-4 rounded "
             onClick={() => handleNavigate(community?.name, community?.id)}
           >
             <div className="flex">

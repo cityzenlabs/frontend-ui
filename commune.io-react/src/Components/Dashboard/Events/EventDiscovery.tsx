@@ -12,6 +12,8 @@ import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
 import ISpinner from "../../../Library/Spinner/ISpinner";
 import { useDash } from "../../../Context/DashboardContext";
+import ISearch from "../../../Library/Search/ISearch";
+import ShowAllEvents from "./Reusable/ShowAllEvents";
 
 function EventDiscovery() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +23,13 @@ function EventDiscovery() {
   const { isMobile, isLargeScreen } = useScreenSize();
 
   const [eventDiscovery, setEventDiscovery] = useState<any>();
+  const [searchTerm, setSearchTerm] = useState<any>();
+  const [selectedPrivacy, setSelectedPrivacy] = useState<any>();
+  const [selectedAttribute, setSelectedAttribute] = useState<any>();
+  const [showFilteredResults, setShowFilteredResults] = useState<any>();
+  const [filteredEvents, setFilteredEvents] = useState<any>();
+
+  const [page, setPage] = useState(1);
 
   const fetchEventDiscovery = async () => {
     try {
@@ -31,6 +40,48 @@ function EventDiscovery() {
       );
       setEventDiscovery(data);
     } catch (error) {}
+  };
+
+  const fetchMoreEvents = async (page: any) => {
+    const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=${page}`;
+    try {
+      const data = await EventService.getEventDiscoverySearch(
+        accessToken.token,
+        searchUrl,
+      );
+      return data; // Should return an array of communities
+    } catch (error) {
+      console.error("Error fetching more communities:", error);
+      return []; // Return empty array in case of error
+    }
+  };
+
+  const handleSearch = async (
+    searchTerm: string,
+    selectedPrivacy: any,
+    selectedAttribute: any,
+  ) => {
+    if (
+      searchTerm === "" &&
+      selectedPrivacy === "" &&
+      selectedAttribute === ""
+    ) {
+      setShowFilteredResults(false);
+    } else {
+      setSearchTerm(searchTerm);
+      setSelectedPrivacy(selectedPrivacy);
+      setSelectedAttribute(selectedAttribute);
+      setPage(1);
+      const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=1`;
+      try {
+        const filteredCommunities = await EventService.getEventDiscoverySearch(
+          accessToken.token,
+          searchUrl,
+        );
+        setFilteredEvents(filteredCommunities);
+        setShowFilteredResults(true);
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
@@ -53,6 +104,7 @@ function EventDiscovery() {
         <ILabel text="Discover Events" />
 
         <div className={`flex ${isLargeScreen ? "" : "hidden"}`}>
+          <ISearch handleSearch={handleSearch} />
           <IButton
             text="Home"
             onClick={() => navigate("/events/home")}
@@ -82,58 +134,81 @@ function EventDiscovery() {
         )}
       </div>
 
-      <IEventPanel
-        title="Trending"
-        buttonLabel={eventDiscovery?.trendingEvents?.length ? "Show All" : ""}
-        height="600px"
-        events={eventDiscovery?.trendingEvents}
-        onEventClick={(eventName, eventId) => {
-          navigate(`/event/${eventName}/${eventId}`);
-        }}
-        marginTop="mt-0"
-        paddingB={4}
-        onButtonClick={() =>
-          navigate(`/events/${encodeURIComponent("Trending Events")}`, {
-            state: { events: eventDiscovery?.trendingEvents },
-          })
-        }
-      />
+      {!showFilteredResults && (
+        <div>
+          <IEventPanel
+            title="Trending"
+            buttonLabel={
+              eventDiscovery?.trendingEvents?.length ? "Show All" : ""
+            }
+            height="600px"
+            events={eventDiscovery?.trendingEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+            onButtonClick={() =>
+              navigate(`/events/${encodeURIComponent("Trending Events")}`, {
+                state: {
+                  type: "trending",
+                },
+              })
+            }
+          />
 
-      <IEventPanel
-        title="Upcoming"
-        buttonLabel={eventDiscovery?.upcomingEvents?.length ? "Show All" : ""}
-        height="600px"
-        onButtonClick={() =>
-          navigate(`/events/${encodeURIComponent("Upcoming Events")}`, {
-            state: { events: eventDiscovery?.upcomingEvents },
-          })
-        }
-        events={eventDiscovery?.upcomingEvents}
-        onEventClick={(eventName, eventId) => {
-          navigate(`/event/${eventName}/${eventId}`);
-        }}
-        marginTop="mt-0"
-        paddingB={4}
-      />
+          <IEventPanel
+            title="Upcoming"
+            buttonLabel={
+              eventDiscovery?.upcomingEvents?.length ? "Show All" : ""
+            }
+            height="600px"
+            onButtonClick={() =>
+              navigate(`/events/${encodeURIComponent("Upcoming Events")}`, {
+                state: {
+                  type: "upcoming",
+                },
+              })
+            }
+            events={eventDiscovery?.upcomingEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
 
-      <IEventPanel
-        title="Recommended"
-        buttonLabel={
-          eventDiscovery?.recommendedEvents?.length ? "Show All" : ""
-        }
-        height="600px"
-        onButtonClick={() =>
-          navigate(`/events/${encodeURIComponent("Recommended Events")}`, {
-            state: { events: eventDiscovery?.recommendedEvents },
-          })
-        }
-        events={eventDiscovery?.recommendedEvents}
-        onEventClick={(eventName, eventId) => {
-          navigate(`/event/${eventName}/${eventId}`);
-        }}
-        marginTop="mt-0"
-        paddingB={4}
-      />
+          <IEventPanel
+            title="Recommended"
+            buttonLabel={
+              eventDiscovery?.recommendedEvents?.length ? "Show All" : ""
+            }
+            height="600px"
+            onButtonClick={() =>
+              navigate(`/events/${encodeURIComponent("Recommended Events")}`, {
+                state: {
+                  type: "recommended",
+                },
+              })
+            }
+            events={eventDiscovery?.recommendedEvents}
+            onEventClick={(eventName, eventId) => {
+              navigate(`/event/${eventName}/${eventId}`);
+            }}
+            marginTop="mt-0"
+            paddingB={4}
+          />
+        </div>
+      )}
+
+      {showFilteredResults && (
+        <ShowAllEvents
+          initialEvents={filteredEvents}
+          fetchEventsFunction={fetchMoreEvents}
+          initialPage={page}
+          pageSize={12}
+        />
+      )}
     </div>
   );
 }

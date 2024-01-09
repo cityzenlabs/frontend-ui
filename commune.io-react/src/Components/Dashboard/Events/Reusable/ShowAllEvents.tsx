@@ -1,19 +1,69 @@
 import { UsersIcon } from "@heroicons/react/outline";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "../../../../Constants/Constants";
+import { formatDate, getAttributeColor } from "../../../../Constants/Constants";
+import { debounce } from "lodash";
 
-function ShowAllEvents({ events }: any) {
+function ShowAllEvents({
+  initialEvents,
+  fetchEventsFunction,
+  initialPage = 1,
+  pageSize = 12,
+  kind,
+}: any) {
   const navigate = useNavigate();
+  const [events, setEvents] = useState(initialEvents || []);
+  const [page, setPage] = useState(initialPage + 1); // Start from the next page
+  const [hasMore, setHasMore] = useState(true);
+  console.log(initialEvents);
+
+  const fetchMoreEvents = useCallback(async () => {
+    try {
+      const newEvents = await fetchEventsFunction(page, pageSize);
+      if (newEvents && newEvents.length > 0) {
+        setEvents((prev: any) => [...prev, ...newEvents]);
+        setPage((prev: any) => prev + 1);
+        if (newEvents.length < pageSize) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      setHasMore(false);
+    }
+  }, [page, pageSize, fetchEventsFunction]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight &&
+      hasMore
+    ) {
+      fetchMoreEvents();
+    }
+  }, [fetchMoreEvents, hasMore]);
+
+  useEffect(() => {
+    const debouncedHandleScroll = debounce(handleScroll, 100);
+    window.addEventListener("scroll", debouncedHandleScroll);
+    return () => window.removeEventListener("scroll", debouncedHandleScroll);
+  }, [handleScroll]);
+
+  useEffect(() => {
+    setEvents(initialEvents);
+    setPage(initialPage + 1);
+    setHasMore(true);
+  }, [initialEvents, initialPage]);
 
   return (
     <div>
-      <div className="xl:w-3/4 w-full">
+      <div className="xl:w-3/4 w-full pb-4">
         <div>
           {events?.map((event: any) => (
             <div
               key={event?.communityId}
-              className="pb-4 flex justify-between"
+              className=" flex justify-between bg-white p-4 rounded mb-4"
               onClick={() => navigate(`/event/${event?.name}/${event?.id}`)}
             >
               <div className="flex ">
@@ -25,9 +75,24 @@ function ShowAllEvents({ events }: any) {
                   />
                 </div>
                 <div className="ml-4 mt-1 text-[10px]">
-                  <span className="border rounded-full py-1 px-3 font-thin text-white bg-black">
-                    {event?.private ? "PRIVATE" : "PUBLIC"}
+                  <span className="rounded-full py-1 px-3 font-thin text-white bg-black">
+                    {event?.privacy === "PRIVATE" ? "PRIVATE" : "PUBLIC"}
                   </span>
+                  <span
+                    className="ml-2 rounded-full py-1 px-3 font-thin text-white"
+                    style={{
+                      backgroundColor: getAttributeColor(event?.attribute, 0.2),
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: getAttributeColor(event?.attribute),
+                      }}
+                    >
+                      {event?.attribute}
+                    </span>
+                  </span>
+
                   <div className="mt-4">
                     <div className="text-xs font-thin mb-1">
                       {formatDate(event?.startTime)}
@@ -43,22 +108,17 @@ function ShowAllEvents({ events }: any) {
                         overflow: "hidden",
                       }}
                     >
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
+                      {event?.description}
                     </div>
-                    <div className="text-xs font-thin">{event?.address}</div>
+                    <div className="text-[11px] font-md mt-2">
+                      {event?.address}
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div
-                className="border bg-black px-2 rounded-full flex items-center font-thin"
+                className="bg-black px-2 rounded-full flex items-center font-thin"
                 style={{ height: "fit-content" }}
               >
                 <div className="text-sm mr-1 text-white">

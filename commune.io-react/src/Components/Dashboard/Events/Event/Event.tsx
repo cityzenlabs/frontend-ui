@@ -30,7 +30,7 @@ function Event() {
       const eventPage = await EventService.getEvent(accessToken.token, eventId);
       if (eventPage) {
         setEvent(eventPage?.event);
-        setOrganizerId(eventPage?.event?.organizerId);
+        setOrganizerId(eventPage?.event?.organizer?.id);
         setOrganizer(eventPage?.organizer);
         setCommunity(eventPage?.host);
         setAttendeesList(eventPage?.event?.attendees);
