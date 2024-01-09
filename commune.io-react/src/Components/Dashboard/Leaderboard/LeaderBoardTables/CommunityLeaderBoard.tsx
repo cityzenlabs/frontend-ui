@@ -94,8 +94,8 @@ const ICommunityLeaderBoard: React.FC<CommunityLeaderBoardProps> = ({
                   />
                 </div>
                 <div>
-                  <div className="text-md">{community?.name}</div>
-                  <div className="text-xs text-[#7E858B]">
+                  <div className="text-md ml-1">{community?.name}</div>
+                  <div className="text-xs text-[#7E858B] ml-1">
                     {`${community?.organizerName}`}
                   </div>
                 </div>

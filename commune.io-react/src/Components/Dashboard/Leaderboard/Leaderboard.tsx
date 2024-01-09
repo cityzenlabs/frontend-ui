@@ -84,6 +84,7 @@ function Leaderboard() {
         `category=${category}&attribute=${attribute}&${location}=${getLocation()}&page=${1}`,
       );
       if (data) {
+        console.log(data);
         setRest(data.content);
       }
     } catch (error) {}

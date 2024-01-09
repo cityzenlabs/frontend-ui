@@ -1,5 +1,9 @@
 import React from "react";
-import { CameraIcon } from "@heroicons/react/outline";
+import { CameraIcon, UserGroupIcon } from "@heroicons/react/outline";
+import {
+  capitalizeFirstLetter,
+  getAttributeColor,
+} from "../../Constants/Constants";
 
 interface IEventPanelProps {
   events: any[];
@@ -27,6 +31,7 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
   titleColor,
   paddingB = 4,
 }) => {
+  console.log(events);
   const paddingBClass = `pb-${paddingB}`;
   return (
     <div className={`${marginTop} ${paddingBClass}`}>
@@ -72,8 +77,8 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
                     <CameraIcon className="w-8 h-8 text-gray-500" />
                   </div>
                 )}
-                <span className=" absolute text-[10px] top-2 right-2  bg-[#999c9c]  bg-opacity-80  rounded-full  px-3 font-thin text-white  ">
-                  {event?.private ? (
+                <span className="absolute text-[10px] top-2 right-2 bg-[#9FA3A6] bg-opacity-80 rounded-full px-3 font-thin text-white ">
+                  {event?.privacy === "PRIVATE" ? (
                     <>
                       <div className="flex">
                         <svg
@@ -98,23 +103,31 @@ const IEventPanel: React.FC<IEventPanelProps> = ({
                   )}
                 </span>
               </div>
-              <div className="px-2 pt-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium truncate">{event?.name}</h3>
-              </div>
-              <div className="px-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event?.category}
+              <div className="px-2 pt-2 pb-1 flex items-center justify-between">
+                <h3 className="text-sm font-medium flex-grow truncate">
+                  {event?.name}
+                </h3>
+                <div className="flex items-center ml-1">
+                  <span className="text-xs text-[#7E858B] font-thin truncate flex-grow">
+                    {event?.attendees}
+                  </span>
+                  <UserGroupIcon
+                    className="h-4 w-4 ml-1 flex-shrink-0 text-[#7E858B]"
+                    aria-hidden="true"
+                  />
                 </div>
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  Public
+              </div>
+              <div className="px-2 pb-1 flex items-center justify-between">
+                <div
+                  className="text-xs font-medium text-[#7E858B] truncate flex-grow"
+                  style={{ color: getAttributeColor(event?.attribute) }}
+                >
+                  {capitalizeFirstLetter(event?.attribute)}
                 </div>
               </div>
-              <div className="px-2 pb-2 flex items-center justify-between">
-                <div className="text-xs font-medium truncate text-[#7E858B]">
+              <div className="px-2 pb-1 flex items-center justify-between">
+                <div className="text-xs font-medium text-[#7E858B] font-thin truncate flex-grow">
                   {event?.address}
-                </div>
-                <div className="text-xs font-medium truncate text-[#7E858B]">
-                  {event?.attendees + " Attendees"}
                 </div>
               </div>
             </div>

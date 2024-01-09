@@ -3,11 +3,9 @@ import { FilterIcon } from "@heroicons/react/outline";
 
 function ISearch({ handleSearch }: any) {
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedAttribute, setSelectedAttribute] = useState<any>("");
-  const [selectedPrivacy, setSelectedPrivacy] = useState<any>("");
-  const [searchTerm, setSearchTerm] = useState<any>("");
-
-  const toggleFilters = () => setShowFilters(!showFilters);
+  const [selectedAttribute, setSelectedAttribute] = useState("");
+  const [selectedPrivacy, setSelectedPrivacy] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const attributes = [
     "Social",
@@ -19,68 +17,58 @@ function ISearch({ handleSearch }: any) {
   ];
   const privacies = ["Public", "Private"];
 
-  const handleFilterClick = () => {
-    toggleFilters();
-  };
+  const handleFilterClick = () => setShowFilters(!showFilters);
 
   const handleAttributeClick = (attribute: any) => {
-    setSelectedAttribute(attribute);
+    setSelectedAttribute(selectedAttribute === attribute ? "" : attribute);
   };
 
   const handlePrivacyClick = (privacy: any) => {
-    setSelectedPrivacy(privacy);
+    setSelectedPrivacy(selectedPrivacy === privacy ? "" : privacy);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     handleSearch(
       searchTerm,
       selectedPrivacy.toUpperCase(),
       selectedAttribute.toUpperCase(),
     );
-    setShowFilters(false);
+    setShowFilters(false); // Ensuring the filter panel closes only when the search is actually performed
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex">
-      <label
-        htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >
-        Search
-      </label>
       <div className="relative flex-grow mr-2">
-        <div className="absolute inset-y-0 start-0 flex items-center pl-3 pointer-events-none">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
+            className="w-5 h-5 text-gray-500"
             fill="none"
-            viewBox="0 0 20 20"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-            ;
+            <path d="M19 19l-3.5-3.5"></path>
+            <path d="M11 18a7 7 0 100-14 7 7 0 000 14z"></path>
           </svg>
         </div>
         <input
           type="search"
           id="default-search"
           className="block w-full pl-10 pr-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
+          placeholder="Search..."
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
+          autoComplete="off"
         />
         <button
           type="button"
-          className="absolute inset-y-0 end-0 flex items-center pr-3"
+          className="absolute inset-y-0 right-0 flex items-center pr-3"
           onClick={handleFilterClick}
         >
-          <FilterIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          <FilterIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </button>
         {showFilters && (
           <div className="absolute right-0 mt-2 px-4 pt-4 pb-2 bg-white border border-gray-300 rounded-lg shadow-lg z-50 w-[205px]">
@@ -90,7 +78,6 @@ function ISearch({ handleSearch }: any) {
             <div className="flex flex-wrap gap-2 mb-3">
               {attributes.map((attribute) => (
                 <button
-                  type="button"
                   key={attribute}
                   className={`py-1 px-3 min-w-max rounded-lg text-xs font-medium focus:outline-none transition-colors whitespace-nowrap ${
                     selectedAttribute === attribute
@@ -109,7 +96,6 @@ function ISearch({ handleSearch }: any) {
             <div className="flex gap-3 mb-2">
               {privacies.map((privacy) => (
                 <button
-                  type="button"
                   key={privacy}
                   className={`py-1 px-2 rounded-lg text-xs font-medium focus:outline-none transition-colors ${
                     selectedPrivacy === privacy

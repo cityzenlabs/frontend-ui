@@ -11,9 +11,11 @@ import { useNavigate } from "react-router-dom";
 import IMenuButton from "../../../Library/MenuButton/IMenuButton";
 import { useScreenSize } from "../../../Context/ScreenContext";
 import ISpinner from "../../../Library/Spinner/ISpinner";
+import { useDash } from "../../../Context/DashboardContext";
 
 function EventDiscovery() {
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useDash();
   const accessToken = useAuth();
   const navigate = useNavigate();
   const { isMobile, isLargeScreen } = useScreenSize();
@@ -22,7 +24,11 @@ function EventDiscovery() {
 
   const fetchEventDiscovery = async () => {
     try {
-      const data = await EventService.getEventDiscovery(accessToken.token);
+      const data = await EventService.getEventDiscovery(
+        accessToken.token,
+        user?.city,
+        user?.topAttribute,
+      );
       setEventDiscovery(data);
     } catch (error) {}
   };

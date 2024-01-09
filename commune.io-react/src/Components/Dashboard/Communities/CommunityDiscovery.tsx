@@ -61,20 +61,28 @@ function CommunityDiscovery() {
     selectedPrivacy: any,
     selectedAttribute: any,
   ) => {
-    setSearchTerm(searchTerm);
-    setSelectedPrivacy(selectedPrivacy);
-    setSelectedAttribute(selectedAttribute);
-    setPage(1);
-    const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=1`;
-    try {
-      const filteredCommunities =
-        await CommunityService.getCommunityDiscoverySearch(
-          accessToken.token,
-          searchUrl,
-        );
-      setFilteredCommunities(filteredCommunities);
-      setShowFilteredResults(true);
-    } catch (error) {}
+    if (
+      searchTerm === "" &&
+      selectedPrivacy === "" &&
+      selectedAttribute === ""
+    ) {
+      setShowFilteredResults(false);
+    } else {
+      setSearchTerm(searchTerm);
+      setSelectedPrivacy(selectedPrivacy);
+      setSelectedAttribute(selectedAttribute);
+      setPage(1);
+      const searchUrl = `search?city=${user?.city}&nameContains=${searchTerm}&privacy=${selectedPrivacy}&attribute=${selectedAttribute}&page=1`;
+      try {
+        const filteredCommunities =
+          await CommunityService.getCommunityDiscoverySearch(
+            accessToken.token,
+            searchUrl,
+          );
+        setFilteredCommunities(filteredCommunities);
+        setShowFilteredResults(true);
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
